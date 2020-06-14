@@ -1,12 +1,10 @@
-﻿using SideWarsServer.Game;
+﻿using SideWarsServer.Database;
+using SideWarsServer.Game;
 using SideWarsServer.Game.Room;
 using SideWarsServer.Networking;
 using SideWarsServer.Threading;
 using SideWarsServer.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SideWarsServer
@@ -18,6 +16,7 @@ namespace SideWarsServer
         public LogicController LogicController { get; set; }
         public TaskController TaskController { get; set; }
         public RoomController RoomController { get; set; }
+        public DatabaseController DatabaseController { get; set; }
 
         public Server()
         {
@@ -36,6 +35,7 @@ namespace SideWarsServer
             LogicController = new LogicController(threadCount);
             TaskController = new TaskController(threadCount, LogicController);
             RoomController = new RoomController();
+            DatabaseController = new DatabaseController();
 
             NetworkManager.StartServer();
 

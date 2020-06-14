@@ -18,21 +18,6 @@ namespace SideWarsServer.Game.Room
             tokenController = new DebugTokenController();
         }
 
-        public async Task<bool> PlayerJoinRequest(string tokenId)
-        {
-            try 
-            {
-                var token = await tokenController.GetTokenAsync(tokenId);
-                JoinOrCreateRoom(token);
-
-                return true;
-            }
-            catch(InvalidTokenException ex)
-            {
-                return false;
-            }
-        }
-
         public void JoinOrCreateRoom(Token token)
         {
 

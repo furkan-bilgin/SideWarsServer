@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Database\DebugTokenController.cs" />
     <Compile Include="Database\Exceptions\InvalidTokenException.cs" />
     <Compile Include="Database\ITokenController.cs" />

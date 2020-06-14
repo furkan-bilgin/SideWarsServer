@@ -9,11 +9,13 @@ namespace SideWarsServer.Networking
     {
         public async void OnConnectionRequest(ConnectionRequest request)
         {
-            string token;
-            if (!request.Data.TryGetString(out token))
+            string tokenId;
+            if (!request.Data.TryGetString(out tokenId))
                 request.Reject();
 
-            if (await Server.Instance.RoomController.PlayerJoinRequest(token))
+            var token = await Server.Instance.DatabaseController.GetTokenAsync(tokenId);
+
+            if (token != null)
                 request.Accept();
             else
                 request.Reject();
