@@ -1,4 +1,5 @@
 ﻿using SideWarsServer.Game;
+using SideWarsServer.Game.Room;
 using SideWarsServer.Networking;
 using SideWarsServer.Threading;
 using SideWarsServer.Utils;
@@ -16,6 +17,7 @@ namespace SideWarsServer
         public NetworkManager NetworkManager { get; set; }
         public LogicController LogicController { get; set; }
         public TaskController TaskController { get; set; }
+        public RoomController RoomController { get; set; }
 
         public Server()
         {
@@ -33,6 +35,7 @@ namespace SideWarsServer
             Logger.Info("Starting async logic with " + threadCount + " threads.");
             LogicController = new LogicController(threadCount);
             TaskController = new TaskController(threadCount, LogicController);
+            RoomController = new RoomController();
 
             NetworkManager.StartServer();
 

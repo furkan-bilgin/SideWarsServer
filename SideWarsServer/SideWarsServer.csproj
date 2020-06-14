@@ -47,8 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\DebugTokenController.cs" />
+    <Compile Include="Database\Exceptions\InvalidTokenException.cs" />
+    <Compile Include="Database\ITokenController.cs" />
+    <Compile Include="Database\Models\Token.cs" />
     <Compile Include="Game\LogicController.cs" />
     <Compile Include="Game\Room\GameRoom.cs" />
+    <Compile Include="Game\Room\RoomController.cs" />
     <Compile Include="Networking\NetworkEventListener.cs" />
     <Compile Include="Networking\NetworkManager.cs" />
     <Compile Include="Server.cs" />

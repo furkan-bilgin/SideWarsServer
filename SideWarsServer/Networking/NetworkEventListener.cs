@@ -7,14 +7,16 @@ namespace SideWarsServer.Networking
 {
     public class NetworkEventListener : INetEventListener
     {
-        public void OnConnectionRequest(ConnectionRequest request)
+        public async void OnConnectionRequest(ConnectionRequest request)
         {
-            string key;
-            if (!request.Data.TryGetString(out key))
+            string token;
+            if (!request.Data.TryGetString(out token))
                 request.Reject();
 
-            // TODO: Check key from Redis
-            request.Accept();
+            if (await Server.Instance.RoomController.PlayerJoinRequest(token))
+                request.Accept();
+            else
+                request.Reject();
         }
 
         public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
