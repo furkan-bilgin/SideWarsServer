@@ -1,4 +1,5 @@
 ﻿using SideWarsServer.Networking;
+using SideWarsServer.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -33,7 +34,7 @@ namespace SideWarsServer.Game.Room
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Logger.Error(ex.ToString());
                 return false;
             }
         }
