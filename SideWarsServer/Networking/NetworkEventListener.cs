@@ -16,7 +16,12 @@ namespace SideWarsServer.Networking
             var token = await Server.Instance.DatabaseController.GetTokenAsync(tokenId);
 
             if (token != null)
-                request.Accept();
+            {
+                var peer = request.Accept();
+                var playerConnection = new PlayerConnection(token, peer);
+
+                Server.Instance.RoomController.JoinOrCreateRoom(playerConnection);
+            }
             else
                 request.Reject();
         }

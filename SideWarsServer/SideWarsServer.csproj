@@ -53,10 +53,13 @@
     <Compile Include="Database\ITokenController.cs" />
     <Compile Include="Database\Models\Token.cs" />
     <Compile Include="Game\LogicController.cs" />
-    <Compile Include="Game\Room\GameRoom.cs" />
+    <Compile Include="Game\Logic\Player.cs" />
+    <Compile Include="Game\Room\BaseGameRoom.cs" />
+    <Compile Include="Game\Room\IGameRoom.cs" />
     <Compile Include="Game\Room\RoomController.cs" />
     <Compile Include="Networking\NetworkEventListener.cs" />
     <Compile Include="Networking\NetworkManager.cs" />
+    <Compile Include="Networking\PlayerConnection.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

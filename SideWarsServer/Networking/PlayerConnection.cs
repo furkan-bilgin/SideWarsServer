@@ -1,0 +1,22 @@
+﻿using LiteNetLib;
+using SideWarsServer.Database.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SideWarsServer.Networking
+{
+    public class PlayerConnection
+    {
+        public Token Token { get; private set; }
+        public NetPeer NetPeer { get; private set; }
+        
+        public PlayerConnection(Token token, NetPeer netPeer)
+        {
+            Token = token;
+            NetPeer = netPeer;
+        }
+    }
+}
