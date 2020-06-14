@@ -20,8 +20,12 @@ namespace SideWarsServer.Game
 
             for (int i = 0; i < threadCount; i++)
             {
-                LogicTimers.Add(new LogicTimer(() => LogicUpdate(i)));
-                logicUpdates.TryAdd(i, new List<Action>());
+                var id = i;
+                var logicTimer = new LogicTimer(() => LogicUpdate(id));
+                logicTimer.Start();
+                
+                LogicTimers.Add(logicTimer);
+                logicUpdates.TryAdd(id, new List<Action>());
             }
         }
 
@@ -46,7 +50,7 @@ namespace SideWarsServer.Game
         {  
             List<Action> currentList;
             logicUpdates.TryGetValue(id, out currentList);
-            
+
             lock (currentList)
             {
                 for (int i = 0; i < currentList.Count; i++)

@@ -31,7 +31,7 @@ namespace SideWarsServer
             NetworkManager = new NetworkManager();
             
             LogicController = new LogicController(threadCount);
-            TaskController = new TaskController(threadCount);
+            TaskController = new TaskController(threadCount, LogicController);
 
             NetworkManager.StartServer();
 

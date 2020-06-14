@@ -1,4 +1,5 @@
-﻿using SideWarsServer.Utils;
+﻿using SideWarsServer.Game;
+using SideWarsServer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,13 @@ namespace SideWarsServer.Threading
     {
         private List<Task> tasks;
 
-        public TaskController(int threadCount)
+        public TaskController(int threadCount, LogicController logicController)
         {
             tasks = new List<Task>();
             for (int i = 0; i < threadCount; i++)
             {
                 var id = i;
-                var logicTimer = Server.Instance.LogicController.LogicTimers[i];
+                var logicTimer = logicController.LogicTimers[i];
                 tasks.Add(Task.Run(() => TaskLoop(id, logicTimer))); // Create task and give them their ids
             }
         }
