@@ -29,7 +29,8 @@ namespace SideWarsServer
             var threadCount = Environment.ProcessorCount;
 
             NetworkManager = new NetworkManager();
-            
+
+            Logger.Info("Starting async logic with " + threadCount + " threads.");
             LogicController = new LogicController(threadCount);
             TaskController = new TaskController(threadCount, LogicController);
 
