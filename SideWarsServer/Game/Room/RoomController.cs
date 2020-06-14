@@ -1,30 +1,40 @@
 ﻿using SideWarsServer.Networking;
+using System;
 using System.Collections.Generic;
 
 namespace SideWarsServer.Game.Room
 {
     public class RoomController
     {
-        private Dictionary<string, IGameRoom> gameRooms;
+        public Dictionary<string, IGameRoom> GameRooms { get; private set; }
 
         public RoomController()
         {
-            gameRooms = new Dictionary<string, IGameRoom>();
+            GameRooms = new Dictionary<string, IGameRoom>();
         }
 
-        public void JoinOrCreateRoom(PlayerConnection playerConnection)
+        public bool JoinOrCreateRoom(PlayerConnection playerConnection)
         {
-            if (!gameRooms.ContainsKey(playerConnection.Token.RoomId)) // If the room doesn't exist
+            try
             {
-                var gameRoom = new BaseGameRoom();
-                gameRoom.AddPlayer(playerConnection);
+                if (!GameRooms.ContainsKey(playerConnection.Token.RoomId)) // If the room doesn't exist
+                {
+                    var gameRoom = new BaseGameRoom();
+                    gameRoom.AddPlayer(playerConnection);
 
-                gameRooms.Add(playerConnection.Token.RoomId, gameRoom);
+                    GameRooms.Add(playerConnection.Token.RoomId, gameRoom);
+                }
+                else // If it is, add it
+                {
+                    var gameRoom = GameRooms[playerConnection.Token.RoomId];
+                    gameRoom.AddPlayer(playerConnection);
+                }
+                return true;
             }
-            else
+            catch (Exception ex)
             {
-                var gameRoom = gameRooms[playerConnection.Token.RoomId];
-                gameRoom.AddPlayer(playerConnection);
+                Console.WriteLine(ex.ToString());
+                return false;
             }
         }
     }
