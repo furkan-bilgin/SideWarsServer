@@ -1,4 +1,6 @@
-﻿using SideWarsServer.Networking;
+﻿using SideWarsServer.Game;
+using SideWarsServer.Networking;
+using SideWarsServer.Threading;
 using SideWarsServer.Utils;
 using System;
 using System.Collections.Generic;
@@ -8,23 +10,38 @@ using System.Threading.Tasks;
 
 namespace SideWarsServer
 {
-    public class Server
+    public class Server : Singleton<Server>
     {
-        public bool shutdown;
-        public NetworkManager networkManager;
+        public bool Shutdown { get; set; }
+        public NetworkManager NetworkManager { get; set; }
+        public LogicController LogicController { get; set; }
+        public TaskController TaskController { get; set; }
+
+        public Server()
+        {
+            base.InitSingleton(this);
+        }
 
         public async Task StartServerThread()
         {
             Logger.Info("Starting server thread...");
 
-            networkManager = new NetworkManager();
-            networkManager.StartServer();
+            var threadCount = Environment.ProcessorCount;
 
-            while (!shutdown)
+            NetworkManager = new NetworkManager();
+            
+            LogicController = new LogicController(threadCount);
+            TaskController = new TaskController(threadCount);
+
+            NetworkManager.StartServer();
+
+            while (!Shutdown)
             {
-                networkManager.Update();
+                NetworkManager.Update();
                 await Task.Delay(50);
             }
+
+            Environment.Exit(0);
         }
     }
 }

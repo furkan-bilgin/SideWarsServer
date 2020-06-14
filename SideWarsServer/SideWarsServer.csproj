@@ -47,19 +47,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\LogicController.cs" />
+    <Compile Include="Game\Room\GameRoom.cs" />
     <Compile Include="Networking\NetworkEventListener.cs" />
     <Compile Include="Networking\NetworkManager.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Threading\TaskController.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\LogicTimer.cs" />
+    <Compile Include="Utils\Singleton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Game\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
