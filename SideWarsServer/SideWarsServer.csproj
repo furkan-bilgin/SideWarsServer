@@ -58,7 +58,7 @@
     <Compile Include="Game\Room\IGameRoom.cs" />
     <Compile Include="Game\Room\RoomController.cs" />
     <Compile Include="Networking\NetworkEventListener.cs" />
-    <Compile Include="Networking\NetworkManager.cs" />
+    <Compile Include="Networking\NetworkController.cs" />
     <Compile Include="Networking\PlayerConnection.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Program.cs" />

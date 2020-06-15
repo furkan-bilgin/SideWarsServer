@@ -12,7 +12,7 @@ namespace SideWarsServer
     public class Server : Singleton<Server>
     {
         public bool Shutdown { get; set; }
-        public NetworkManager NetworkManager { get; set; }
+        public NetworkController NetworkManager { get; set; }
         public LogicController LogicController { get; set; }
         public TaskController TaskController { get; set; }
         public RoomController RoomController { get; set; }
@@ -29,7 +29,7 @@ namespace SideWarsServer
 
             var threadCount = Environment.ProcessorCount;
 
-            NetworkManager = new NetworkManager();
+            NetworkManager = new NetworkController();
 
             Logger.Info("Starting async logic with " + threadCount + " thread(s).");
             LogicController = new LogicController(threadCount);

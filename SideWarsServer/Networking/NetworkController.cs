@@ -10,7 +10,7 @@ using SideWarsServer.Utils;
 
 namespace SideWarsServer.Networking
 {
-    public class NetworkManager
+    public class NetworkController
     {
         private NetManager client;
         private NetworkEventListener networkEventListener;
