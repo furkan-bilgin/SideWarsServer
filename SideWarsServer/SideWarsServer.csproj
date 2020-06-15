@@ -69,6 +69,8 @@
     <Compile Include="Networking\NetworkController.cs" />
     <Compile Include="Networking\PlayerConnection.cs" />
     <Compile Include="Networking\PlayerController.cs" />
+    <Compile Include="Networking\Shared\EntitySpawnPacket.cs" />
+    <Compile Include="Networking\Shared\PlayerMovementPacket.cs" />
     <Compile Include="Networking\Shared\ReadyPacket.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Program.cs" />

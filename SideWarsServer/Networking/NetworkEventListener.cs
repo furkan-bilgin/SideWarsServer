@@ -1,6 +1,5 @@
 ﻿using LiteNetLib;
 using LiteNetLib.Utils;
-using SideWarsServer.Networking.Shared;
 using SideWarsServer.Utils;
 using System.Net;
 using System.Net.Sockets;
