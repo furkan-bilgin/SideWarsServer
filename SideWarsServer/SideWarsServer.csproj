@@ -61,10 +61,14 @@
     <Compile Include="Game\Logic\Player.cs" />
     <Compile Include="Game\Room\BaseGameRoom.cs" />
     <Compile Include="Game\Room\IGameRoom.cs" />
+    <Compile Include="Game\Room\Listener\BaseGameRoomListener.cs" />
+    <Compile Include="Game\Room\Listener\IGameRoomListener.cs" />
     <Compile Include="Game\Room\RoomController.cs" />
     <Compile Include="Networking\NetworkEventListener.cs" />
     <Compile Include="Networking\NetworkController.cs" />
     <Compile Include="Networking\PlayerConnection.cs" />
+    <Compile Include="Networking\PlayerController.cs" />
+    <Compile Include="Networking\Shared\ReadyPacket.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="Networking\NetworkEventListener.Game.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

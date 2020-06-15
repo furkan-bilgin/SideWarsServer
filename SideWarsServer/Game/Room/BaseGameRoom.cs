@@ -1,16 +1,21 @@
 ﻿using SideWarsServer.Game.Logic;
+using SideWarsServer.Game.Room.Listener;
 using SideWarsServer.Networking;
+using SideWarsServer.Utils;
 using System.Collections.Generic;
 
 namespace SideWarsServer.Game.Room
 {
     public class BaseGameRoom : IGameRoom
     {
+        public IGameRoomListener Listener { get; set; }
         protected Dictionary<int, Player> players;
 
         public BaseGameRoom()
         {
             players = new Dictionary<int, Player>();
+            Listener = new BaseGameRoomListener(this);
+
             Server.Instance.LogicController.RegisterLogicUpdate(Update);
         }
 
@@ -21,6 +26,9 @@ namespace SideWarsServer.Game.Room
 
         public void AddPlayer(PlayerConnection playerConnection)
         {
+            Logger.Info("Added player " + playerConnection.NetPeer.Id + " to the room");
+
+            playerConnection.CurrentGameRoom = this;
             players.Add(playerConnection.NetPeer.Id, new Player(Ara3D.Vector3.Zero, playerConnection));
         }
 
@@ -31,7 +39,7 @@ namespace SideWarsServer.Game.Room
 
         protected virtual void Update()
         {
-            // TODO: Game logic
+
         }
     }
 }

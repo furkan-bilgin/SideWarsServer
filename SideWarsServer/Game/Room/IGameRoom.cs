@@ -1,4 +1,5 @@
-﻿using SideWarsServer.Networking;
+﻿using SideWarsServer.Game.Room.Listener;
+using SideWarsServer.Networking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace SideWarsServer.Game.Room
 {
     public interface IGameRoom
     {
+        IGameRoomListener Listener { get; set; }
+
         void AddPlayer(PlayerConnection playerConnection);
         void RemovePlayer(PlayerConnection playerConnection);
     }

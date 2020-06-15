@@ -1,11 +1,13 @@
 ﻿using LiteNetLib;
+using LiteNetLib.Utils;
+using SideWarsServer.Networking.Shared;
 using SideWarsServer.Utils;
 using System.Net;
 using System.Net.Sockets;
 
 namespace SideWarsServer.Networking
 {
-    public class NetworkEventListener : INetEventListener
+    public partial class NetworkEventListener : INetEventListener
     {
         public async void OnConnectionRequest(ConnectionRequest request)
         {
@@ -26,24 +28,9 @@ namespace SideWarsServer.Networking
                 request.Reject();
         }
 
-        public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
-        {
-
-        }
-
-        public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
-        {
-
-        }
-
         public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
         {
-
-        }
-
-        public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
-        {
-
+            netPacketProcessor.ReadAllPackets(reader, peer);
         }
 
         public void OnPeerConnected(NetPeer peer)
@@ -55,5 +42,14 @@ namespace SideWarsServer.Networking
         {
             Logger.Info("Peer disconnected with id " + peer.Id);
         }
+
+        public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
+        { }
+
+        public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
+        { }
+
+        public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
+        { }
     }
 }

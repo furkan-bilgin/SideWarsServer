@@ -30,6 +30,7 @@ namespace SideWarsServer.Game.Room
                     var gameRoom = GameRooms[playerConnection.Token.RoomId];
                     gameRoom.AddPlayer(playerConnection);
                 }
+
                 return true;
             }
             catch (Exception ex)

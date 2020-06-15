@@ -19,6 +19,7 @@ namespace SideWarsServer
         public TaskController TaskController { get; set; }
         public RoomController RoomController { get; set; }
         public DatabaseController DatabaseController { get; set; }
+        public PlayerController PlayerController { get; set; }
 
         public Server()
         {
@@ -38,6 +39,7 @@ namespace SideWarsServer
             TaskController = new TaskController(threadCount, LogicController);
             RoomController = new RoomController();
             DatabaseController = new DatabaseController();
+            PlayerController = new PlayerController();
 
             NetworkManager.StartServer();
 
