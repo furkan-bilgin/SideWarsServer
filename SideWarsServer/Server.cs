@@ -31,7 +31,7 @@ namespace SideWarsServer
 
             NetworkManager = new NetworkManager();
 
-            Logger.Info("Starting async logic with " + threadCount + " threads.");
+            Logger.Info("Starting async logic with " + threadCount + " thread(s).");
             LogicController = new LogicController(threadCount);
             TaskController = new TaskController(threadCount, LogicController);
             RoomController = new RoomController();
