@@ -1,5 +1,6 @@
 ﻿using LiteNetLib;
 using LiteNetLib.Utils;
+using SideWarsServer.Game.Room;
 using SideWarsServer.Networking.Shared;
 
 namespace SideWarsServer.Networking
@@ -10,14 +11,14 @@ namespace SideWarsServer.Networking
 
         public NetworkEventListener()
         {
-            netPacketProcessor = new NetPacketProcessor();
+            netPacketProcessor = Server.Instance.NetworkController.PacketProcessor;
             netPacketProcessor.SubscribeReusable<ReadyPacket, NetPeer>(ReadyPacketReceive);
         }
 
         private void ReadyPacketReceive(ReadyPacket packet, NetPeer netPeer)
         {
             var player = Server.Instance.PlayerController.Players[netPeer.Id];
-            if (player.CurrentGameRoom != null)
+            if (player.CurrentGameRoom != null && player.CurrentGameRoom.RoomState == GameRoomState.Waiting)
             {
                 player.CurrentGameRoom.Listener.OnPlayerReady(player);
             }

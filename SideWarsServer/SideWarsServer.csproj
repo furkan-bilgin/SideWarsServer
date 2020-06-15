@@ -60,6 +60,7 @@
     <Compile Include="Game\Logic\Physics\SquareCollider.cs" />
     <Compile Include="Game\Logic\Player.cs" />
     <Compile Include="Game\Room\BaseGameRoom.cs" />
+    <Compile Include="Game\Room\GameRoomState.cs" />
     <Compile Include="Game\Room\IGameRoom.cs" />
     <Compile Include="Game\Room\Listener\BaseGameRoomListener.cs" />
     <Compile Include="Game\Room\Listener\IGameRoomListener.cs" />

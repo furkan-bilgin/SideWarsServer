@@ -8,12 +8,13 @@ namespace SideWarsServer.Game.Room
 {
     public class BaseGameRoom : IGameRoom
     {
+        public GameRoomState RoomState { get; set; }
         public IGameRoomListener Listener { get; set; }
-        protected Dictionary<int, Player> players;
+        public Dictionary<int, Player> Players { get; set; }
 
         public BaseGameRoom()
         {
-            players = new Dictionary<int, Player>();
+            Players = new Dictionary<int, Player>();
             Listener = new BaseGameRoomListener(this);
 
             Server.Instance.LogicController.RegisterLogicUpdate(Update);
@@ -29,12 +30,21 @@ namespace SideWarsServer.Game.Room
             Logger.Info("Added player " + playerConnection.NetPeer.Id + " to the room");
 
             playerConnection.CurrentGameRoom = this;
-            players.Add(playerConnection.NetPeer.Id, new Player(Ara3D.Vector3.Zero, playerConnection));
+            Players.Add(playerConnection.NetPeer.Id, new Player(Ara3D.Vector3.Zero, playerConnection));
         }
 
         public void RemovePlayer(PlayerConnection playerConnection)
         {
-            players.Remove(playerConnection.NetPeer.Id);
+            Players.Remove(playerConnection.NetPeer.Id);
+        }
+
+        public void StartGame()
+        {
+            if (RoomState != GameRoomState.Waiting)
+                throw new System.Exception("Game is already started");
+
+            Logger.Info("Start game");
+            // TODO: Game start
         }
 
         protected virtual void Update()

@@ -13,7 +13,13 @@ namespace SideWarsServer.Game.Room.Listener
 
         public void OnPlayerReady(PlayerConnection player)
         {
+            gameRoom.Players[player.NetPeer.Id].IsReady = true;
 
+            foreach (var item in gameRoom.Players)
+                if (!item.Value.IsReady)
+                    return;
+
+            gameRoom.StartGame();
         }
     }
 }

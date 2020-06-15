@@ -1,19 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using LiteNetLib;
+﻿using LiteNetLib;
+using LiteNetLib.Utils;
 using SideWarsServer.Utils;
 
 namespace SideWarsServer.Networking
 {
     public class NetworkController
     {
+        public NetPacketProcessor PacketProcessor { get; private set; }
         private NetManager client;
         private NetworkEventListener networkEventListener;
+
+        public NetworkController()
+        {
+            PacketProcessor = new NetPacketProcessor();
+        }
 
         public void StartServer()
         {
