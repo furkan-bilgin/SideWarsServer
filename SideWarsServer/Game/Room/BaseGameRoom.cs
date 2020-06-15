@@ -1,10 +1,6 @@
 ﻿using SideWarsServer.Game.Logic;
 using SideWarsServer.Networking;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SideWarsServer.Game.Room
 {
@@ -25,7 +21,7 @@ namespace SideWarsServer.Game.Room
 
         public void AddPlayer(PlayerConnection playerConnection)
         {
-            players.Add(playerConnection.NetPeer.Id, new Player());
+            players.Add(playerConnection.NetPeer.Id, new Player(Ara3D.Vector3.Zero, playerConnection));
         }
 
         public void RemovePlayer(PlayerConnection playerConnection)

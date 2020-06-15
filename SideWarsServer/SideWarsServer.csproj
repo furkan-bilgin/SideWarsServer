@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ara3D.Math3D">
+      <HintPath>..\Ara3D.Math3D.dll</HintPath>
+    </Reference>
     <Reference Include="LiteNetLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\LiteNetLib.dll</HintPath>
@@ -53,6 +56,8 @@
     <Compile Include="Database\ITokenController.cs" />
     <Compile Include="Database\Models\Token.cs" />
     <Compile Include="Game\LogicController.cs" />
+    <Compile Include="Game\Logic\Physics\ICollider.cs" />
+    <Compile Include="Game\Logic\Physics\SquareCollider.cs" />
     <Compile Include="Game\Logic\Player.cs" />
     <Compile Include="Game\Room\BaseGameRoom.cs" />
     <Compile Include="Game\Room\IGameRoom.cs" />
@@ -70,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Game\Models\" />
