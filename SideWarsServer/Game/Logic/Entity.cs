@@ -9,7 +9,7 @@ namespace SideWarsServer.Game.Logic
         public int Id { get; set; }
 
         public Vector3 Location { get; set; }
-        public SquareCollider Collider { get; set; }
+        public ICollider Collider { get; set; }
         public EntityType Type { get; set; }
         public EntityTeam Team { get; set; }
         public int BaseHealth { get; set; }
