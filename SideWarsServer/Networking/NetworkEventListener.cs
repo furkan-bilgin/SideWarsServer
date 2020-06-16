@@ -21,6 +21,7 @@ namespace SideWarsServer.Networking
                 var peer = request.Accept();
                 var playerConnection = new PlayerConnection(token, peer);
 
+                Server.Instance.PlayerController.AddPlayer(playerConnection);
                 Server.Instance.RoomController.JoinOrCreateRoom(playerConnection);
             }
             else
@@ -40,6 +41,7 @@ namespace SideWarsServer.Networking
         public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
         {
             Logger.Info("Peer disconnected with id " + peer.Id);
+            Server.Instance.PlayerController.RemovePlayer(peer.Id);
         }
 
         public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)

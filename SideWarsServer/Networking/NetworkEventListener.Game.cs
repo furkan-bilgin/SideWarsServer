@@ -2,6 +2,8 @@
 using LiteNetLib.Utils;
 using SideWars.Shared.Packets;
 using SideWarsServer.Game.Room;
+using SideWarsServer.Utils;
+using System;
 
 namespace SideWarsServer.Networking
 {
@@ -16,8 +18,10 @@ namespace SideWarsServer.Networking
             netPacketProcessor.SubscribeReusable<PlayerMovementPacket, NetPeer>(PlayerMovementPacketRecieve);
         }
 
-        private void ReadyPacketReceive(ReadyPacket packet, NetPeer netPeer)
+        private async void ReadyPacketReceive(ReadyPacket packet, NetPeer netPeer)
         {
+            await Wait.While(() => !Server.Instance.PlayerController.Players.ContainsKey(netPeer.Id));
+
             var player = Server.Instance.PlayerController.Players[netPeer.Id];
             if (player.CurrentGameRoom != null && player.CurrentGameRoom.RoomState == GameRoomState.Waiting)
             {
@@ -27,10 +31,17 @@ namespace SideWarsServer.Networking
 
         private void PlayerMovementPacketRecieve(PlayerMovementPacket packet, NetPeer netPeer)
         {
-            var player = Server.Instance.PlayerController.Players[netPeer.Id];
-            if (player.CurrentGameRoom != null && player.CurrentGameRoom.RoomState != GameRoomState.Waiting)
+            try
             {
-                player.CurrentGameRoom.Listener.OnPlayerLocationChange(player, new Ara3D.Vector3(packet.X, packet.Y, packet.Z));
+                var player = Server.Instance.PlayerController.Players[netPeer.Id];
+                if (player.CurrentGameRoom != null && player.CurrentGameRoom.RoomState != GameRoomState.Waiting)
+                {
+                    player.CurrentGameRoom.Listener.OnPlayerLocationChange(player, new Ara3D.Vector3(packet.X, packet.Y, packet.Z));
+                }
+            } 
+            catch(Exception ex)
+            {
+                Logger.Error(ex.ToString());
             }
         }
 

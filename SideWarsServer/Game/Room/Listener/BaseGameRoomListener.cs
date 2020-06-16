@@ -1,5 +1,6 @@
 ﻿using Ara3D;
 using SideWarsServer.Networking;
+using SideWarsServer.Utils;
 
 namespace SideWarsServer.Game.Room.Listener
 {
@@ -14,11 +15,12 @@ namespace SideWarsServer.Game.Room.Listener
 
         public void OnPlayerLocationChange(PlayerConnection player, Vector3 location)
         {
-            gameRoom.Players[player.NetPeer.Id].Location = location;
+            gameRoom.UpdatePlayerLocation(player, location);
         }
 
         public void OnPlayerReady(PlayerConnection player)
         {
+            Logger.Info("Player ready");
             gameRoom.Players[player.NetPeer.Id].IsReady = true;
 
             foreach (var item in gameRoom.Players)

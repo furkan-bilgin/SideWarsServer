@@ -5,7 +5,7 @@ namespace SideWarsServer.Utils
 {
     public class LogicTimer
     {
-        public const float FramesPerSecond = 25.0f;
+        public const float FramesPerSecond = 25;
         public const float FixedDelta = 1.0f / FramesPerSecond;
 
         private double _accumulator;

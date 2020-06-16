@@ -13,7 +13,7 @@ namespace SideWarsServer.Game.Room
     {
         GameRoomState RoomState { get; set; }
         IGameRoomListener Listener { get; set; }
-        Dictionary<int, Player> Players { get; set; }
+        Dictionary<int, Entity> Entities { get; set; }
 
         void AddPlayer(PlayerConnection playerConnection);
         void RemovePlayer(PlayerConnection playerConnection);

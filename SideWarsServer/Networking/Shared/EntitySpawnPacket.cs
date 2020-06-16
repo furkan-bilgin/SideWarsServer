@@ -4,16 +4,24 @@
     {
         public int Id { get; set; }
         /// <summary>
-        /// EntityType casted as an int
+        /// EntityType casted as a byte
         /// </summary>
-        public int EntityType { get; set; }
+        public byte EntityType { get; set; }
 
         /// <summary>
-        /// EntityData casted as an int
+        /// EntityData casted as a byte
         /// </summary>
-        public int[] Data { get; set; }
+        public byte[] Data { get; set; }
+
+        /// <summary>
+        /// EntityTeam casted as a byte
+        /// </summary>
+        public byte Team { get; set; }
+        
         public float X { get; set; }
         public float Y { get; set; }
         public float Z { get; set; }
+
+        public ushort Health { get; set; }
     }
 }

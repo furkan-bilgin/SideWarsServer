@@ -4,12 +4,9 @@ using SideWarsServer.Networking;
 
 namespace SideWarsServer.Game.Logic
 {
-    public class Player
+    public class Player : Entity
     {
-        public Vector3 Location { get; set; }
-        public SquareCollider Collider { get; set; }
         public PlayerConnection PlayerConnection { get; private set; }
-        public bool IsReady { get; set; }
 
         public Player(Vector3 location, PlayerConnection playerConnection)
         {

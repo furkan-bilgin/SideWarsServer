@@ -56,6 +56,7 @@
     <Compile Include="Database\ITokenController.cs" />
     <Compile Include="Database\Models\Token.cs" />
     <Compile Include="Game\LogicController.cs" />
+    <Compile Include="Game\Logic\Entity.cs" />
     <Compile Include="Game\Logic\Physics\ICollider.cs" />
     <Compile Include="Game\Logic\Physics\SquareCollider.cs" />
     <Compile Include="Game\Logic\Player.cs" />
@@ -70,7 +71,9 @@
     <Compile Include="Networking\PlayerConnection.cs" />
     <Compile Include="Networking\PlayerController.cs" />
     <Compile Include="Networking\Shared\EntityData.cs" />
+    <Compile Include="Networking\Shared\EntityMovementPacket.cs" />
     <Compile Include="Networking\Shared\EntitySpawnPacket.cs" />
+    <Compile Include="Networking\Shared\EntityTeam.cs" />
     <Compile Include="Networking\Shared\EntityType.cs" />
     <Compile Include="Networking\Shared\PlayerMovementPacket.cs" />
     <Compile Include="Networking\Shared\ReadyPacket.cs" />
@@ -81,10 +84,12 @@
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\LogicTimer.cs" />
     <Compile Include="Utils\Singleton.cs" />
+    <Compile Include="Utils\Wait.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <Compile Include="Networking\NetworkEventListener.Game.cs" />
+    <Compile Include="Game\Room\BaseGameRoom.PacketSender.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

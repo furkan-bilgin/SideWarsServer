@@ -14,7 +14,8 @@ namespace SideWarsServer.Networking
         public Token Token { get; private set; }
         public NetPeer NetPeer { get; private set; }
         public IGameRoom CurrentGameRoom { get; set; }
-        
+        public bool IsReady { get; set; }
+
         public PlayerConnection(Token token, NetPeer netPeer)
         {
             Token = token;
