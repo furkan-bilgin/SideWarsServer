@@ -20,6 +20,7 @@ namespace SideWarsServer.Networking
             networkEventListener = new NetworkEventListener();
             server = new NetManager(networkEventListener);
             server.BroadcastReceiveEnabled = true;
+            
             server.Start(443);
             
             Logger.Info("Started listening at 443");

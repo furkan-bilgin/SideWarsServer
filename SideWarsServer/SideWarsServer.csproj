@@ -57,8 +57,6 @@
     <Compile Include="Database\Models\Token.cs" />
     <Compile Include="Game\LogicController.cs" />
     <Compile Include="Game\Logic\Entity.cs" />
-    <Compile Include="Game\Logic\Physics\ICollider.cs" />
-    <Compile Include="Game\Logic\Physics\SquareCollider.cs" />
     <Compile Include="Game\Logic\Player.cs" />
     <Compile Include="Game\Room\BaseGameRoom.cs" />
     <Compile Include="Game\Room\GameRoomState.cs" />
@@ -66,17 +64,11 @@
     <Compile Include="Game\Room\Listener\BaseGameRoomListener.cs" />
     <Compile Include="Game\Room\Listener\IGameRoomListener.cs" />
     <Compile Include="Game\Room\RoomController.cs" />
+    <Compile Include="Game\Room\RoomOptions.cs" />
     <Compile Include="Networking\NetworkEventListener.cs" />
     <Compile Include="Networking\NetworkController.cs" />
     <Compile Include="Networking\PlayerConnection.cs" />
     <Compile Include="Networking\PlayerController.cs" />
-    <Compile Include="Networking\Shared\EntityData.cs" />
-    <Compile Include="Networking\Shared\EntityMovementPacket.cs" />
-    <Compile Include="Networking\Shared\EntitySpawnPacket.cs" />
-    <Compile Include="Networking\Shared\EntityTeam.cs" />
-    <Compile Include="Networking\Shared\EntityType.cs" />
-    <Compile Include="Networking\Shared\PlayerMovementPacket.cs" />
-    <Compile Include="Networking\Shared\ReadyPacket.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,6 +86,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Game\Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SideWarsShared\SideWarsShared.csproj">
+      <Project>{b9a51cfa-51dd-41fb-8fe7-2538e2fc4f7c}</Project>
+      <Name>SideWarsShared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

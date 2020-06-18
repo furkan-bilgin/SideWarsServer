@@ -1,7 +1,7 @@
 ﻿using Ara3D;
 using System;
 
-namespace SideWarsServer.Game.Logic.Physics
+namespace SideWars.Shared.Physics
 {
     public class SquareCollider : ICollider
     {
@@ -31,6 +31,11 @@ namespace SideWarsServer.Game.Logic.Physics
             }
 
             return false;
+        }
+
+        public float GetLowestPoint()
+        {
+            return min.Y;
         }
     }
 }

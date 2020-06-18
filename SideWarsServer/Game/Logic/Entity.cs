@@ -1,6 +1,6 @@
 ﻿using Ara3D;
 using SideWars.Shared.Packets;
-using SideWarsServer.Game.Logic.Physics;
+using SideWars.Shared.Physics;
 
 namespace SideWarsServer.Game.Logic
 {

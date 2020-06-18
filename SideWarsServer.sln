@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SideWarsServer", "SideWarsS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SideWarsServerTests", "SideWarsServerTests\SideWarsServerTests.csproj", "{271705EE-0EF1-4B82-A030-534FC42AA099}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SideWarsShared", "SideWarsShared\SideWarsShared.csproj", "{B9A51CFA-51DD-41FB-8FE7-2538E2FC4F7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{271705EE-0EF1-4B82-A030-534FC42AA099}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{271705EE-0EF1-4B82-A030-534FC42AA099}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{271705EE-0EF1-4B82-A030-534FC42AA099}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9A51CFA-51DD-41FB-8FE7-2538E2FC4F7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9A51CFA-51DD-41FB-8FE7-2538E2FC4F7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9A51CFA-51DD-41FB-8FE7-2538E2FC4F7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9A51CFA-51DD-41FB-8FE7-2538E2FC4F7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

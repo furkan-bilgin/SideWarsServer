@@ -11,6 +11,7 @@ namespace SideWarsServer.Game.Room
 {
     public partial class BaseGameRoom : IGameRoom
     {
+        public RoomOptions RoomOptions { get => RoomOptions.Default; }
         public GameRoomState RoomState { get; set; }
         public IGameRoomListener Listener { get; set; }
         public Dictionary<int, Entity> Entities { get; set; }
@@ -41,6 +42,7 @@ namespace SideWarsServer.Game.Room
             playerConnection.CurrentGameRoom = this;
 
             Players.Add(playerConnection.NetPeer.Id, playerConnection);
+            SendAllEntitySpawns(playerConnection.NetPeer);
 
             var entity = SpawnEntity(new Player(Vector3.Zero, playerConnection));
             playerEntities.Add(playerConnection, (Player)entity);
@@ -52,9 +54,10 @@ namespace SideWarsServer.Game.Room
             playerEntities.Remove(playerConnection);
         }
 
-        public void UpdatePlayerLocation(PlayerConnection playerConnection, Vector3 newLocation)
+        public void UpdatePlayerMovement(PlayerConnection playerConnection, float horizontal, bool jump)
         {
-            playerEntities[playerConnection].Location = newLocation;
+            playerEntities[playerConnection].PlayerMovement.Horizontal = horizontal;
+            playerEntities[playerConnection].PlayerMovement.Jump = jump;
         }
 
         public Entity SpawnEntity(Entity entity)
@@ -90,6 +93,28 @@ namespace SideWarsServer.Game.Room
             tickCount++;
 
             SendMovementPackets();
+            UpdateColliders();
+            UpdatePlayerMovement();
+        }
+
+        void UpdatePlayerMovement()
+        {
+            foreach (var item in playerEntities)
+            {
+                var player = item.Value;
+                var location = player.Location;
+
+                player.PlayerMovement.Update(LogicTimer.FixedDelta, ref location);
+                player.Location = location;
+            }
+        }
+
+        void SendAllEntitySpawns(NetPeer netPeer)
+        {
+            foreach (var item in Entities)
+            {
+                SendEntitySpawn(item.Value, netPeer);
+            }
         }
 
         void SendMovementPackets()
@@ -119,6 +144,14 @@ namespace SideWarsServer.Game.Room
                     }
                 }
 
+            }
+        }
+
+        void UpdateColliders()
+        {
+            foreach (var item in Entities)
+            {
+                item.Value.Collider.UpdateLocation(item.Value.Location);
             }
         }
     }

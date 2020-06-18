@@ -6,6 +6,6 @@ namespace SideWarsServer.Game.Room.Listener
     public interface IGameRoomListener
     {
         void OnPlayerReady(PlayerConnection player);
-        void OnPlayerLocationChange(PlayerConnection player, Vector3 location);
+        void OnPlayerMovementChange(PlayerConnection player, float horizontal, bool jump);
     }
 }

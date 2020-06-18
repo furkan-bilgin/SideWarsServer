@@ -13,15 +13,18 @@ namespace SideWarsServer.Game.Room.Listener
             gameRoom = room;
         }
 
-        public void OnPlayerLocationChange(PlayerConnection player, Vector3 location)
+        public void OnPlayerMovementChange(PlayerConnection player, float horizontal, bool jump)
         {
-            gameRoom.UpdatePlayerLocation(player, location);
+            gameRoom.UpdatePlayerMovement(player, horizontal, jump);
         }
 
         public void OnPlayerReady(PlayerConnection player)
         {
             Logger.Info("Player ready");
             gameRoom.Players[player.NetPeer.Id].IsReady = true;
+
+            if (gameRoom.Players.Count < gameRoom.RoomOptions.MaxPlayers)
+                return;
 
             foreach (var item in gameRoom.Players)
                 if (!item.Value.IsReady)

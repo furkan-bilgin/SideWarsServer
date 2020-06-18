@@ -33,7 +33,7 @@ namespace SideWarsServer.Game.Room
                 Health = (ushort)entity.Health
             });
         }
-        
+
         void SendEntityMovement(Entity entity, NetPeer peer)
         {
             Server.Instance.NetworkController.SendPacket(peer, new EntityMovementPacket()
