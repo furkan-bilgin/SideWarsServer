@@ -10,6 +10,7 @@ namespace SideWarsServer.Game.Logic
 
         public Vector3 Location { get; set; }
         public ICollider Collider { get; set; }
+        public IEntityMovement Movement { get; set; }
         public EntityType Type { get; set; }
         public EntityTeam Team { get; set; }
         public int BaseHealth { get; set; }

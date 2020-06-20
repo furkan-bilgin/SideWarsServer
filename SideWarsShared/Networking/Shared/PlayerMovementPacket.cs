@@ -2,7 +2,7 @@
 {
     public class PlayerMovementPacket
     {
-        public byte Horizontal { get; set; }
+        public sbyte Horizontal { get; set; }
         public bool Jump { get; set; }
     }
 }

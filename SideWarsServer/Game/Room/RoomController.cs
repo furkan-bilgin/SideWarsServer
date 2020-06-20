@@ -2,6 +2,7 @@
 using SideWarsServer.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SideWarsServer.Game.Room
 {
@@ -37,6 +38,19 @@ namespace SideWarsServer.Game.Room
             {
                 Logger.Error(ex.ToString());
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Checks and disposes closed rooms, freeing up memory.
+        /// </summary>
+        public void Update()
+        {
+            var closedRooms = GameRooms.Where((item, id) => item.Value.RoomState == GameRoomState.Closed);
+
+            foreach (var room in closedRooms)
+            {
+                GameRooms.Remove(room.Key);
             }
         }
     }

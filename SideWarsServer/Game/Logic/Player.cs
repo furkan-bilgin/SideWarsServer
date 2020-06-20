@@ -1,20 +1,28 @@
 ﻿using Ara3D;
+using SideWars.Shared.Game;
 using SideWars.Shared.Physics;
+using SideWarsServer.Game.Logic.Combat;
 using SideWarsServer.Networking;
 
 namespace SideWarsServer.Game.Logic
 {
     public class Player : Entity
     {
+        public PlayerInfo PlayerInfo { get; set; }
+        public PlayerCombat PlayerCombat { get; set; }
         public PlayerConnection PlayerConnection { get; private set; }
-        public IPlayerMovement PlayerMovement { get; private set; }
 
         public Player(Vector3 location, PlayerConnection playerConnection)
         {
+            PlayerInfo = PlayerInfo.Default;
+
             Location = location;
-            Collider = new SquareCollider(location, -Vector3.One, Vector3.One); // TODO
+            Collider = new SquareCollider(location, PlayerInfo.HitBoxMin, PlayerInfo.HitBoxMax); // TODO
             PlayerConnection = playerConnection;
-            PlayerMovement = new PlayerMovement(Team, 5); // TODO
+            
+            Movement = new PlayerMovement(Team, Collider, 5); // TODO
+            
+            PlayerCombat = new PlayerCombat(PlayerInfo);
         }
     }
 }

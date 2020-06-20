@@ -33,9 +33,9 @@ namespace SideWars.Shared.Physics
             return false;
         }
 
-        public float GetLowestPoint()
+        public float GetHighestPoint()
         {
-            return min.Y;
+            return max.Y;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using LiteNetLib;
 using SideWars.Shared.Packets;
+using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic;
+using SideWarsServer.Utils;
 using System;
 using System.Collections.Generic;
 
@@ -42,6 +44,17 @@ namespace SideWarsServer.Game.Room
                 X = entity.Location.X,
                 Y = entity.Location.Y,
                 Z = entity.Location.Z
+            }, DeliveryMethod.Unreliable);
+        }
+
+        void SendPlayerMovement(Player player, NetPeer peer)
+        {
+            var playerMovement = (PlayerMovement)player.Movement;
+            Server.Instance.NetworkController.SendPacket(peer, new ServerPlayerMovementPacket()
+            {
+                Id = player.Id,
+                Horizontal = Functions.AsSByte(playerMovement.Horizontal),
+                Jump = Convert.ToBoolean(playerMovement.Jump)
             }, DeliveryMethod.Unreliable);
         }
     }

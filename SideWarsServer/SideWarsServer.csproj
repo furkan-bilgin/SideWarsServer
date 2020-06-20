@@ -58,6 +58,7 @@
     <Compile Include="Game\LogicController.cs" />
     <Compile Include="Game\Logic\Entity.cs" />
     <Compile Include="Game\Logic\Player.cs" />
+    <Compile Include="Game\Logic\Combat\PlayerCombat.cs" />
     <Compile Include="Game\Room\BaseGameRoom.cs" />
     <Compile Include="Game\Room\GameRoomState.cs" />
     <Compile Include="Game\Room\IGameRoom.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\LogicTimer.cs" />
     <Compile Include="Utils\Singleton.cs" />
+    <Compile Include="Utils\Functions.cs" />
     <Compile Include="Utils\Wait.cs" />
   </ItemGroup>
   <ItemGroup>

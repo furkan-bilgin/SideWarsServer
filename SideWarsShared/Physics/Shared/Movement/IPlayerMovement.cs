@@ -2,11 +2,9 @@
 
 namespace SideWars.Shared.Physics
 {
-    public interface IPlayerMovement
+    public interface IPlayerMovement : IEntityMovement
     {
         float Horizontal { get; set; }
         bool Jump { get; set; }
-
-        void Update(float deltaTime, ref Vector3 location);
     }
 }

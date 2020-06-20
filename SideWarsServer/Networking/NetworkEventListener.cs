@@ -51,6 +51,8 @@ namespace SideWarsServer.Networking
         { }
 
         public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
-        { }
+        {
+            Server.Instance.PlayerController.Players[peer.Id].Latency = latency;
+        }
     }
 }

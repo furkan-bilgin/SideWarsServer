@@ -5,7 +5,7 @@
         public int Id { get; set; }
         /// <summary>
         /// EntityType casted as a byte
-        /// </summary>
+        /// </summary> 
         public byte EntityType { get; set; }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace SideWarsServer.Networking
                 var player = Server.Instance.PlayerController.Players[netPeer.Id];
                 if (player.CurrentGameRoom != null && player.CurrentGameRoom.RoomState != GameRoomState.Waiting)
                 {
-                    player.CurrentGameRoom.Listener.OnPlayerMovementChange(player, packet.Horizontal, packet.Jump);
+                    player.CurrentGameRoom.Listener.OnPlayerMovementChange(player, Functions.AsFloat(packet.Horizontal), packet.Jump);
                 }
             } 
             catch(Exception ex)

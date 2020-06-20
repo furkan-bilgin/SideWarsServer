@@ -1,6 +1,7 @@
 ﻿using Ara3D;
 using LiteNetLib;
 using SideWars.Shared.Packets;
+using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic;
 using SideWarsServer.Game.Room.Listener;
 using SideWarsServer.Networking;
@@ -44,20 +45,37 @@ namespace SideWarsServer.Game.Room
             Players.Add(playerConnection.NetPeer.Id, playerConnection);
             SendAllEntitySpawns(playerConnection.NetPeer);
 
-            var entity = SpawnEntity(new Player(Vector3.Zero, playerConnection));
-            playerEntities.Add(playerConnection, (Player)entity);
+            var player = new Player(Vector3.Zero, playerConnection);
+            player.Team = GetNextTeam();
+            player.Location = RoomOptions.GetSpawnPoint(player.Team);
+
+            playerEntities.Add(playerConnection, player);
+
+            SpawnEntity(player);
         }
 
         public void RemovePlayer(PlayerConnection playerConnection)
         {
             Entities.Remove(playerConnection.NetPeer.Id);
             playerEntities.Remove(playerConnection);
+
+            if (Entities.Count == 0)
+            {
+                RoomState = GameRoomState.Closed;
+            }
         }
 
         public void UpdatePlayerMovement(PlayerConnection playerConnection, float horizontal, bool jump)
         {
-            playerEntities[playerConnection].PlayerMovement.Horizontal = horizontal;
-            playerEntities[playerConnection].PlayerMovement.Jump = jump;
+            var player = playerEntities[playerConnection];
+            var playerMovement = (PlayerMovement)playerEntities[playerConnection].Movement;
+
+            var addX = playerConnection.Latency / 1000 * playerMovement.Speed * horizontal * LogicTimer.FixedDelta;
+
+            player.Location = player.Location.SetX(player.Location.X + addX);
+
+            playerMovement.Horizontal = horizontal;
+            playerMovement.Jump = jump;
         }
 
         public Entity SpawnEntity(Entity entity)
@@ -92,20 +110,21 @@ namespace SideWarsServer.Game.Room
 
             tickCount++;
 
-            SendMovementPackets();
             UpdateColliders();
-            UpdatePlayerMovement();
+            UpdateEntityMovements();
+            SendPlayerMovementPackets();
+            SendMovementPackets();
         }
 
-        void UpdatePlayerMovement()
+        void UpdateEntityMovements()
         {
-            foreach (var item in playerEntities)
+            foreach (var item in Entities)
             {
-                var player = item.Value;
-                var location = player.Location;
+                var entity = item.Value;
+                var location = entity.Location;
+                entity.Movement.Update(LogicTimer.FixedDelta, ref location);
 
-                player.PlayerMovement.Update(LogicTimer.FixedDelta, ref location);
-                player.Location = location;
+                entity.Location = location;
             }
         }
 
@@ -131,19 +150,30 @@ namespace SideWarsServer.Game.Room
 
                     if (entity is Player)
                     {
-                        var playerEntity = (Player)entity;
-                        if (playerEntity.PlayerConnection == playerItem.Key && tickCount % LogicTimer.FramesPerSecond == 0) // This makes players receive their own coordinates every second in case of desynchronization with the server. Then the players can check them and teleport back to their server coordinates if necessary. 
-                            sendEntityMovement();
-
-                        if (playerEntity.PlayerConnection != playerItem.Key) // If the player entity doesn't belong to this PlayerConnection, then send it everytime
+                        if (tickCount % LogicTimer.FramesPerSecond == 0) // Send Player positions every second in case of sync issues. 
                             sendEntityMovement();
                     }
+                    /*
                     else
                     {
                         sendEntityMovement();
-                    }
+                    }*/
                 }
 
+            }
+        }
+
+        void SendPlayerMovementPackets()
+        {
+            foreach (var playerItem in playerEntities)
+            {
+                foreach (var item in Players)
+                {
+                    if (item.Value.NetPeer != playerItem.Key.NetPeer)
+                    {
+                        SendPlayerMovement(playerItem.Value, item.Value.NetPeer);
+                    }
+                }
             }
         }
 
@@ -153,6 +183,13 @@ namespace SideWarsServer.Game.Room
             {
                 item.Value.Collider.UpdateLocation(item.Value.Location);
             }
+        }
+
+        EntityTeam team = EntityTeam.Red;
+        EntityTeam GetNextTeam()
+        {
+            team = team == EntityTeam.Red ? EntityTeam.Blue : EntityTeam.Red;
+            return team;
         }
     }
 }
