@@ -24,6 +24,7 @@ namespace SideWarsServerTests
             var roomController = new RoomController();
             var server = new Server();
             server.LogicController = new LogicController(1);
+            server.NetworkController = new NetworkController();
 
             var netManager = new NetManager(new EventBasedNetListener());
             netManager.Start();

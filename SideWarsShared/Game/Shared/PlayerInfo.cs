@@ -6,8 +6,8 @@ namespace SideWars.Shared.Game
     {
         public static PlayerInfo Default => new PlayerInfo
         {
+            ProjectileType = ProjectileType.Default,
             BaseHealth = 100,
-            AttackDamage = 20,
             AttackSpeed = 500,
             Speed = 5,
             BulletPosition = new Vector3(0, 1.5f, 1),
@@ -15,8 +15,9 @@ namespace SideWars.Shared.Game
             HitBoxMax = Vector3.One
         };
 
+        public ProjectileType ProjectileType { get; set; }
+        public PlayerType PlayerType { get; set; }
         public float BaseHealth { get; set; }
-        public float AttackDamage { get; set; }
 
         /// <summary>
         /// Player attack speed in milliseconds.
