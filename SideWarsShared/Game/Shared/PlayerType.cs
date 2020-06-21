@@ -4,6 +4,6 @@ namespace SideWars.Shared.Game
 {
     public enum PlayerType
     {
-        Default
+        Default = 100
     }
 }

@@ -4,6 +4,12 @@ using SideWars.Shared.Physics;
 
 namespace SideWarsServer.Game.Logic
 {
+    public enum EntityState
+    {
+        Alive,
+        Dead
+    }
+
     public class Entity
     {
         public int Id { get; set; }
@@ -11,11 +17,17 @@ namespace SideWarsServer.Game.Logic
         public Vector3 Location { get; set; }
         public ICollider Collider { get; set; }
         public IEntityMovement Movement { get; set; }
+        public EntityState State { get; set; }
         public EntityType Type { get; set; }
         public EntityTeam Team { get; set; }
         public int BaseHealth { get; set; }
         public int Health { get; set; }
         public bool IsImmortal { get; set; }
+
+        public Entity()
+        {
+            State = EntityState.Alive;
+        }
 
         public virtual void Hurt(int damage)
         {

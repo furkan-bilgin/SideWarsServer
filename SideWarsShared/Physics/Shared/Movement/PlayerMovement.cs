@@ -26,6 +26,7 @@ namespace SideWars.Shared.Physics
 
         public void Update(float deltaTime, ref Vector3 location)
         {
+            var speed = Team == EntityTeam.Red ? -Speed : Speed;
             var x = location.X;
             var y = location.Y;
 
@@ -54,7 +55,7 @@ namespace SideWars.Shared.Physics
             {
                 y = newY;
             }
-            x += Speed * Horizontal * deltaTime;
+            x += speed * Horizontal * deltaTime;
 
             location = new Vector3(x, y, location.Z);
         }

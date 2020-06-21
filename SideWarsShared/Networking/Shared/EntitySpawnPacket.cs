@@ -11,7 +11,7 @@
         /// <summary>
         /// EntityData casted as a byte
         /// </summary>
-        public byte[] Data { get; set; }
+        public ushort[] Data { get; set; }
 
         /// <summary>
         /// EntityTeam casted as a byte

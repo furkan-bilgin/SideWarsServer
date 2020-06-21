@@ -56,12 +56,14 @@
     <Compile Include="Database\ITokenController.cs" />
     <Compile Include="Database\Models\Token.cs" />
     <Compile Include="Game\LogicController.cs" />
+    <Compile Include="Game\Logic\Bullet.cs" />
     <Compile Include="Game\Logic\CollisionController.cs" />
     <Compile Include="Game\Logic\Models\CollisionData.cs" />
     <Compile Include="Game\Logic\Projectile.cs" />
     <Compile Include="Game\Logic\Entity.cs" />
     <Compile Include="Game\Logic\Player.cs" />
     <Compile Include="Game\Logic\Combat\PlayerCombat.cs" />
+    <Compile Include="Game\Logic\ProjectileSpawner.cs" />
     <Compile Include="Game\Room\BaseGameRoom.cs" />
     <Compile Include="Game\Room\GameRoomState.cs" />
     <Compile Include="Game\Room\IGameRoom.cs" />
@@ -73,10 +75,16 @@
     <Compile Include="Networking\NetworkController.cs" />
     <Compile Include="Networking\PlayerConnection.cs" />
     <Compile Include="Networking\PlayerController.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Server.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threading\TaskController.cs" />
+    <Compile Include="Utils\Extensions.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\LogicTimer.cs" />
     <Compile Include="Utils\Singleton.cs" />
@@ -89,7 +97,12 @@
     <Compile Include="Game\Room\BaseGameRoom.PacketSender.cs" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SideWarsShared\SideWarsShared.csproj">
       <Project>{b9a51cfa-51dd-41fb-8fe7-2538e2fc4f7c}</Project>

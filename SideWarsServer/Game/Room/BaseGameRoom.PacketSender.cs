@@ -12,15 +12,22 @@ namespace SideWarsServer.Game.Room
     {
         void SendEntitySpawn(Entity entity, NetPeer peer)
         {
-            var data = new List<byte>();
+            var data = new List<ushort>();
 
             if (entity is Player)
             {
                 var player = (Player)entity;
+                data.Add((ushort)player.PlayerInfo.PlayerType);
+                
                 if (player.PlayerConnection.NetPeer.Id == peer.Id) // If peer has the same id as the entity, that means he can control it
                 {
-                    data.Add((byte)EntityData.Controllable);
+                    data.Add((ushort)EntityData.Controllable);
                 }
+            }
+            else if (entity is Projectile)
+            {
+                var projectile = (Projectile)entity;
+                data.Add((ushort)projectile.ProjectileInfo.Type);
             }
 
             Server.Instance.NetworkController.SendPacket(peer, new EntitySpawnPacket()

@@ -1,4 +1,5 @@
 ﻿using Ara3D;
+using SideWars.Shared.Packets;
 using SideWarsServer.Networking;
 using SideWarsServer.Utils;
 
@@ -13,9 +14,9 @@ namespace SideWarsServer.Game.Room.Listener
             gameRoom = room;
         }
 
-        public void OnPlayerMovementChange(PlayerConnection player, float horizontal, bool jump)
+        public void OnPlayerMovementChange(PlayerConnection player, float horizontal, bool jump, PlayerButton[] buttons)
         {
-            gameRoom.UpdatePlayerMovement(player, horizontal, jump);
+            gameRoom.UpdatePlayerMovement(player, horizontal, jump, buttons);
         }
 
         public void OnPlayerReady(PlayerConnection player)

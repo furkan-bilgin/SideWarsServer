@@ -1,17 +1,26 @@
 ﻿using Ara3D;
+using System.Collections.Generic;
+using System.IO;
 
 namespace SideWars.Shared.Game
 {
-    public class ProjectileInfo
+    public partial class ProjectileInfo
     {
-        public static ProjectileInfo Default => new ProjectileInfo()
+        public static ProjectileInfo GetProjectileInfo(ProjectileType type)
         {
-            Speed = 10,
-            Damage = 20
-        };
+            switch (type)
+            {
+                case ProjectileType.Bullet:
+                    return Bullet;
+            }
+
+            return null;
+        }
 
         public ProjectileType Type { get; set; }
         public float Damage { get; set; }
         public float Speed { get; set; }
+        public Vector3 HitBoxMin { get; set; }
+        public Vector3 HitBoxMax { get; set; }
     }
 }

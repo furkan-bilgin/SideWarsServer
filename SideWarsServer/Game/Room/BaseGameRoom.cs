@@ -7,6 +7,7 @@ using SideWarsServer.Game.Room.Listener;
 using SideWarsServer.Networking;
 using SideWarsServer.Utils;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SideWarsServer.Game.Room
 {
@@ -18,12 +19,14 @@ namespace SideWarsServer.Game.Room
         public Dictionary<int, Entity> Entities { get; set; }
         public Dictionary<int, PlayerConnection> Players { get; set; }
 
+        private ProjectileSpawner projectileSpawner;
         private Dictionary<PlayerConnection, Player> playerEntities;
         private int currentEntityId;
         private long tickCount;
 
         public BaseGameRoom()
         {
+            projectileSpawner = new ProjectileSpawner();
             playerEntities = new Dictionary<PlayerConnection, Player>();
             Players = new Dictionary<int, PlayerConnection>();
             Entities = new Dictionary<int, Entity>();
@@ -65,7 +68,7 @@ namespace SideWarsServer.Game.Room
             }
         }
 
-        public void UpdatePlayerMovement(PlayerConnection playerConnection, float horizontal, bool jump)
+        public void UpdatePlayerMovement(PlayerConnection playerConnection, float horizontal, bool jump, PlayerButton[] buttons)
         {
             var player = playerEntities[playerConnection];
             var playerMovement = (PlayerMovement)playerEntities[playerConnection].Movement;
@@ -76,6 +79,15 @@ namespace SideWarsServer.Game.Room
 
             playerMovement.Horizontal = horizontal;
             playerMovement.Jump = jump;
+
+            if (buttons.Contains(PlayerButton.Fire))
+            {
+                if (player.PlayerCombat.Shoot())
+                {
+                    var projectile = projectileSpawner.SpawnProjectile(player.PlayerInfo.ProjectileType, player);
+                    SpawnEntity(projectile);
+                }
+            }
         }
 
         public Entity SpawnEntity(Entity entity)
@@ -110,8 +122,8 @@ namespace SideWarsServer.Game.Room
 
             tickCount++;
 
-            UpdateColliders();
             UpdateEntityMovements();
+            UpdateColliders();
             SendPlayerMovementPackets();
             SendMovementPackets();
         }

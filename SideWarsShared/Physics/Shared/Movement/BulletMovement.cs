@@ -16,7 +16,9 @@ namespace SideWars.Shared.Physics
 
         public void Update(float deltaTime, ref Vector3 location)
         {
-            location = location.SetZ(location.Z + Speed * deltaTime);
+            var speed = Team == EntityTeam.Red ? -Speed : Speed;
+
+            location = location.SetZ(location.Z + speed * deltaTime);
         }
     }
 }

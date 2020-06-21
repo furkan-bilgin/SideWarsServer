@@ -12,16 +12,18 @@ namespace SideWarsServer.Game.Logic
         public PlayerCombat PlayerCombat { get; set; }
         public PlayerConnection PlayerConnection { get; private set; }
 
-        public Player(Vector3 location, PlayerConnection playerConnection)
+        public Player(Vector3 location, PlayerConnection playerConnection) : base()
         {
             PlayerInfo = PlayerInfo.Default;
 
-            Location = location;
-            Collider = new SquareCollider(location, PlayerInfo.HitBoxMin, PlayerInfo.HitBoxMax); // TODO
+            BaseHealth = PlayerInfo.BaseHealth;
+            Health = PlayerInfo.BaseHealth;
+
             PlayerConnection = playerConnection;
+            Location = location;
             
-            Movement = new PlayerMovement(Team, Collider, 5); // TODO
-            
+            Collider = new SquareCollider(location, PlayerInfo.HitBoxMin, PlayerInfo.HitBoxMax);
+            Movement = new PlayerMovement(Team, Collider, PlayerInfo.Speed);
             PlayerCombat = new PlayerCombat(PlayerInfo);
         }
     }

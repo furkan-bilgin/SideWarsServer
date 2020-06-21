@@ -33,17 +33,5 @@ namespace SideWarsServer.Game.Logic.Combat
 
             return false;
         }
-
-        public virtual Entity CreateProjectile()
-        {
-            switch (playerInfo.ProjectileType)
-            {
-                //case ProjectileType.Default:
-                //    return new Bullet();
-
-            }
-
-            return null;
-        }
     }
 }

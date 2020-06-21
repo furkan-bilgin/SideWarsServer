@@ -4,6 +4,6 @@ namespace SideWars.Shared.Game
 {
     public enum ProjectileType
     {
-        Default
+        Bullet = 200
     }
 }
