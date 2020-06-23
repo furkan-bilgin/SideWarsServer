@@ -10,7 +10,8 @@ namespace SideWars.Shared.Game
             Speed = 50,
             Damage = 20,
             HitBoxMin = -(Vector3.One / 4),
-            HitBoxMax = (Vector3.One / 4)
+            HitBoxMax = (Vector3.One / 4),
+            BaseHealth = 1
         };
     }
 }

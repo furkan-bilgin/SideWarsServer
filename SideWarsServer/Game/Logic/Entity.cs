@@ -1,32 +1,29 @@
 ﻿using Ara3D;
+using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
 using SideWars.Shared.Physics;
 
 namespace SideWarsServer.Game.Logic
 {
-    public enum EntityState
-    {
-        Alive,
-        Dead
-    }
-
     public class Entity
     {
         public int Id { get; set; }
+        public int BirthTick { get; set; }
 
         public Vector3 Location { get; set; }
         public ICollider Collider { get; set; }
         public IEntityMovement Movement { get; set; }
-        public EntityState State { get; set; }
         public EntityType Type { get; set; }
         public EntityTeam Team { get; set; }
+        public EntityInfo EntityInfo { get; set; }
+
         public int BaseHealth { get; set; }
         public int Health { get; set; }
         public bool IsImmortal { get; set; }
 
-        public Entity()
+        public Entity(EntityInfo entityInfo)
         {
-            State = EntityState.Alive;
+            Health = entityInfo.BaseHealth;
         }
 
         public virtual void Hurt(int damage)
@@ -50,6 +47,11 @@ namespace SideWarsServer.Game.Logic
                 Health = BaseHealth;
 
             Health += hp;
+        }
+
+        public virtual void Kill()
+        {
+            Health = 0;
         }
     }
 }

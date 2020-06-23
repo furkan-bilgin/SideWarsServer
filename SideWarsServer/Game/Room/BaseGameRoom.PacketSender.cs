@@ -10,6 +10,68 @@ namespace SideWarsServer.Game.Room
 {
     public partial class BaseGameRoom
     {
+        void SendAllEntitySpawns(NetPeer netPeer)
+        {
+            foreach (var item in Entities)
+            {
+                SendEntitySpawn(item.Value, netPeer);
+            }
+        }
+
+        void SendMovementPackets()
+        {
+            foreach (var playerItem in playerEntities)
+            {
+                foreach (var entityItem in Entities)
+                {
+                    var entity = entityItem.Value;
+                    void sendEntityMovement()
+                    {
+                        SendEntityMovement(entity, playerItem.Key.NetPeer);
+                    }
+
+                    if (entity is Player)
+                    {
+                        if (tickCount % LogicTimer.FramesPerSecond == 0) // Send Player positions every second in case of sync issues. 
+                            sendEntityMovement();
+                    }
+                    /*
+                    else
+                    {
+                        sendEntityMovement();
+                    }*/
+                }
+
+            }
+        }
+
+        void SendPlayerMovementPackets()
+        {
+            foreach (var playerItem in playerEntities)
+            {
+                foreach (var item in Players)
+                {
+                    if (item.Value.NetPeer != playerItem.Key.NetPeer)
+                    {
+                        SendPlayerMovement(playerItem.Value, item.Value.NetPeer);
+                    }
+                }
+            }
+        }
+
+        void SendEntityDeathPackets()
+        {
+            foreach (var entity in deadEntities)
+            {
+                foreach (var player in Players)
+                {
+                    SendEntityDeath(entity, player.Value.NetPeer);
+                }
+            }
+        }
+
+        ///////// PACKET SENDER FUNCTIONS /////////
+
         void SendEntitySpawn(Entity entity, NetPeer peer)
         {
             var data = new List<ushort>();
@@ -62,6 +124,14 @@ namespace SideWarsServer.Game.Room
                 Id = player.Id,
                 Horizontal = Functions.AsSByte(playerMovement.Horizontal),
                 Jump = Convert.ToBoolean(playerMovement.Jump)
+            }, DeliveryMethod.Unreliable);
+        }
+
+        void SendEntityDeath(Entity entity, NetPeer peer)
+        {
+            Server.Instance.NetworkController.SendPacket(peer, new EntityDeathPacket()
+            {
+                Id = entity.Id
             }, DeliveryMethod.Unreliable);
         }
     }

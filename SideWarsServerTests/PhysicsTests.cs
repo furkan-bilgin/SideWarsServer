@@ -19,12 +19,16 @@ namespace SideWarsServerTests
             var col2 = new SquareCollider(Vector3.Zero, -Vector3.One, Vector3.One);
 
             var fireCount = 0;
-            collisionController.GetCollidingBodies(new List<ICollider>() { col1, col2 }, (victim, data) =>
+            for (int i = 0; i < 1000; i++)
             {
-                fireCount++;
-            });
+                collisionController.GetCollidingBodies(new List<ICollider>() { col1, col2 }, (victim, data) =>
+                {
+                    fireCount++;
+                });
+            }
+           
 
-            Assert.AreEqual(2, fireCount);
+            Assert.AreEqual(2000, fireCount);
         }
 
         [TestMethod]

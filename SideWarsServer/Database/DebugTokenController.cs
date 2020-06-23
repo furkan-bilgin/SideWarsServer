@@ -1,4 +1,5 @@
-﻿using SideWarsServer.Database.Models;
+﻿#pragma warning disable CS1998
+using SideWarsServer.Database.Models;
 using System.Threading.Tasks;
 
 namespace SideWarsServer.Database

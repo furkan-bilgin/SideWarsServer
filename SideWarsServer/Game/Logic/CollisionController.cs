@@ -7,11 +7,11 @@ namespace SideWarsServer.Game.Logic
 {
     public class CollisionController
     {
-        Dictionary<ICollider, ICollider> collidedBodies;
+        HashSet<int> collidedBodies;
 
         public CollisionController()
         {
-            collidedBodies = new Dictionary<ICollider, ICollider>();
+            collidedBodies = new HashSet<int>();
         }
 
         public void GetCollidingBodies(List<ICollider> colliders, Action<ICollider, CollisionData> onCollision)
@@ -25,17 +25,9 @@ namespace SideWarsServer.Game.Logic
                     if (collider == otherCollider)
                         continue;
 
-                    if (collidedBodies.ContainsKey(collider)) // Don't look the same colliders twice
+                    if (collidedBodies.Contains(collider.GetHashCode() * otherCollider.GetHashCode()))
                     {
-                        var other = collidedBodies[collider];
-                        if (other == otherCollider)
-                            continue;
-                    }
-                    else if (collidedBodies.ContainsKey(otherCollider))
-                    {
-                        var current = collidedBodies[otherCollider];
-                        if (collider == current)
-                            continue;
+                        continue;
                     }
 
                     if (collider.IsColliding(otherCollider)) // If we're colliding, fire the events
@@ -43,11 +35,34 @@ namespace SideWarsServer.Game.Logic
                         onCollision(collider, new CollisionData() { collider = otherCollider });
                         onCollision(otherCollider, new CollisionData() { collider = collider });
 
-                        collidedBodies.Add(collider, otherCollider);
-                        collidedBodies.Add(otherCollider, collider);
+                        collidedBodies.Add(collider.GetHashCode() * otherCollider.GetHashCode());
                     }
                 }
             }
+        }
+
+        Dictionary<ICollider, Entity> collidingEntityDic = new Dictionary<ICollider, Entity>();
+        List<ICollider> collidingEntityList = new List<ICollider>();
+
+        /// <summary>
+        /// Gets colliding entities. 
+        /// </summary>
+        /// <param name="onCollision">First param is entity, second is colliding entity</param>
+        public void GetCollidingEntities(List<Entity> entities, Action<Entity, Entity> onCollision)
+        {
+            collidingEntityDic.Clear();
+            collidingEntityList.Clear();
+
+            foreach (var item in entities)
+            {
+                collidingEntityDic.Add(item.Collider, item);
+                collidingEntityList.Add(item.Collider);
+            }
+
+            GetCollidingBodies(collidingEntityList, (collider, data) =>
+            {
+                onCollision(collidingEntityDic[collider], collidingEntityDic[data.collider]);
+            });
         }
     }
 }

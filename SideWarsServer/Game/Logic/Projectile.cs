@@ -3,15 +3,21 @@ using SideWars.Shared.Game;
 
 namespace SideWarsServer.Game.Logic
 {
-    public class Projectile : Entity
+    public class Projectile : Entity, ITimedDestroy
     {
+        public Player Shooter { get; set; }
         public PlayerInfo ShooterInfo { get; set; }
         public ProjectileInfo ProjectileInfo { get; set; }
-        
-        public Projectile(Vector3 location, PlayerInfo shooterInfo, ProjectileInfo projectileInfo) : base()
+        public int DestroySeconds { get; set; }
+
+        public Projectile(Vector3 location, ProjectileInfo projectileInfo, Player shooter) : base(projectileInfo)
         {
-            ShooterInfo = shooterInfo;
+            DestroySeconds = 5; // TODO
+
+            Shooter = shooter;
+            ShooterInfo = shooter.PlayerInfo;
             ProjectileInfo = projectileInfo;
+            Team = shooter.Team;
 
             Location = location;
         }

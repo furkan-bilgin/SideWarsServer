@@ -4,7 +4,7 @@ using System.IO;
 
 namespace SideWars.Shared.Game
 {
-    public partial class ProjectileInfo
+    public partial class ProjectileInfo : EntityInfo
     {
         public static ProjectileInfo GetProjectileInfo(ProjectileType type)
         {
@@ -18,9 +18,6 @@ namespace SideWars.Shared.Game
         }
 
         public ProjectileType Type { get; set; }
-        public float Damage { get; set; }
-        public float Speed { get; set; }
-        public Vector3 HitBoxMin { get; set; }
-        public Vector3 HitBoxMax { get; set; }
+        public int Damage { get; set; }
     }
 }

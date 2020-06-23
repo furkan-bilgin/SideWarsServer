@@ -8,7 +8,7 @@ namespace SideWarsServer.Game.Room
     {
         public static RoomOptions Default = new RoomOptions()
         {
-            MaxPlayers = 1,
+            MaxPlayers = 2,
             BlueSpawnPoint = new Vector3(0, 1, 0),
             RedSpawnPoint = new Vector3(0, 1, 20)
         };

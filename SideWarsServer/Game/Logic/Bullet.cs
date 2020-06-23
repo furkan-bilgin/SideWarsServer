@@ -8,7 +8,7 @@ namespace SideWarsServer.Game.Logic
 {
     public class Bullet : Projectile
     {
-        public Bullet(Player shooter, ProjectileInfo projectileInfo) : base(Vector3.Zero, shooter.PlayerInfo, projectileInfo)
+        public Bullet(Player shooter, ProjectileInfo projectileInfo) : base(Vector3.Zero, projectileInfo, shooter)
         {
             Type = EntityType.Bullet;
 

@@ -1,5 +1,6 @@
 ﻿using Ara3D;
 using SideWars.Shared.Game;
+using SideWars.Shared.Packets;
 using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic.Combat;
 using SideWarsServer.Networking;
@@ -12,11 +13,11 @@ namespace SideWarsServer.Game.Logic
         public PlayerCombat PlayerCombat { get; set; }
         public PlayerConnection PlayerConnection { get; private set; }
 
-        public Player(Vector3 location, PlayerConnection playerConnection) : base()
+        public Player(Vector3 location, PlayerConnection playerConnection, EntityTeam team) : base(PlayerInfo.Default)
         {
             PlayerInfo = PlayerInfo.Default;
+            Team = team;
 
-            BaseHealth = PlayerInfo.BaseHealth;
             Health = PlayerInfo.BaseHealth;
 
             PlayerConnection = playerConnection;
