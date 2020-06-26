@@ -2,8 +2,8 @@
 
 namespace SideWars.Shared.Game
 {
-    public enum ProjectileType
+    public enum ChampionType
     {
-        Bullet = 200
+        Mark = 100
     }
 }

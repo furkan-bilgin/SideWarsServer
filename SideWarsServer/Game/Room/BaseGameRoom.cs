@@ -1,9 +1,12 @@
 ﻿using Ara3D;
 using LiteNetLib;
+using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
 using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic;
+using SideWarsServer.Game.Logic.Champions;
 using SideWarsServer.Game.Logic.Models;
+using SideWarsServer.Game.Logic.Projectiles;
 using SideWarsServer.Game.Room.Listener;
 using SideWarsServer.Networking;
 using SideWarsServer.Utils;
@@ -20,9 +23,9 @@ namespace SideWarsServer.Game.Room
         public IGameRoomListener Listener { get; set; }
         public Dictionary<int, Entity> Entities { get; set; }
         public Dictionary<int, PlayerConnection> Players { get; set; }
+        public ProjectileSpawner ProjectileSpawner { get; set; }
 
         private CollisionController collisionController;
-        private ProjectileSpawner projectileSpawner;
         private Dictionary<PlayerConnection, Player> playerEntities;
         private List<Entity> deadEntities;
         private int currentEntityId;
@@ -32,8 +35,9 @@ namespace SideWarsServer.Game.Room
         {
             deadEntities = new List<Entity>();
             collisionController = new CollisionController();
-            projectileSpawner = new ProjectileSpawner();
             playerEntities = new Dictionary<PlayerConnection, Player>();
+
+            ProjectileSpawner = new ProjectileSpawner();
             Players = new Dictionary<int, PlayerConnection>();
             Entities = new Dictionary<int, Entity>();
             Listener = new BaseGameRoomListener(this);
@@ -55,8 +59,19 @@ namespace SideWarsServer.Game.Room
             SendAllEntitySpawns(playerConnection.NetPeer);
 
             var team = GetNextTeam();
-            var player = new Player(RoomOptions.GetSpawnPoint(team), playerConnection, team);
-
+            var spawnPoint = RoomOptions.GetSpawnPoint(team);
+            Player player = null;
+            
+            switch (playerConnection.Token.ChampionType)
+            {
+                case ChampionType.Mark:
+                    player = new Mark(spawnPoint, playerConnection, team);
+                    break;
+                default:
+                    throw new System.Exception("Unknown champion.");
+                    break;
+            }
+            
             playerEntities.Add(playerConnection, player);
             SpawnEntity(player);
         }
@@ -83,14 +98,23 @@ namespace SideWarsServer.Game.Room
             playerMovement.Horizontal = horizontal;
             playerMovement.Jump = jump;
 
-            if (buttons.Contains(PlayerButton.Fire))
+            foreach (var button in buttons)
             {
-                if (player.PlayerCombat.Shoot())
+                if (button == PlayerButton.Special1 || button == PlayerButton.Special2)
                 {
-                    var projectile = projectileSpawner.SpawnProjectile(player.PlayerInfo.ProjectileType, player);
-                    SpawnEntity(projectile);
+                    var spell = player.PlayerSpells.SpellInfo.GetSpellInfo(button);
+                    player.PlayerSpells.Cast(this, player, spell);
+                }
+                if (button == PlayerButton.Fire)
+                {
+                    if (player.PlayerCombat.Shoot())
+                    {
+                        var projectile = ProjectileSpawner.SpawnProjectile(player.PlayerInfo.ProjectileType, player);
+                        SpawnEntity(projectile);
+                    }
                 }
             }
+            
         }
 
         public Entity SpawnEntity(Entity entity)
@@ -147,7 +171,6 @@ namespace SideWarsServer.Game.Room
         {
             if (entity is Bullet)
             {
-                Logger.Info(entity.Type + " collided " + collidingEntity.Type);
                 if (entity.Team == collidingEntity.Team)
                     return;
 

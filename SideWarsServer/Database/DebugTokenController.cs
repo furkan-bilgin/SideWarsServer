@@ -8,7 +8,7 @@ namespace SideWarsServer.Database
     {
         public async Task<Token> GetTokenAsync(string token)
         {
-            return new Token(true, "Player", token);
+            return new Token(true, "Player", token, SideWars.Shared.Game.ChampionType.Mark);
         }
     }
 }

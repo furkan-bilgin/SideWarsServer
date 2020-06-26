@@ -18,8 +18,8 @@ namespace SideWars.Shared.Physics
 
         public void UpdateLocation(Vector3 newLocation)
         {
-            BoundingBox.SetMin(min + newLocation);
-            BoundingBox.SetMax(max + newLocation);
+            BoundingBox = BoundingBox.SetMin(min + newLocation)
+                                     .SetMax(max + newLocation);
         }
 
         public bool IsColliding(ICollider collider)

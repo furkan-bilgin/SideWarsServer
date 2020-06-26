@@ -86,11 +86,13 @@ namespace SideWarsServer.Game.Room
                     data.Add((ushort)EntityData.Controllable);
                 }
             }
+            /*  Unnecessary
             else if (entity is Projectile)
             {
                 var projectile = (Projectile)entity;
                 data.Add((ushort)projectile.ProjectileInfo.Type);
             }
+            */
 
             Server.Instance.NetworkController.SendPacket(peer, new EntitySpawnPacket()
             {

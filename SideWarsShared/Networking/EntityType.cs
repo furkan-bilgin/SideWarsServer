@@ -3,6 +3,7 @@
     public enum EntityType
     {
         Player,
-        Bullet
+        Bullet,
+        Grenade
     }
 }

@@ -59,7 +59,8 @@
     <Compile Include="Database\ITokenController.cs" />
     <Compile Include="Database\Models\Token.cs" />
     <Compile Include="Game\LogicController.cs" />
-    <Compile Include="Game\Logic\Bullet.cs" />
+    <Compile Include="Game\Logic\Projectiles\Bullet.cs" />
+    <Compile Include="Game\Logic\Champions\Mark.cs" />
     <Compile Include="Game\Logic\CollisionController.cs" />
     <Compile Include="Game\Logic\ITimedDestroy.cs" />
     <Compile Include="Game\Logic\Models\CollisionData.cs" />
@@ -68,6 +69,9 @@
     <Compile Include="Game\Logic\Player.cs" />
     <Compile Include="Game\Logic\Combat\PlayerCombat.cs" />
     <Compile Include="Game\Logic\ProjectileSpawner.cs" />
+    <Compile Include="Game\Logic\Projectiles\Grenade.cs" />
+    <Compile Include="Game\Logic\Spells\IPlayerSpells.cs" />
+    <Compile Include="Game\Logic\Spells\MarkSpells.cs" />
     <Compile Include="Game\Room\BaseGameRoom.cs" />
     <Compile Include="Game\Room\GameRoomState.cs" />
     <Compile Include="Game\Room\IGameRoom.cs" />

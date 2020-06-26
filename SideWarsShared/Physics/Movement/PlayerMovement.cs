@@ -6,9 +6,10 @@ namespace SideWars.Shared.Physics
     public class PlayerMovement : IPlayerMovement
     {
         const float GRAVITY = 15;
-        const float JUMP_FORCE = 9;
 
         public float Speed { get; set; }
+        public float JumpSpeed { get; set; }
+
         public float Horizontal { get; set; }
         public bool Jump { get; set; }
         public EntityTeam Team { get; private set; }
@@ -17,11 +18,12 @@ namespace SideWars.Shared.Physics
         private bool onGround;
         private float velocityY;
 
-        public PlayerMovement(EntityTeam Team, ICollider collider, float Speed)
+        public PlayerMovement(EntityTeam team, ICollider collider, float speed, float jumpSpeed)
         {
             groundLevel = collider.GetHighestPoint();
-            this.Team = Team;
-            this.Speed = Speed;
+            this.Team = team;
+            this.Speed = speed;
+            this.JumpSpeed = jumpSpeed;
         }
 
         public void Update(float deltaTime, ref Vector3 location)
@@ -42,7 +44,7 @@ namespace SideWars.Shared.Physics
 
             if (onGround && Jump)
             {
-                velocityY += JUMP_FORCE;
+                velocityY += JumpSpeed;
             }
 
             var newY = y + velocityY * deltaTime;
