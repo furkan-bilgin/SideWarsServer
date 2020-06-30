@@ -14,6 +14,11 @@
         public ushort[] Data { get; set; }
 
         /// <summary>
+        /// Big datas such as floats etc
+        /// </summary>
+        public float[] BigData { get; set; }
+
+        /// <summary>
         /// EntityTeam casted as a byte
         /// </summary>
         public byte Team { get; set; }

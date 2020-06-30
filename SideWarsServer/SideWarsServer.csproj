@@ -59,6 +59,8 @@
     <Compile Include="Database\ITokenController.cs" />
     <Compile Include="Database\Models\Token.cs" />
     <Compile Include="Game\LogicController.cs" />
+    <Compile Include="Game\Logic\Updater\GrenadeUpdater.cs" />
+    <Compile Include="Game\Logic\Updater\IEntityUpdater.cs" />
     <Compile Include="Game\Logic\Projectiles\Bullet.cs" />
     <Compile Include="Game\Logic\Champions\Mark.cs" />
     <Compile Include="Game\Logic\CollisionController.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="Game\Logic\Projectiles\Grenade.cs" />
     <Compile Include="Game\Logic\Spells\IPlayerSpells.cs" />
     <Compile Include="Game\Logic\Spells\MarkSpells.cs" />
+    <Compile Include="Game\Logic\Updater\TimedDestroyUpdater.cs" />
     <Compile Include="Game\Room\BaseGameRoom.cs" />
     <Compile Include="Game\Room\GameRoomState.cs" />
     <Compile Include="Game\Room\IGameRoom.cs" />
@@ -117,5 +120,6 @@
       <Name>SideWarsShared</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -15,6 +15,7 @@ namespace SideWarsServer.Game.Room
         GameRoomState RoomState { get; set; }
         IGameRoomListener Listener { get; set; }
         Dictionary<int, Entity> Entities { get; set; }
+        int Tick { get; }
 
         void AddPlayer(PlayerConnection playerConnection);
         void RemovePlayer(PlayerConnection playerConnection);

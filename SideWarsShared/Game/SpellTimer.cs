@@ -1,44 +1,30 @@
-﻿using SideWars.Shared.Game;
-using System;
+﻿using SideWars.Shared.Utils;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SideWars.Shared.Game
 {
     public class SpellTimer
     {
-        private Dictionary<SpellType, Stopwatch> timerList;
+        private Dictionary<SpellType, Timer> timerList;
 
         public SpellTimer()
         {
-            timerList = new Dictionary<SpellType, Stopwatch>();
+            timerList = new Dictionary<SpellType, Timer>();
         }
 
         public bool CanCast(SpellInfo info)
         {
-            Stopwatch stopwatch = null;
+            Timer timer;
             if (!timerList.ContainsKey(info.Type))
             {
-                stopwatch = new Stopwatch();
-                stopwatch.Start();
-
-                timerList.Add(info.Type, stopwatch);
+                timer = new Timer(info.Cooldown);
+                timerList.Add(info.Type, timer);
                 return true;
             }
 
-            stopwatch = timerList[info.Type];
-            if (stopwatch.ElapsedMilliseconds >= info.Cooldown * 1000)
-            {
-                stopwatch.Reset();
-                stopwatch.Start();
-
-                return true;
-            }
-
-            return false;
+            timer = timerList[info.Type];
+            return timer.CanTick();
         }
     }
 }

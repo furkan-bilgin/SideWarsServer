@@ -2,6 +2,7 @@
 using SideWars.Shared.Packets;
 using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic;
+using SideWarsServer.Game.Logic.Projectiles;
 using SideWarsServer.Utils;
 using System;
 using System.Collections.Generic;
@@ -75,6 +76,7 @@ namespace SideWarsServer.Game.Room
         void SendEntitySpawn(Entity entity, NetPeer peer)
         {
             var data = new List<ushort>();
+            var bigData = new List<float>();
 
             if (entity is Player)
             {
@@ -86,19 +88,20 @@ namespace SideWarsServer.Game.Room
                     data.Add((ushort)EntityData.Controllable);
                 }
             }
-            /*  Unnecessary
-            else if (entity is Projectile)
+            else if (entity is Grenade)
             {
-                var projectile = (Projectile)entity;
-                data.Add((ushort)projectile.ProjectileInfo.Type);
+                var grenade = (Grenade)entity;
+                bigData.Add(grenade.Target.X);
+                bigData.Add(grenade.Target.Y);
+                bigData.Add(grenade.Target.Z);
             }
-            */
 
             Server.Instance.NetworkController.SendPacket(peer, new EntitySpawnPacket()
             {
                 Id = entity.Id,
                 EntityType = (byte)entity.Type,
                 Data = data.ToArray(),
+                BigData = bigData.ToArray(),
                 Team = (byte)entity.Team,
                 X = entity.Location.X,
                 Y = entity.Location.Y,

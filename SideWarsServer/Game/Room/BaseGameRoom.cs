@@ -7,6 +7,7 @@ using SideWarsServer.Game.Logic;
 using SideWarsServer.Game.Logic.Champions;
 using SideWarsServer.Game.Logic.Models;
 using SideWarsServer.Game.Logic.Projectiles;
+using SideWarsServer.Game.Logic.Updater;
 using SideWarsServer.Game.Room.Listener;
 using SideWarsServer.Networking;
 using SideWarsServer.Utils;
@@ -25,9 +26,12 @@ namespace SideWarsServer.Game.Room
         public Dictionary<int, PlayerConnection> Players { get; set; }
         public ProjectileSpawner ProjectileSpawner { get; set; }
 
+        public int Tick => tickCount;
+
         private CollisionController collisionController;
         private Dictionary<PlayerConnection, Player> playerEntities;
         private List<Entity> deadEntities;
+        private List<IEntityUpdater> entityUpdaters;
         private int currentEntityId;
         private int tickCount;
 
@@ -36,6 +40,11 @@ namespace SideWarsServer.Game.Room
             deadEntities = new List<Entity>();
             collisionController = new CollisionController();
             playerEntities = new Dictionary<PlayerConnection, Player>();
+            entityUpdaters = new List<IEntityUpdater>()
+            {
+                new GrenadeUpdater(),
+                new TimedDestroyUpdater()
+            };
 
             ProjectileSpawner = new ProjectileSpawner();
             Players = new Dictionary<int, PlayerConnection>();
@@ -105,7 +114,7 @@ namespace SideWarsServer.Game.Room
                     var spell = player.PlayerSpells.SpellInfo.GetSpellInfo(button);
                     player.PlayerSpells.Cast(this, player, spell);
                 }
-                if (button == PlayerButton.Fire)
+                else if (button == PlayerButton.Fire)
                 {
                     if (player.PlayerCombat.Shoot())
                     {
@@ -157,7 +166,7 @@ namespace SideWarsServer.Game.Room
                 UpdateEntityMovements();
                 UpdateColliders();
                 UpdateCollisions();
-                UpdateEntities();
+                UpdateEntityUpdaters();
 
                 CheckEntityHealths();
 
@@ -184,17 +193,13 @@ namespace SideWarsServer.Game.Room
             }
         }
 
-        private void UpdateEntities()
+        private void UpdateEntityUpdaters()
         {
-            foreach (var item in Entities)
+            foreach (var item in entityUpdaters)
             {
-                if (item.Value is ITimedDestroy)
+                foreach (var entity in Entities)
                 {
-                    var timedDestroy = (ITimedDestroy)item.Value;
-                    if (tickCount - item.Value.BirthTick >= LogicTimer.FramesPerSecond * timedDestroy.DestroySeconds) // If the time has passed
-                    {
-                        item.Value.Kill(); // Kill the entity
-                    }
+                    item.Update(entity.Value, this);
                 }
             }
         }

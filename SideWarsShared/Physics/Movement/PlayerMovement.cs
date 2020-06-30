@@ -1,12 +1,11 @@
 ﻿using Ara3D;
+using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
 
 namespace SideWars.Shared.Physics
 {
     public class PlayerMovement : IPlayerMovement
     {
-        const float GRAVITY = 15;
-
         public float Speed { get; set; }
         public float JumpSpeed { get; set; }
 
@@ -35,7 +34,7 @@ namespace SideWars.Shared.Physics
             onGround = y == groundLevel;
             if (y > groundLevel)
             {
-                velocityY -= GRAVITY * deltaTime;
+                velocityY -= GameConstants.GRAVITY * deltaTime;
             }
             else
             {
