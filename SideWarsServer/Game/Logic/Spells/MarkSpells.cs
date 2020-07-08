@@ -24,10 +24,16 @@ namespace SideWarsServer.Game.Logic.Spells
                 return false;
 
             var baseGameRoom = (BaseGameRoom)gameRoom;
+
             if (spell.Type == SpellType.MarkGrenade)
             {
                 var grenade = baseGameRoom.ProjectileSpawner.SpawnProjectile(ProjectileType.Grenade, player);
                 baseGameRoom.SpawnEntity(grenade);
+            }
+            else if (spell.Type == SpellType.MarkHeal)
+            {
+                player.Heal(25);
+                baseGameRoom.SpawnParticle(ParticleType.MarkHealup, player.Location, new float[] { player.Id }); // Data contains playerID, in the client-side particle will follow player
             }
 
             return true;

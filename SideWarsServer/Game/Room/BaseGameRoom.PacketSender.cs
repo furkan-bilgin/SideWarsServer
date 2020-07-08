@@ -1,9 +1,11 @@
-﻿using LiteNetLib;
+﻿using Ara3D;
+using LiteNetLib;
 using SideWars.Shared.Packets;
 using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic;
 using SideWarsServer.Game.Logic.Projectiles;
 using SideWarsServer.Utils;
+using SideWars.Shared.Game;
 using System;
 using System.Collections.Generic;
 
@@ -33,7 +35,7 @@ namespace SideWarsServer.Game.Room
 
                     if (entity is Player)
                     {
-                        if (tickCount % LogicTimer.FramesPerSecond == 0) // Send Player positions every second in case of sync issues. 
+                        if (Tick % LogicTimer.FramesPerSecond == 0) // Send Player positions every second in case of sync issues. 
                             sendEntityMovement();
                     }
                     /*
@@ -57,6 +59,14 @@ namespace SideWarsServer.Game.Room
                         SendPlayerMovement(playerItem.Value, item.Value.NetPeer);
                     }
                 }
+            }
+        }
+
+        void SendEntityHealthChangePackets(Entity entity)
+        {
+            foreach (var player in Players)
+            {
+                SendEntityHealthChange(entity, player.Value.NetPeer);
             }
         }
 
@@ -110,6 +120,18 @@ namespace SideWarsServer.Game.Room
             });
         }
 
+        void SendParticleSpawn(ParticleType particleType, Vector3 location, float[] data, NetPeer peer)
+        {
+            Server.Instance.NetworkController.SendPacket(peer, new ParticleSpawnPacket()
+            {
+                ParticleType = (ushort)particleType,
+                X = location.X,
+                Y = location.Y,
+                Z = location.Z,
+                Data = data
+            });
+        }
+
         void SendEntityMovement(Entity entity, NetPeer peer)
         {
             Server.Instance.NetworkController.SendPacket(peer, new EntityMovementPacket()
@@ -138,6 +160,15 @@ namespace SideWarsServer.Game.Room
             {
                 Id = entity.Id
             }, DeliveryMethod.Unreliable);
+        }
+
+        void SendEntityHealthChange(Entity entity, NetPeer peer)
+        {
+            Server.Instance.NetworkController.SendPacket(peer, new EntityHealthUpdatePacket()
+            {
+                Id = entity.Id,
+                Health = (ushort)entity.Health
+            }, DeliveryMethod.ReliableSequenced);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace SideWars.Shared.Game
             Timer timer;
             if (!timerList.ContainsKey(info.Type))
             {
-                timer = new Timer(info.Cooldown);
+                timer = new Timer(info.Cooldown * 1000);
                 timerList.Add(info.Type, timer);
                 return true;
             }

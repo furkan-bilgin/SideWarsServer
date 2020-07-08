@@ -23,6 +23,7 @@ namespace SideWarsServer.Game.Logic
 
         public Entity(EntityInfo entityInfo)
         {
+            BaseHealth = entityInfo.BaseHealth;
             Health = entityInfo.BaseHealth;
         }
 
@@ -43,10 +44,17 @@ namespace SideWarsServer.Game.Logic
 
         public virtual void Heal(int hp)
         {
-            if (Health + hp >= BaseHealth)
-                Health = BaseHealth;
+            if (IsImmortal)
+                return;
 
-            Health += hp;
+            if (Health + hp >= BaseHealth)
+            {
+                Health = BaseHealth;
+            }
+            else
+            {
+                Health += hp;
+            }
         }
 
         public virtual void Kill()

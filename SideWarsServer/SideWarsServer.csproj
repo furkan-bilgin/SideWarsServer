@@ -59,6 +59,10 @@
     <Compile Include="Database\ITokenController.cs" />
     <Compile Include="Database\Models\Token.cs" />
     <Compile Include="Game\LogicController.cs" />
+    <Compile Include="Game\Logic\Effects\BulletCollisionEffect.cs" />
+    <Compile Include="Game\Logic\Effects\ExplosionEffect.cs" />
+    <Compile Include="Game\Logic\Effects\GrenadeDetonateEffect.cs" />
+    <Compile Include="Game\Logic\Effects\IEffects.cs" />
     <Compile Include="Game\Logic\Updater\GrenadeUpdater.cs" />
     <Compile Include="Game\Logic\Updater\IEntityUpdater.cs" />
     <Compile Include="Game\Logic\Projectiles\Bullet.cs" />
@@ -76,6 +80,7 @@
     <Compile Include="Game\Logic\Spells\MarkSpells.cs" />
     <Compile Include="Game\Logic\Updater\TimedDestroyUpdater.cs" />
     <Compile Include="Game\Room\BaseGameRoom.cs" />
+    <Compile Include="Game\Room\BaseGameRoomExtensions.cs" />
     <Compile Include="Game\Room\GameRoomState.cs" />
     <Compile Include="Game\Room\IGameRoom.cs" />
     <Compile Include="Game\Room\Listener\BaseGameRoomListener.cs" />

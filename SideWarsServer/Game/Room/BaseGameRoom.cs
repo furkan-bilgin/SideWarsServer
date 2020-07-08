@@ -1,17 +1,16 @@
 ﻿using Ara3D;
-using LiteNetLib;
 using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
 using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic;
 using SideWarsServer.Game.Logic.Champions;
-using SideWarsServer.Game.Logic.Models;
+using SideWarsServer.Game.Logic.Effects;
 using SideWarsServer.Game.Logic.Projectiles;
 using SideWarsServer.Game.Logic.Updater;
 using SideWarsServer.Game.Room.Listener;
 using SideWarsServer.Networking;
 using SideWarsServer.Utils;
-using System.Buffers;
+using SideWars.Shared.Game;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,18 +25,22 @@ namespace SideWarsServer.Game.Room
         public Dictionary<int, PlayerConnection> Players { get; set; }
         public ProjectileSpawner ProjectileSpawner { get; set; }
 
-        public int Tick => tickCount;
+        public int Tick { get; private set; }
 
         private CollisionController collisionController;
         private Dictionary<PlayerConnection, Player> playerEntities;
-        private List<Entity> deadEntities;
         private List<IEntityUpdater> entityUpdaters;
+
+        private List<Entity> deadEntities;
+        private Dictionary<Entity, int> previousHealths;
+
         private int currentEntityId;
-        private int tickCount;
 
         public BaseGameRoom()
         {
+            previousHealths = new Dictionary<Entity, int>();
             deadEntities = new List<Entity>();
+
             collisionController = new CollisionController();
             playerEntities = new Dictionary<PlayerConnection, Player>();
             entityUpdaters = new List<IEntityUpdater>()
@@ -69,16 +72,16 @@ namespace SideWarsServer.Game.Room
 
             var team = GetNextTeam();
             var spawnPoint = RoomOptions.GetSpawnPoint(team);
-            Player player = null;
+            Player player;
             
             switch (playerConnection.Token.ChampionType)
             {
                 case ChampionType.Mark:
                     player = new Mark(spawnPoint, playerConnection, team);
                     break;
+
                 default:
                     throw new System.Exception("Unknown champion.");
-                    break;
             }
             
             playerEntities.Add(playerConnection, player);
@@ -101,8 +104,8 @@ namespace SideWarsServer.Game.Room
             var player = playerEntities[playerConnection];
             var playerMovement = (PlayerMovement)playerEntities[playerConnection].Movement;
 
-            var addX = playerConnection.Latency / 1000 * playerMovement.Speed * horizontal * LogicTimer.FixedDelta; // A little lag compensation but it probably makes things worse :P
-            player.Location = player.Location.SetX(player.Location.X + addX);
+            //var addX = playerConnection.Latency / 1000 * playerMovement.Speed * horizontal * LogicTimer.FixedDelta; // A little lag compensation but it probably makes things worse :P
+            //player.Location = player.Location.SetX(player.Location.X + addX);
 
             playerMovement.Horizontal = horizontal;
             playerMovement.Jump = jump;
@@ -130,7 +133,7 @@ namespace SideWarsServer.Game.Room
         {
             var id = ++currentEntityId;
             entity.Id = id;
-            entity.BirthTick = tickCount;
+            entity.BirthTick = Tick;
 
             Entities.Add(id, entity); // Add entity to Entities dictionary
 
@@ -141,6 +144,17 @@ namespace SideWarsServer.Game.Room
             }
 
             return entity;
+        }
+
+        public void SpawnParticle(ParticleType particleType, Vector3 location, float[] data = null)
+        {
+            if (data == null)
+                data = new float[0];
+
+            foreach (var item in Players)
+            {
+                SendParticleSpawn(particleType, location, data, item.Value.NetPeer);
+            }
         }
 
         public void StartGame()
@@ -160,7 +174,8 @@ namespace SideWarsServer.Game.Room
 
             lock (Entities) lock (Players)
             {
-                tickCount++;
+                Tick++;
+
                 deadEntities.Clear();
 
                 UpdateEntityMovements();
@@ -168,6 +183,7 @@ namespace SideWarsServer.Game.Room
                 UpdateCollisions();
                 UpdateEntityUpdaters();
 
+                CheckEntityHealthChanges();
                 CheckEntityHealths();
 
                 SendEntityDeathPackets();
@@ -180,15 +196,34 @@ namespace SideWarsServer.Game.Room
         {
             if (entity is Bullet)
             {
-                if (entity.Team == collidingEntity.Team)
-                    return;
+                new BulletCollisionEffect((Bullet)entity, collidingEntity).Start(this);
+            }
+        }
 
-                var bullet = (Bullet)entity;
+        #region Tick Functions
 
-                if (collidingEntity is Player)
+        private void CheckEntityHealthChanges()
+        {
+            foreach (var item in Entities)
+            {
+                var entity = item.Value;
+                
+                if (!previousHealths.ContainsKey(entity))
                 {
-                    collidingEntity.Hurt(bullet.ProjectileInfo.Damage);
-                    entity.Kill();
+                    previousHealths.Add(entity, entity.Health);
+                    continue;
+                }
+
+                if (entity.Health <= 0)
+                {
+                    previousHealths.Remove(entity);
+                    continue;
+                }
+
+                if (previousHealths[entity] != entity.Health)
+                {
+                    previousHealths[entity] = entity.Health;
+                    SendEntityHealthChangePackets(entity);
                 }
             }
         }
@@ -253,5 +288,6 @@ namespace SideWarsServer.Game.Room
             team = team == EntityTeam.Red ? EntityTeam.Blue : EntityTeam.Red;
             return team;
         }
+        #endregion
     }
 }

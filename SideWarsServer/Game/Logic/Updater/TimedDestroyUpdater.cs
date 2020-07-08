@@ -8,13 +8,13 @@ namespace SideWarsServer.Game.Logic.Updater
     {
         public void Update(Entity entity, IGameRoom gameRoom)
         {
-            if (entity is ITimedDestroy)
+            if (!(entity is ITimedDestroy)) // If entity is not grenade, return.
+                return;
+
+            var timedDestroy = (ITimedDestroy)entity;
+            if (gameRoom.Tick - entity.BirthTick >= LogicTimer.FramesPerSecond * timedDestroy.DestroySeconds) // If the time has passed
             {
-                var timedDestroy = (ITimedDestroy)entity;
-                if (gameRoom.Tick - entity.BirthTick >= LogicTimer.FramesPerSecond * timedDestroy.DestroySeconds) // If the time has passed
-                {
-                    entity.Kill(); // Kill the entity
-                }
+                entity.Kill(); // Kill the entity
             }
         }
     }

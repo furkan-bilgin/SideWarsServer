@@ -8,7 +8,7 @@ namespace SideWars.Shared.Physics
 {
     public class GrenadeMovement : IProjectileMovement
     {
-        const float HEIGHT = 2.3f;
+        const float HEIGHT = 2f;
 
         public float Speed { get; set; }
         public EntityTeam Team { get; set; }

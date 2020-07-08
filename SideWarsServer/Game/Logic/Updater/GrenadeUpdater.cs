@@ -1,4 +1,5 @@
-﻿using SideWarsServer.Game.Logic.Projectiles;
+﻿using SideWarsServer.Game.Logic.Effects;
+using SideWarsServer.Game.Logic.Projectiles;
 using SideWarsServer.Game.Room;
 
 namespace SideWarsServer.Game.Logic.Updater
@@ -7,13 +8,14 @@ namespace SideWarsServer.Game.Logic.Updater
     {
         public void Update(Entity entity, IGameRoom gameRoom)
         {
+            if (!(entity is Grenade)) // If entity is not grenade, return.
+                return;
+
             var grenade = (Grenade)entity;
-            var room = (BaseGameRoom)gameRoom;
 
             if (grenade.Location.Y <= 0)
             {
-                room.CreateExplosion();
-                grenade.Kill();
+                new GrenadeDetonateEffect(grenade).Start(gameRoom);
             }
         }
     }

@@ -11,17 +11,13 @@ namespace SideWars.Shared.Utils
         public Timer(int periodMilliseconds)
         {
             PeriodMilliseconds = periodMilliseconds;
+            
             stopwatch = new Stopwatch();
+            stopwatch.Start();
         }
 
         public bool CanTick()
         {
-            if (!stopwatch.IsRunning)
-            {
-                stopwatch.Start();
-                return true;
-            }
-
             if (stopwatch.ElapsedMilliseconds >= PeriodMilliseconds)
             {
                 stopwatch.Restart();

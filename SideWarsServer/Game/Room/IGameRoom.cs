@@ -1,6 +1,8 @@
-﻿using SideWarsServer.Game.Logic;
+﻿using Ara3D;
+using SideWarsServer.Game.Logic;
 using SideWarsServer.Game.Room.Listener;
 using SideWarsServer.Networking;
+using SideWars.Shared.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +21,7 @@ namespace SideWarsServer.Game.Room
 
         void AddPlayer(PlayerConnection playerConnection);
         void RemovePlayer(PlayerConnection playerConnection);
+        Entity SpawnEntity(Entity entity);
+        void SpawnParticle(ParticleType particleType, Vector3 location, float[] data = null);
     }
 }

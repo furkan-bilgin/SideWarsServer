@@ -7,12 +7,9 @@ namespace SideWarsServer.Game.Logic
 {
     public class CollisionController
     {
-        HashSet<int> collidedBodies;
-
-        public CollisionController()
-        {
-            collidedBodies = new HashSet<int>();
-        }
+        HashSet<int> collidedBodies = new HashSet<int>();
+        Dictionary<ICollider, Entity> collidingEntityDic = new Dictionary<ICollider, Entity>();
+        List<ICollider> collidingEntityList = new List<ICollider>();
 
         public void GetCollidingBodies(List<ICollider> colliders, Action<ICollider, CollisionData> onCollision)
         {
@@ -40,9 +37,6 @@ namespace SideWarsServer.Game.Logic
                 }
             }
         }
-
-        Dictionary<ICollider, Entity> collidingEntityDic = new Dictionary<ICollider, Entity>();
-        List<ICollider> collidingEntityList = new List<ICollider>();
 
         /// <summary>
         /// Gets colliding entities. 
