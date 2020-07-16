@@ -16,9 +16,12 @@ namespace SideWarsServer.Game.Logic.Effects
 
         public void Start(IGameRoom room)
         {
-            var projectile = room.ProjectileSpawner.SpawnProjectile(player.PlayerInfo.ProjectileType, player);
-            room.SpawnEntity(projectile);
-            room.SpawnParticle(ParticleType.MuzzleFlash, Vector3.Zero, new float[] { player.Id });
+            for (int i = 0; i < player.PlayerInfo.BulletsPerShoot; i++)
+            {
+                new BulletSpawnEffect(player).Start(room);
+            }
+
+            new ShowMuzzleFlashEffect(player).Start(room);
         }
     }
 }

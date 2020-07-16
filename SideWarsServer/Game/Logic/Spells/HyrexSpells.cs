@@ -20,6 +20,10 @@ namespace SideWarsServer.Game.Logic.Spells
             {
                 var baseGameRoom = (BaseGameRoom)gameRoom;
 
+                if (spell.Type == SpellType.HyrexSlide)
+                {
+                
+                }
             }
 
             return canCast;

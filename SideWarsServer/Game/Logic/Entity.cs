@@ -2,6 +2,8 @@
 using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
 using SideWars.Shared.Physics;
+using SideWarsServer.Game.Logic.StatusEffects;
+using System.Collections.Generic;
 
 namespace SideWarsServer.Game.Logic
 {
@@ -21,8 +23,11 @@ namespace SideWarsServer.Game.Logic
         public int Health { get; set; }
         public bool IsImmortal { get; set; }
 
+        public List<IStatusEffect> StatusEffects { get; protected set; }
+
         public Entity(EntityInfo entityInfo)
         {
+            StatusEffects = new List<IStatusEffect>();
             BaseHealth = entityInfo.BaseHealth;
             Health = entityInfo.BaseHealth;
         }

@@ -12,7 +12,9 @@ namespace SideWars.Shared.Game
         /// <summary>
         /// Player attack speed in milliseconds.
         /// </summary>
-        public int AttackSpeed { get; set; }
+        public int AttackSpeed { get; set; } 
+
+        public int BulletsPerShoot { get; set; }
 
         public int AmmoCount { get; set; }
         public float ReloadTime { get; set; }

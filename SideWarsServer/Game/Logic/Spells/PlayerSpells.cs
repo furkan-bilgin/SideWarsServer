@@ -9,6 +9,7 @@ namespace SideWarsServer.Game.Logic.Spells
     {
         public SpellTimer SpellTimer { get; set; }
         public PlayerSpellInfo SpellInfo { get; set; }
+        private bool isPaused;
 
         public PlayerSpells()
         {
@@ -20,10 +21,23 @@ namespace SideWarsServer.Game.Logic.Spells
             if (!SpellInfo.Spells.Contains(spell))
                 throw new Exception("Mark doesn't have the spell " + spell.Type);
 
+            if (isPaused)
+                return false;
+
             if (!SpellTimer.CanCast(spell))
                 return false;
 
             return true;
+        }
+
+        public void Pause()
+        {
+            isPaused = true;
+        }
+
+        public void Resume()
+        {
+            isPaused = false;
         }
     }
 }

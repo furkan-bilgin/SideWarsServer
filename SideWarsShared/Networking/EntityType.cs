@@ -4,6 +4,7 @@
     {
         Player,
         Bullet,
-        Grenade
+        Grenade,
+        HyrexBullet
     }
 }

@@ -41,10 +41,10 @@ namespace SideWars.Shared.Physics
                 velocityY = 0;
             }
 
-            if (onGround && Jump)
+            /*if (onGround && Jump) // I personally don't want jumping in this game, cuz its fucking useless.
             {
                 velocityY += JumpSpeed;
-            }
+            }*/
 
             var newY = y + velocityY * deltaTime;
             if (newY <= groundLevel) // If we're gonna touch the ground in this frame

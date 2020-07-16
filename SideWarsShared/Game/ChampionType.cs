@@ -4,6 +4,7 @@ namespace SideWars.Shared.Game
 {
     public enum ChampionType
     {
-        Mark = 100
+        Mark = 100,
+        Hyrex
     }
 }

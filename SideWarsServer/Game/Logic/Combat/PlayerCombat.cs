@@ -9,6 +9,7 @@ namespace SideWarsServer.Game.Logic.Combat
     {
         private PlayerInfo playerInfo;
         private Timer attackTimer;
+        private bool isPaused;
 
         public PlayerCombat(PlayerInfo playerInfo)
         {
@@ -18,7 +19,20 @@ namespace SideWarsServer.Game.Logic.Combat
 
         public virtual bool Shoot()
         {
+            if (isPaused)
+                return false;
+
             return attackTimer.CanTick();
+        }
+
+        public void Pause()
+        {
+            isPaused = true;
+        }
+
+        public void Resume()
+        {
+            isPaused = false;
         }
     }
 }

@@ -8,7 +8,7 @@ namespace SideWarsServer.Game.Logic.Champions
 {
     public class Hyrex : Player
     {
-        public Hyrex(Vector3 location, PlayerConnection playerConnection, EntityTeam team) : base(location, PlayerInfo.Mark, playerConnection, team)
+        public Hyrex(Vector3 location, PlayerConnection playerConnection, EntityTeam team) : base(location, PlayerInfo.Hyrex, playerConnection, team)
         {
             PlayerSpells = new HyrexSpells();
         }

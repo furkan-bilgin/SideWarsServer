@@ -9,5 +9,7 @@ namespace SideWarsServer.Game.Logic.Spells
         SpellTimer SpellTimer { get; set; }
 
         bool Cast(IGameRoom gameRoom, Player player, SpellInfo spell);
+        void Pause();
+        void Resume();
     }
 }

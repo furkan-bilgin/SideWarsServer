@@ -14,6 +14,16 @@ namespace SideWars.Shared.Game
             BaseHealth = 1
         };
 
+        public static ProjectileInfo HyrexBullet => new ProjectileInfo()
+        {
+            Type = ProjectileType.HyrexBullet,
+            Speed = 70,
+            Damage = 7,
+            HitBoxMin = -(Vector3.One / 4),
+            HitBoxMax = (Vector3.One / 4),
+            BaseHealth = 1
+        };
+
         public static ProjectileInfo Grenade => new ProjectileInfo()
         {
             Type = ProjectileType.Grenade,

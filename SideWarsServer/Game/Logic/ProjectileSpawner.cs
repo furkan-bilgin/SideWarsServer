@@ -1,4 +1,5 @@
 ﻿using SideWars.Shared.Game;
+using SideWarsServer.Game.Logic.Champions;
 using SideWarsServer.Game.Logic.Projectiles;
 
 namespace SideWarsServer.Game.Logic
@@ -12,7 +13,16 @@ namespace SideWarsServer.Game.Logic
             switch (type)
             {
                 case ProjectileType.Bullet:
-                    projectile = new Bullet(shooter);
+
+                    if (shooter is Hyrex)
+                    {
+                        projectile = new HyrexBullet(shooter);
+                    }
+                    else
+                    {
+                        projectile = new Bullet(shooter);
+                    }
+
                     break;
 
                 case ProjectileType.Grenade:

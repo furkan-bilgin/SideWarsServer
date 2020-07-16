@@ -84,6 +84,10 @@ namespace SideWarsServer.Game.Room
                     player = new Mark(spawnPoint, playerConnection, team);
                     break;
 
+                case ChampionType.Hyrex:
+                    player = new Hyrex(spawnPoint, playerConnection, team);
+                    break;
+
                 default:
                     throw new System.Exception("Unknown champion.");
             }

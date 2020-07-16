@@ -4,6 +4,8 @@ namespace SideWars.Shared.Physics
 {
     public interface ICollider
     {
+        bool IsEnabled { get; set; }
+
         /// <summary>
         /// Returns the highest point of the collider. i.e the up of the sphere or square
         /// </summary>
