@@ -7,8 +7,8 @@ namespace SideWars.Shared.Game
         public static ProjectileInfo Bullet => new ProjectileInfo()
         {
             Type = ProjectileType.Bullet,
-            Speed = 65,
-            Damage = 20,
+            Speed = 80,
+            Damage = 15,
             HitBoxMin = -(Vector3.One / 4),
             HitBoxMax = (Vector3.One / 4),
             BaseHealth = 1

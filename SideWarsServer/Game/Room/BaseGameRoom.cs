@@ -10,14 +10,15 @@ using SideWarsServer.Game.Logic.Updater;
 using SideWarsServer.Game.Room.Listener;
 using SideWarsServer.Networking;
 using SideWarsServer.Utils;
-using SideWars.Shared.Game;
 using System.Collections.Generic;
 using System.Linq;
+using SideWarsServer.Game.Logic.Scheduler;
 
 namespace SideWarsServer.Game.Room
 {
     public partial class BaseGameRoom : IGameRoom
     {
+        public RoomScheduler RoomScheduler { get; set; }
         public RoomOptions RoomOptions { get => RoomOptions.Default; }
         public GameRoomState RoomState { get; set; }
         public IGameRoomListener Listener { get; set; }
@@ -32,12 +33,14 @@ namespace SideWarsServer.Game.Room
         private List<IEntityUpdater> entityUpdaters;
 
         private List<Entity> deadEntities;
+        private List<(Player, SpellInfo)> spellUses;
         private Dictionary<Entity, int> previousHealths;
 
         private int currentEntityId;
 
         public BaseGameRoom()
         {
+            spellUses = new List<(Player, SpellInfo)>();
             previousHealths = new Dictionary<Entity, int>();
             deadEntities = new List<Entity>();
 
@@ -53,6 +56,7 @@ namespace SideWarsServer.Game.Room
             Players = new Dictionary<int, PlayerConnection>();
             Entities = new Dictionary<int, Entity>();
             Listener = new BaseGameRoomListener(this);
+            RoomScheduler = new RoomScheduler();
 
             Server.Instance.LogicController.RegisterLogicUpdate(Update);
         }
@@ -115,14 +119,16 @@ namespace SideWarsServer.Game.Room
                 if (button == PlayerButton.Special1 || button == PlayerButton.Special2)
                 {
                     var spell = player.PlayerSpells.SpellInfo.GetSpellInfo(button);
-                    player.PlayerSpells.Cast(this, player, spell);
+                    if (player.PlayerSpells.Cast(this, player, spell))
+                    {
+                        spellUses.Add((player, spell));
+                    }
                 }
                 else if (button == PlayerButton.Fire)
                 {
                     if (player.PlayerCombat.Shoot())
                     {
-                        var projectile = ProjectileSpawner.SpawnProjectile(player.PlayerInfo.ProjectileType, player);
-                        SpawnEntity(projectile);
+                        new PlayerShootEffect(player).Start(this);
                     }
                 }
             }
@@ -182,6 +188,7 @@ namespace SideWarsServer.Game.Room
                 UpdateColliders();
                 UpdateCollisions();
                 UpdateEntityUpdaters();
+                RoomScheduler.Update(Tick);
 
                 CheckEntityHealthChanges();
                 CheckEntityHealths();
@@ -189,6 +196,7 @@ namespace SideWarsServer.Game.Room
                 SendEntityDeathPackets();
                 SendPlayerMovementPackets();
                 SendMovementPackets();
+                SendPlayerSpellUsePackets();
             }
         }
 

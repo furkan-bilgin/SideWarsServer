@@ -1,42 +1,41 @@
 ﻿using SideWars.Shared.Game;
 using SideWarsServer.Game.Room;
+using SideWarsServer.Utils;
 using System;
 
 namespace SideWarsServer.Game.Logic.Spells
 {
-    public class MarkSpells : IPlayerSpells
+    public class MarkSpells : PlayerSpells
     {
-        public SpellTimer SpellTimer { get; set; }
-        public PlayerSpellInfo SpellInfo { get; set; }
-
-        public MarkSpells()
+        public MarkSpells() : base()
         {
             SpellInfo = new MarkSpellInfo();
-            SpellTimer = new SpellTimer();
         }
 
-        public bool Cast(IGameRoom gameRoom, Player player, SpellInfo spell)
+        public override bool Cast(IGameRoom gameRoom, Player player, SpellInfo spell)
         {
-            if (!SpellInfo.Spells.Contains(spell))
-                throw new Exception("Mark doesn't have the spell " + spell.Type);
+            var canCast = base.Cast(gameRoom, player, spell);
 
-            if (!SpellTimer.CanCast(spell))
-                return false;
-
-            var baseGameRoom = (BaseGameRoom)gameRoom;
-
-            if (spell.Type == SpellType.MarkGrenade)
+            if (canCast)
             {
-                var grenade = baseGameRoom.ProjectileSpawner.SpawnProjectile(ProjectileType.Grenade, player);
-                baseGameRoom.SpawnEntity(grenade);
-            }
-            else if (spell.Type == SpellType.MarkHeal)
-            {
-                player.Heal(25);
-                baseGameRoom.SpawnParticle(ParticleType.MarkHealup, player.Location, new float[] { player.Id }); // Data contains playerID, in the client-side particle will follow player
-            }
+                var baseGameRoom = (BaseGameRoom)gameRoom;
 
-            return true;
+                if (spell.Type == SpellType.MarkGrenade)
+                {
+                    baseGameRoom.RoomScheduler.ScheduleJobAfter(() =>
+                    {
+                        var grenade = baseGameRoom.ProjectileSpawner.SpawnProjectile(ProjectileType.Grenade, player);
+                        baseGameRoom.SpawnEntity(grenade);
+                    }, (int)LogicTimer.FramesPerSecond); // Execute spell after 1 seconds (currently 25 ticks)
+                }
+                else if (spell.Type == SpellType.MarkHeal)
+                {
+                    player.Heal(25);
+                    baseGameRoom.SpawnParticle(ParticleType.MarkHealup, player.Location, new float[] { player.Id }); // Data contains playerID, in the client-side particle will follow player
+                }
+            }
+           
+            return canCast;
         }
     }
 }

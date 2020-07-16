@@ -3,16 +3,15 @@ using SideWarsServer.Game.Logic;
 using SideWarsServer.Game.Room.Listener;
 using SideWarsServer.Networking;
 using SideWars.Shared.Game;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SideWarsServer.Game.Logic.Scheduler;
 
 namespace SideWarsServer.Game.Room
 {
     public interface IGameRoom
     {
+        RoomScheduler RoomScheduler { get; set; }
+        ProjectileSpawner ProjectileSpawner { get; set; }
         RoomOptions RoomOptions { get; }
         GameRoomState RoomState { get; set; }
         IGameRoomListener Listener { get; set; }

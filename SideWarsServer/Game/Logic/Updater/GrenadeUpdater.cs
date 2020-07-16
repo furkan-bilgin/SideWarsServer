@@ -15,6 +15,7 @@ namespace SideWarsServer.Game.Logic.Updater
 
             if (grenade.Location.Y <= 0)
             {
+                grenade.Location = grenade.Location.SetY(0);
                 new GrenadeDetonateEffect(grenade).Start(gameRoom);
             }
         }

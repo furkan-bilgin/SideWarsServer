@@ -63,6 +63,10 @@
     <Compile Include="Game\Logic\Effects\ExplosionEffect.cs" />
     <Compile Include="Game\Logic\Effects\GrenadeDetonateEffect.cs" />
     <Compile Include="Game\Logic\Effects\IEffects.cs" />
+    <Compile Include="Game\Logic\Effects\PlayerShootEffect.cs" />
+    <Compile Include="Game\Logic\Scheduler\RoomScheduler.cs" />
+    <Compile Include="Game\Logic\Spells\HyrexSpells.cs" />
+    <Compile Include="Game\Logic\Spells\PlayerSpells.cs" />
     <Compile Include="Game\Logic\Updater\GrenadeUpdater.cs" />
     <Compile Include="Game\Logic\Updater\IEntityUpdater.cs" />
     <Compile Include="Game\Logic\Projectiles\Bullet.cs" />

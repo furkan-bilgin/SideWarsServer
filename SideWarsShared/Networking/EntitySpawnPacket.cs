@@ -3,6 +3,7 @@
     public class EntitySpawnPacket
     {
         public int Id { get; set; }
+
         /// <summary>
         /// EntityType casted as a byte
         /// </summary> 
@@ -14,7 +15,7 @@
         public ushort[] Data { get; set; }
 
         /// <summary>
-        /// Big datas such as floats etc
+        /// Big datas such as floats etc. Like it's bigger than ushort, right?
         /// </summary>
         public float[] BigData { get; set; }
 

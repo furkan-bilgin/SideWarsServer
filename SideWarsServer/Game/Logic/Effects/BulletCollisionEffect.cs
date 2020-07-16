@@ -25,15 +25,15 @@ namespace SideWarsServer.Game.Logic.Effects
             { 
                 collidingEntity.Hurt(bullet.ProjectileInfo.Damage);
                 room.SpawnParticle(ParticleType.Blood, collidingEntity.Location);
-
-                bullet.Kill();
             }
             else if (collidingEntity is Grenade)
             {
                 var grenade = (Grenade)collidingEntity;
                 new GrenadeDetonateEffect(grenade).Start(room);
             }
+
+            bullet.Kill();
         }
     }
-    }
+    
 }

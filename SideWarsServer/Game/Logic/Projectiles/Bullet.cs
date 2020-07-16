@@ -12,7 +12,12 @@ namespace SideWarsServer.Game.Logic.Projectiles
         {
             Type = EntityType.Bullet;
 
-            var bulletPosition = shooter.PlayerInfo.BulletPosition.InvertIfRedTeam(shooter.Team);
+            var bulletPosition = shooter.PlayerInfo.BulletPosition;
+            var playerMovement = (PlayerMovement)shooter.Movement;
+            if (playerMovement.Horizontal != 0) // If player is running
+                bulletPosition = shooter.PlayerInfo.RunningBulletPosition;
+
+            bulletPosition = bulletPosition.InvertIfRedTeam(shooter.Team);
 
             Location = shooter.Location + bulletPosition;
             Collider = new SquareCollider(Location, ProjectileInfo.HitBoxMin, ProjectileInfo.HitBoxMax);

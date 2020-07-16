@@ -12,7 +12,7 @@ namespace SideWarsServer.Game.Logic
 
         public Projectile(Vector3 location, ProjectileInfo projectileInfo, Player shooter) : base(projectileInfo)
         {
-            DestroySeconds = 5; // TODO
+            DestroySeconds = 4; // TODO
 
             Shooter = shooter;
             ShooterInfo = shooter.PlayerInfo;

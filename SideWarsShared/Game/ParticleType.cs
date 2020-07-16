@@ -5,6 +5,8 @@
         Explosion,
         MidAirExplosion,
         Blood,
+        MuzzleFlash,
+
         MarkHealup
     }
 }

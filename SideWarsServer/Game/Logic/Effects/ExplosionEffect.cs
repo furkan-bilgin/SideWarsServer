@@ -23,8 +23,6 @@ namespace SideWarsServer.Game.Logic.Effects
             {
                 entity.Hurt(damage);
             }
-
-            // TODO: Create particle effect
         }
     }
 }

@@ -81,6 +81,17 @@ namespace SideWarsServer.Game.Room
             }
         }
 
+        void SendPlayerSpellUsePackets()
+        {
+            foreach (var item in spellUses)
+            {
+                (var player, var spell) = item;
+                SendPlayerSpellUse(player, spell, player.PlayerConnection.NetPeer);
+            }
+
+            spellUses.Clear();
+        }
+
         ///////// PACKET SENDER FUNCTIONS /////////
 
         void SendEntitySpawn(Entity entity, NetPeer peer)
@@ -169,6 +180,15 @@ namespace SideWarsServer.Game.Room
                 Id = entity.Id,
                 Health = (ushort)entity.Health
             }, DeliveryMethod.ReliableSequenced);
+        }
+        
+        void SendPlayerSpellUse(Player player, SpellInfo spellInfo, NetPeer peer)
+        {
+            Server.Instance.NetworkController.SendPacket(peer, new PlayerSpellUsePacket()
+            {
+                Id = player.Id,
+                SpellType = (ushort)spellInfo.Type
+            }, DeliveryMethod.ReliableOrdered);
         }
     }
 }

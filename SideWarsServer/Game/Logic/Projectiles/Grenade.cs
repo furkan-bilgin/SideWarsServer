@@ -12,11 +12,10 @@ namespace SideWarsServer.Game.Logic.Projectiles
         public Grenade(Player shooter) : base(Vector3.Zero, ProjectileInfo.Grenade, shooter)
         {
             var playerMovement = (PlayerMovement)shooter.Movement;
-            var addX = playerMovement.Horizontal * playerMovement.Speed;
+            var addX = (playerMovement.Horizontal * playerMovement.Speed).InvertIfRedTeam(Team);
 
             Type = EntityType.Grenade;
-            Target = new Vector3(shooter.Location.X + addX, 0, 15)
-                .InvertIfRedTeam(shooter.Team);
+            Target = new Vector3(shooter.Location.X + addX, 0, Team == EntityTeam.Blue ? 14 : -2); //TODO
 
             var bulletPosition = shooter.PlayerInfo.BulletPosition.InvertIfRedTeam(shooter.Team);
             

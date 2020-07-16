@@ -18,5 +18,6 @@ namespace SideWars.Shared.Game
         public float ReloadTime { get; set; }
 
         public Vector3 BulletPosition { get; set; }
+        public Vector3 RunningBulletPosition { get; set; }
     }
 }
