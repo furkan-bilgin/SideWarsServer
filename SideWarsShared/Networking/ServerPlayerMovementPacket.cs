@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public sbyte Horizontal { get; set; }
-        public bool Jump { get; set; }
+        //public bool Jump { get; set; }
     }
 }

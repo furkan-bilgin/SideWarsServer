@@ -22,7 +22,7 @@ namespace SideWarsServer.Game.Logic.Spells
 
                 if (spell.Type == SpellType.HyrexSlide)
                 {
-                
+                    
                 }
             }
 

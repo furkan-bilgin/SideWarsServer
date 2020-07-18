@@ -39,7 +39,7 @@ namespace SideWarsServer.Networking
 
                 if (player.CurrentGameRoom != null && player.CurrentGameRoom.RoomState != GameRoomState.Waiting)
                 {
-                    player.CurrentGameRoom.Listener.OnPlayerMovementChange(player, Functions.AsFloat(packet.Horizontal), packet.Jump, buttons);
+                    player.CurrentGameRoom.Listener.OnPlayerMovementChange(player, Functions.AsFloat(packet.Horizontal), buttons);
                 }
             } 
             catch(Exception ex)

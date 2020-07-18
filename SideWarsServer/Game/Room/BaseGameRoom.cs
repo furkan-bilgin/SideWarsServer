@@ -107,7 +107,7 @@ namespace SideWarsServer.Game.Room
             }
         }
 
-        public void UpdatePlayerMovement(PlayerConnection playerConnection, float horizontal, bool jump, PlayerButton[] buttons)
+        public void UpdatePlayerMovement(PlayerConnection playerConnection, float horizontal, PlayerButton[] buttons)
         {
             var player = playerEntities[playerConnection];
             var playerMovement = (PlayerMovement)playerEntities[playerConnection].Movement;
@@ -116,7 +116,6 @@ namespace SideWarsServer.Game.Room
             //player.Location = player.Location.SetX(player.Location.X + addX);
 
             playerMovement.Horizontal = horizontal;
-            playerMovement.Jump = jump;
 
             foreach (var button in buttons)
             {

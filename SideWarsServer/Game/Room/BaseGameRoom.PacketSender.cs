@@ -160,8 +160,7 @@ namespace SideWarsServer.Game.Room
             Server.Instance.NetworkController.SendPacket(peer, new ServerPlayerMovementPacket()
             {
                 Id = player.Id,
-                Horizontal = Functions.AsSByte(playerMovement.Horizontal),
-                Jump = Convert.ToBoolean(playerMovement.Jump)
+                Horizontal = Functions.AsSByte(playerMovement.Horizontal)
             }, DeliveryMethod.Unreliable);
         }
 

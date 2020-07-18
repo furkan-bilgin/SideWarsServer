@@ -36,7 +36,7 @@ namespace SideWarsServer
             LogicController = new LogicController(threadCount);
             TaskController = new TaskController(threadCount, LogicController);
             RoomController = new RoomController();
-            DatabaseController = new DatabaseController();
+            DatabaseController = new DatabaseController(new DebugTokenController());
             PlayerController = new PlayerController();
 
             NetworkController.StartServer();

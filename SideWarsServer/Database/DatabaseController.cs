@@ -11,9 +11,9 @@ namespace SideWarsServer.Database
     {
         private ITokenController tokenController;
 
-        public DatabaseController()
+        public DatabaseController(ITokenController tokenController)
         {
-            tokenController = new DebugTokenController();
+            this.tokenController = tokenController;
         }
 
         public async Task<Token> GetTokenAsync(string tokenId)

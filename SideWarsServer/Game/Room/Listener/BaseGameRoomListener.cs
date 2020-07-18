@@ -14,9 +14,9 @@ namespace SideWarsServer.Game.Room.Listener
             gameRoom = room;
         }
 
-        public void OnPlayerMovementChange(PlayerConnection player, float horizontal, bool jump, PlayerButton[] buttons)
+        public void OnPlayerMovementChange(PlayerConnection player, float horizontal, PlayerButton[] buttons)
         {
-            gameRoom.UpdatePlayerMovement(player, horizontal, jump, buttons);
+            gameRoom.UpdatePlayerMovement(player, horizontal, buttons);
         }
 
         public void OnPlayerReady(PlayerConnection player)

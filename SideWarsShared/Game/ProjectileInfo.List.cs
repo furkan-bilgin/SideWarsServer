@@ -18,7 +18,7 @@ namespace SideWars.Shared.Game
         {
             Type = ProjectileType.HyrexBullet,
             Speed = 70,
-            Damage = 7,
+            Damage = 5,
             HitBoxMin = -(Vector3.One / 4),
             HitBoxMax = (Vector3.One / 4),
             BaseHealth = 1
