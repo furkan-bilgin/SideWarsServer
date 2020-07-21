@@ -21,8 +21,9 @@ namespace SideWarsServer.Game.Logic.Effects
 
         public void Start(IGameRoom room)
         {
-            statusEffect.Start(entity);
-            room.RoomScheduler.ScheduleJobAfter(() => statusEffect.Stop(), Convert.ToInt32(statusEffect.Period * LogicTimer.FramesPerSecond));
+            entity.StatusEffects.Add(statusEffect);
+            //statusEffect.Start(entity);
+            //room.RoomScheduler.ScheduleJobAfter(() => statusEffect.Stop(), Convert.ToInt32(statusEffect.Period * LogicTimer.FramesPerSecond));
         }
     }
 }

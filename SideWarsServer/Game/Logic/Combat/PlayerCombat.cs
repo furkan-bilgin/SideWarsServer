@@ -13,13 +13,26 @@ namespace SideWarsServer.Game.Logic.Combat
 
         public PlayerCombat(PlayerInfo playerInfo)
         {
-            attackTimer = new Timer(playerInfo.AttackSpeed);
+            ReInitialize(playerInfo);
+            this.playerInfo = playerInfo;
+        }
+
+        public void ReInitialize(PlayerInfo playerInfo)
+        {
+            if (attackTimer == null)
+                attackTimer = new Timer(playerInfo.AttackSpeed);
+            else
+                attackTimer.PeriodMilliseconds = playerInfo.AttackSpeed;
+
             this.playerInfo = playerInfo;
         }
 
         public virtual bool Shoot()
         {
             if (isPaused)
+                return false;
+
+            if (playerInfo.AttackSpeed <= 0)
                 return false;
 
             return attackTimer.CanTick();

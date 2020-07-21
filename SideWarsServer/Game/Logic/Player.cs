@@ -15,12 +15,10 @@ namespace SideWarsServer.Game.Logic
         public PlayerCombat PlayerCombat { get; set; }
         public PlayerConnection PlayerConnection { get; private set; }
 
-        public Player(Vector3 location, PlayerInfo playerInfo, PlayerConnection playerConnection, EntityTeam team) : base(playerInfo)
+        public Player(Vector3 location, PlayerInfo playerInfo, PlayerConnection playerConnection, EntityTeam team) : base(playerInfo, team)
         {
             PlayerInfo = playerInfo;
-            Team = team;
-
-            Health = PlayerInfo.BaseHealth;
+            EntityInfo = PlayerInfo;
 
             PlayerConnection = playerConnection;
             Location = location;
@@ -28,6 +26,18 @@ namespace SideWarsServer.Game.Logic
             Collider = new SquareCollider(location, PlayerInfo.HitBoxMin, PlayerInfo.HitBoxMax);
             Movement = new PlayerMovement(Team, Collider, PlayerInfo.Speed);
             PlayerCombat = new PlayerCombat(PlayerInfo);
+
+            UpdateEntityInfo(playerInfo);
+        }
+
+        public override void UpdateEntityInfo(EntityInfo entityInfo)
+        {
+            base.UpdateEntityInfo(entityInfo);
+            
+            var playerInfo = (PlayerInfo)entityInfo;
+
+            Movement.Speed = playerInfo.Speed;
+            PlayerCombat.ReInitialize(playerInfo);
         }
     }
 }

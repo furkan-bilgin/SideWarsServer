@@ -24,9 +24,9 @@ namespace SideWarsServer.Game.Logic.Spells
 
                 if (spell.Type == SpellType.MarkGrenade)
                 {
-                    var spellTime = 1; // Execute spell after 1 seconds
+                    var spellTime = 1f; // Execute spell after 1 seconds
 
-                    new ApplyStatusEffect(player, new MutedStatusEffect(spellTime)).Start(gameRoom); // Apply muted status effect to Mark. (to prevent him to shoot or cast other spells)
+                    player.StatusEffects.Add(new MutedStatusEffect(spellTime.SecondsToTicks(), gameRoom.Tick)); // Apply muted status effect to Mark. (to prevent him to shoot or cast other spells)
 
                     baseGameRoom.RoomScheduler.ScheduleJobAfter(() =>
                     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SideWars.Shared.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,11 +10,12 @@ namespace SideWarsServer.Game.Logic.StatusEffects
     public interface IStatusEffect
     {
         /// <summary>
-        /// Time period this status effect will be in effect. (In seconds)
+        /// Time period this status effect will be in effect. (In ticks)
         /// </summary>
-        float Period { get; }
+        int ExpirityPeriod { get; }
 
-        void Start(Entity entity);
-        void Stop();
+        int SpawnTick { get; }
+
+        EntityInfo ApplyEffect(EntityInfo entityInfo);
     }
 }

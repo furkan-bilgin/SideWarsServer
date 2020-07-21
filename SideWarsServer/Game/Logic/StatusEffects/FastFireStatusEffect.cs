@@ -3,12 +3,12 @@ using SideWarsServer.Utils;
 
 namespace SideWarsServer.Game.Logic.StatusEffects
 {
-    public class MutedStatusEffect : IStatusEffect
+    public class HyrexFastFireStatusEffect : IStatusEffect
     {
         public int ExpirityPeriod { get; set; }
         public int SpawnTick { get; private set; }
 
-        public MutedStatusEffect(int expirityPeriod, int spawnTick)
+        public HyrexFastFireStatusEffect(int expirityPeriod, int spawnTick)
         {
             ExpirityPeriod = expirityPeriod;
             SpawnTick = spawnTick;
@@ -17,7 +17,7 @@ namespace SideWarsServer.Game.Logic.StatusEffects
         public EntityInfo ApplyEffect(EntityInfo entityInfo)
         {
             var playerInfo = (PlayerInfo)entityInfo;
-            playerInfo.AttackSpeed = playerInfo.AttackSpeed.DownByPercentage(100);
+            playerInfo.AttackSpeed = playerInfo.AttackSpeed.DownByPercentage(50); // Fire 50% faster
 
             return playerInfo;
         }

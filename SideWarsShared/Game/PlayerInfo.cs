@@ -1,4 +1,5 @@
 ﻿using Ara3D;
+using SideWars.Shared.Utils;
 
 namespace SideWars.Shared.Game
 {
@@ -21,5 +22,10 @@ namespace SideWars.Shared.Game
 
         public Vector3 BulletPosition { get; set; }
         public Vector3 RunningBulletPosition { get; set; }
+
+        public new object Clone()
+        {
+            return ObjectCloner.Clone(this);
+        }
     }
 }

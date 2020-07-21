@@ -8,7 +8,16 @@ namespace SideWars.Shared.Physics
     {
         private bool slide;
 
-        private const float SlideTime = 1;
+        /// <summary>
+        /// How many seconds sliding will take.
+        /// </summary>
+        public const float SLIDE_TIME = 1.25f;
+
+        /// <summary>
+        /// How fast sliding will be compared to normal speed
+        /// </summary>
+        private const float SLIDE_SPEED_MULTIPLIER = 1.25f;
+
         private Stopwatch stopwatch;
         private float slideMultiplier;
 
@@ -29,16 +38,17 @@ namespace SideWars.Shared.Physics
                 if (!stopwatch.IsRunning)
                 {
                     stopwatch.Restart();
-                    slideMultiplier = GetMovementMultiplier() > 0 ? 1 : -1;
+                    slideMultiplier = Horizontal > 0 ? 1 : -1;
                 }
 
-                if (stopwatch.ElapsedMilliseconds >= SlideTime * 1000)
+                if (stopwatch.ElapsedMilliseconds >= SLIDE_TIME * 1000)
                 {
                     slide = false;
+                    stopwatch.Stop();
                     return;
                 }
 
-                location += new Vector3(slideMultiplier, 0, 0) * deltaTime;
+                location += new Vector3(slideMultiplier * GetMovementSpeed() * SLIDE_SPEED_MULTIPLIER, 0, 0) * deltaTime;
 
                 CheckSides(deltaTime, ref location);
             }

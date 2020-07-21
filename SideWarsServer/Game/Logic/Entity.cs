@@ -20,16 +20,25 @@ namespace SideWarsServer.Game.Logic
         public EntityInfo EntityInfo { get; set; }
 
         public int BaseHealth { get; set; }
-        public int Health { get; set; }
+        public int Health { get; set; } = -1;
         public bool IsImmortal { get; set; }
 
         public List<IStatusEffect> StatusEffects { get; protected set; }
 
-        public Entity(EntityInfo entityInfo)
+        public Entity(EntityInfo entityInfo, EntityTeam team)
         {
+            Team = team;
+            EntityInfo = entityInfo;
+
             StatusEffects = new List<IStatusEffect>();
-            BaseHealth = entityInfo.BaseHealth;
-            Health = entityInfo.BaseHealth;
+        }
+
+        public virtual void UpdateEntityInfo(EntityInfo info)
+        {
+            BaseHealth = info.BaseHealth;
+
+            if (Health == -1)
+                Health = info.BaseHealth;
         }
 
         public virtual void Hurt(int damage)

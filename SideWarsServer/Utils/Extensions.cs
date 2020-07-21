@@ -1,5 +1,6 @@
 ﻿using Ara3D;
 using SideWars.Shared.Packets;
+using System;
 
 namespace SideWarsServer.Utils
 {
@@ -13,6 +14,11 @@ namespace SideWarsServer.Utils
         public static float InvertIfRedTeam(this float val, EntityTeam team)
         {
             return team == EntityTeam.Red ? -val : val;
+        }
+
+        public static int SecondsToTicks(this float val)
+        {
+            return Convert.ToInt32(val * LogicTimer.FramesPerSecond);
         }
     }
 }

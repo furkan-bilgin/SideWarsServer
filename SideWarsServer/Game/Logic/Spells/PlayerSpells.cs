@@ -13,13 +13,14 @@ namespace SideWarsServer.Game.Logic.Spells
 
         public PlayerSpells()
         {
+            isPaused = false;
             SpellTimer = new SpellTimer();
         }
 
         public virtual bool Cast(IGameRoom gameRoom, Player player, SpellInfo spell)
         {
             if (!SpellInfo.Spells.Contains(spell))
-                throw new Exception("Mark doesn't have the spell " + spell.Type);
+                throw new Exception("Character doesn't have the spell " + spell.Type);
 
             if (isPaused)
                 return false;

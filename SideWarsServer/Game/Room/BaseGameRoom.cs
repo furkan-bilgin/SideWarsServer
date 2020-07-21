@@ -49,7 +49,8 @@ namespace SideWarsServer.Game.Room
             entityUpdaters = new List<IEntityUpdater>()
             {
                 new GrenadeUpdater(),
-                new TimedDestroyUpdater()
+                new TimedDestroyUpdater(),
+                new StatusEffectUpdater()
             };
 
             ProjectileSpawner = new ProjectileSpawner();

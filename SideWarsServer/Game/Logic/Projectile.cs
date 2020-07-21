@@ -10,7 +10,7 @@ namespace SideWarsServer.Game.Logic
         public ProjectileInfo ProjectileInfo { get; set; }
         public int DestroySeconds { get; set; }
 
-        public Projectile(Vector3 location, ProjectileInfo projectileInfo, Player shooter) : base(projectileInfo)
+        public Projectile(Vector3 location, ProjectileInfo projectileInfo, Player shooter) : base(projectileInfo, shooter.Team)
         {
             DestroySeconds = 4; // TODO
 
@@ -20,6 +20,8 @@ namespace SideWarsServer.Game.Logic
             Team = shooter.Team;
 
             Location = location;
+
+            UpdateEntityInfo(projectileInfo);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SideWars.Shared.Physics
 
         public virtual void Update(float deltaTime, ref Vector3 location)
         {
-            location += new Vector3(GetMovementMultiplier() * Horizontal, 0, 0) * deltaTime;
+            location += new Vector3(GetMovementSpeed() * Horizontal, 0, 0) * deltaTime;
         }
 
         protected void CheckSides(float deltaTime, ref Vector3 location)
@@ -28,7 +28,7 @@ namespace SideWars.Shared.Physics
             // TODO: Limit side movement.
         }
 
-        protected float GetMovementMultiplier()
+        protected float GetMovementSpeed()
         {
             return Team == EntityTeam.Red ? -Speed : Speed;
         }
