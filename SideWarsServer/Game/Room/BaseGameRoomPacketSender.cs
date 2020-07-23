@@ -21,7 +21,7 @@ namespace SideWarsServer.Game.Room
             this.gameRoom = gameRoom;
         }
 
-        void SendAllEntitySpawns(NetPeer netPeer)
+        public void SendAllEntitySpawns(NetPeer netPeer)
         {
             foreach (var item in gameRoom.GetEntities())
             {
@@ -29,7 +29,7 @@ namespace SideWarsServer.Game.Room
             }
         }
 
-        void SendMovementPackets()
+        public void SendMovementPackets()
         {
             foreach (var playerItem in gameRoom.Players)
             {
@@ -43,7 +43,7 @@ namespace SideWarsServer.Game.Room
 
                     if (entity is Player)
                     {
-                        if (Tick % LogicTimer.FramesPerSecond == 0) // Send Player positions every second for sync issues. 
+                        if (gameRoom.Tick % LogicTimer.FramesPerSecond == 0) // Send Player positions every second for sync issues. 
                             sendEntityMovement();
                     }
                     /*
@@ -56,45 +56,45 @@ namespace SideWarsServer.Game.Room
             }
         }
 
-        void SendPlayerMovementPackets()
+        public void SendPlayerMovementPackets()
         {
             foreach (var playerItem in gameRoom.Players)
             {
-                foreach (var item in gameRoom.GetEntities().Where(x => x is Player))
+                foreach (var item in gameRoom.GetEntities().Where(x => x is Player).Select(x => (Player)x))
                 {
-                    if (item != playerItem.Value.NetPeer)
+                    if (item.PlayerConnection.Token.Id != playerItem.Value.Token.Id)
                     {
-                        SendPlayerMovement(item, item.Value.NetPeer);
+                        SendPlayerMovement(item, item.PlayerConnection.NetPeer);
                     }
                 }
             }
         }
 
-        void SendEntityHealthChangePackets(Entity entity)
+        public void SendEntityHealthChangePackets(Entity entity)
         {
-            foreach (var player in Players)
+            foreach (var player in gameRoom.Players)
             {
                 SendEntityHealthChange(entity, player.Value.NetPeer);
             }
         }
 
-        void SendEntityDeathPackets()
+        public void SendEntityDeathPackets(List<Entity> deadEntities)
         {
             foreach (var entity in deadEntities)
             {
-                foreach (var player in Players)
+                foreach (var player in gameRoom.Players)
                 {
                     SendEntityDeath(entity, player.Value.NetPeer);
                 }
             }
         }
 
-        void SendPlayerSpellUsePackets()
+        public void SendPlayerSpellUsePackets(List<(Player, SpellInfo)> spellUses)
         {
             foreach (var item in spellUses)
             {
                 (var player, var spell) = item;
-                foreach (var roomPlayer in Players)
+                foreach (var roomPlayer in gameRoom.Players)
                 {
                     SendPlayerSpellUse(player, spell, roomPlayer.Value.NetPeer);
                 }
@@ -105,7 +105,7 @@ namespace SideWarsServer.Game.Room
 
         ///////// PACKET SENDER FUNCTIONS /////////
 
-        void SendEntitySpawn(Entity entity, NetPeer peer)
+        public void SendEntitySpawn(Entity entity, NetPeer peer)
         {
             var data = new List<ushort>();
             var bigData = new List<float>();
@@ -142,7 +142,7 @@ namespace SideWarsServer.Game.Room
             });
         }
 
-        void SendParticleSpawn(ParticleType particleType, Vector3 location, float[] data, NetPeer peer)
+        public void SendParticleSpawn(ParticleType particleType, Vector3 location, float[] data, NetPeer peer)
         {
             Server.Instance.NetworkController.SendPacket(peer, new ParticleSpawnPacket()
             {

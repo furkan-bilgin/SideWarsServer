@@ -21,7 +21,7 @@ namespace SideWarsServer.Game.Room.Listener
 
         public void OnPlayerReady(PlayerConnection player)
         {
-            gameRoom.Players[player.NetPeer.Id].IsReady = true;
+            player.IsReady = true;
 
             if (gameRoom.Players.Count < gameRoom.RoomOptions.MaxPlayers)
                 return;

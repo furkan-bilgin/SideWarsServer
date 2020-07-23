@@ -11,19 +11,22 @@ namespace SideWarsServer.Game.Logic.GameLoop
     {
         private Dictionary<Entity, int> previousHealths;
         private List<Entity> deadEntities;
-        private Action<Entity> sendEntityHealthChangePackets;
         IGameRoom gameRoom;
 
-        public EntityHealthGameLoop(Action<Entity> sendEntityHealthChangePackets)
+        public EntityHealthGameLoop()
         {
-            this.sendEntityHealthChangePackets = sendEntityHealthChangePackets;
+            previousHealths = new Dictionary<Entity, int>();
+            deadEntities = new List<Entity>();
         }
 
         public void Update(IGameRoom gameRoom)
         {
             this.gameRoom = gameRoom;
+            deadEntities.Clear();
+
             CheckEntityHealthChanges();
             CheckEntityHealths();
+            gameRoom.PacketSender.SendEntityDeathPackets(deadEntities);
         }
 
         private void CheckEntityHealthChanges()
@@ -45,7 +48,7 @@ namespace SideWarsServer.Game.Logic.GameLoop
                 if (previousHealths[entity] != entity.Health)
                 {
                     previousHealths[entity] = entity.Health;
-                    sendEntityHealthChangePackets(entity);
+                    gameRoom.PacketSender.SendEntityHealthChangePackets(entity);
                 }
             }
         }

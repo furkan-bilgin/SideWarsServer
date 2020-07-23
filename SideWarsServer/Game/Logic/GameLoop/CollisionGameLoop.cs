@@ -7,10 +7,11 @@ namespace SideWarsServer.Game.Logic.GameLoop
     {
         private CollisionController collisionController;
         private IGameRoom gameRoom;
-        private Action<Entity, Entity> roomCallback;
+        private Action<Entity, Entity> callback;
 
         public CollisionGameLoop(Action<Entity, Entity> callback)
         {
+            this.callback = callback;
             collisionController = new CollisionController();
         }
 
@@ -31,7 +32,7 @@ namespace SideWarsServer.Game.Logic.GameLoop
 
         private void UpdateCollisions()
         {
-            collisionController.GetCollidingEntities(gameRoom.GetEntities(), roomCallback);
+            collisionController.GetCollidingEntities(gameRoom.GetEntities(), callback);
         }
     }
 }

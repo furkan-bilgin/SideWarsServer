@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SideWarsServer.Game.Logic.Scheduler;
 using SideWarsServer.Game.Logic.GameLoop;
+using System;
 
 namespace SideWarsServer.Game.Room
 {
@@ -24,27 +25,24 @@ namespace SideWarsServer.Game.Room
         public GameRoomState RoomState { get; set; }
         public IGameRoomListener Listener { get; set; }
         public Dictionary<int, Entity> Entities { get; set; }
-        public Dictionary<int, PlayerConnection> Players { get; set; }
+        public Dictionary<string, PlayerConnection> Players { get; set; }
         public ProjectileSpawner ProjectileSpawner { get; set; }
+        public BaseGameRoomPacketSender PacketSender { get; set; }
 
         public int Tick { get; private set; }
 
         private CollisionController collisionController;
-        private Dictionary<Player, PlayerConnection> playerEntities;
         private List<IEntityUpdater> entityUpdaters;
         private List<IGameLoop> gameLoops;
 
-        private List<(Player, SpellInfo)> spellUses;
-        
         private int currentEntityId;
-        private List<Entity> tempEntityList;
 
         public BaseGameRoom()
         {
-            spellUses = new List<(Player, SpellInfo)>();
+            throw new Exception("We don't send SpellUse packet to client, fix that");
+            PacketSender = new BaseGameRoomPacketSender(this);
 
             collisionController = new CollisionController();
-            playerEntities = new Dictionary<Player, PlayerConnection>();
             entityUpdaters = new List<IEntityUpdater>()
             {
                 new GrenadeUpdater(),
@@ -59,12 +57,12 @@ namespace SideWarsServer.Game.Room
 
                 new ActionGameLoop(() => RoomScheduler.Update(Tick)),
 
-                new EntityHealthGameLoop(SendEntityHealthChangePackets),
+                new EntityHealthGameLoop(),
                 new PacketSenderGameLoop()
             };
 
             ProjectileSpawner = new ProjectileSpawner();
-            Players = new Dictionary<int, PlayerConnection>();
+            Players = new Dictionary<string, PlayerConnection>();
             Entities = new Dictionary<int, Entity>();
             Listener = new BaseGameRoomListener(this);
             RoomScheduler = new RoomScheduler();
@@ -82,7 +80,7 @@ namespace SideWarsServer.Game.Room
             Logger.Info("Added player " + playerConnection.NetPeer.Id + " to the room");
             playerConnection.CurrentGameRoom = this;
 
-            SendAllEntitySpawns(playerConnection.NetPeer);
+            PacketSender.SendAllEntitySpawns(playerConnection.NetPeer);
 
             var team = GetNextTeam();
             var spawnPoint = RoomOptions.GetSpawnPoint(team);
@@ -102,14 +100,13 @@ namespace SideWarsServer.Game.Room
                     throw new System.Exception("Unknown champion.");
             }
 
-            Players.Add(playerConnection.NetPeer.Id, playerConnection);
+            Players.Add(playerConnection.Token.Id, playerConnection);
             SpawnEntity(player);
         }
 
         public void RemovePlayer(PlayerConnection playerConnection)
         {
             Entities.Remove(playerConnection.NetPeer.Id);
-            playerEntities.Remove(playerConnection);
 
             if (Entities.Count == 0)
             {
@@ -119,8 +116,8 @@ namespace SideWarsServer.Game.Room
 
         public void UpdatePlayerMovement(PlayerConnection playerConnection, float horizontal, PlayerButton[] buttons)
         {
-            var player = playerEntities[playerConnection];
-            var playerMovement = (PlayerMovement)playerEntities[playerConnection].Movement;
+            var player = (Player)Entities.Select(x => x.Value).Where(x => x is Player && ((Player)x).PlayerConnection.Token.Id == playerConnection.Token.Id).FirstOrDefault();
+            var playerMovement = (PlayerMovement)player.Movement;
 
             //var addX = playerConnection.Latency / 1000 * playerMovement.Speed * horizontal * LogicTimer.FixedDelta; // A little lag compensation but it probably makes things worse :P
             //player.Location = player.Location.SetX(player.Location.X + addX);
@@ -132,10 +129,7 @@ namespace SideWarsServer.Game.Room
                 if (button == PlayerButton.Special1 || button == PlayerButton.Special2)
                 {
                     var spell = player.PlayerSpells.SpellInfo.GetSpellInfo(button);
-                    if (player.PlayerSpells.Cast(this, player, spell))
-                    {
-                        spellUses.Add((player, spell));
-                    }
+                    player.PlayerSpells.Cast(this, player, spell);
                 }
                 else if (button == PlayerButton.Fire)
                 {
@@ -159,7 +153,7 @@ namespace SideWarsServer.Game.Room
             foreach (var item in Players)
             {
                 var peer = item.Value.NetPeer;
-                SendEntitySpawn(entity, peer); // Send everyone EntitySpawnPacket
+                PacketSender.SendEntitySpawn(entity, peer); // Send everyone EntitySpawnPacket
             }
 
             return entity;
@@ -172,19 +166,13 @@ namespace SideWarsServer.Game.Room
 
             foreach (var item in Players)
             {
-                SendParticleSpawn(particleType, location, data, item.Value.NetPeer);
+                PacketSender.SendParticleSpawn(particleType, location, data, item.Value.NetPeer);
             }
         }
 
         public List<Entity> GetEntities()
         {
-            return tempEntityList;
-        }
-
-
-        public PlayerConnection GetPlayerConnection(Player player)
-        {
-            return playerEntities[player]
+            return Entities.Values.ToList(); // Might change later idk.
         }
 
         public void StartGame()
@@ -208,19 +196,8 @@ namespace SideWarsServer.Game.Room
                 {
                     Tick++;
 
-                    tempEntityList = Entities.Values.ToList();
-
-                    UpdateGameLoops();
-
-
                     UpdateEntityUpdaters();
-
-                    SendEntityDeathPackets();
-                    SendPlayerMovementPackets();
-                    SendMovementPackets();
-                    SendPlayerSpellUsePackets();
-
-                    tempEntityList.Clear();
+                    UpdateGameLoops();
                 }
             }
         }
@@ -244,8 +221,6 @@ namespace SideWarsServer.Game.Room
             }
         }
 
-        
-
         private void UpdateEntityUpdaters()
         {
             foreach (var item in entityUpdaters)
@@ -256,8 +231,6 @@ namespace SideWarsServer.Game.Room
                 }
             }
         }
-
-        
 
         EntityTeam team = EntityTeam.Red;
         EntityTeam GetNextTeam()

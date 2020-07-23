@@ -16,7 +16,8 @@ namespace SideWarsServer.Game.Room
         GameRoomState RoomState { get; set; }
         IGameRoomListener Listener { get; set; }
         Dictionary<int, Entity> Entities { get; set; }
-        Dictionary<int, PlayerConnection> Players { get; set; }
+        Dictionary<string, PlayerConnection> Players { get; set; }
+        BaseGameRoomPacketSender PacketSender { get; set; }
         int Tick { get; }
 
         void AddPlayer(PlayerConnection playerConnection);
@@ -24,8 +25,6 @@ namespace SideWarsServer.Game.Room
 
         Entity SpawnEntity(Entity entity);
         void SpawnParticle(ParticleType particleType, Vector3 location, float[] data = null);
-
-        PlayerConnection GetPlayerConnection(Player player);
 
         /// <summary>
         /// Use this in GameLoops, returns a cached entity list.
