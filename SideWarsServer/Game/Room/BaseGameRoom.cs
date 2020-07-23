@@ -13,6 +13,7 @@ using SideWarsServer.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using SideWarsServer.Game.Logic.Scheduler;
+using SideWarsServer.Game.Logic.GameLoop;
 
 namespace SideWarsServer.Game.Room
 {
@@ -29,28 +30,37 @@ namespace SideWarsServer.Game.Room
         public int Tick { get; private set; }
 
         private CollisionController collisionController;
-        private Dictionary<PlayerConnection, Player> playerEntities;
+        private Dictionary<Player, PlayerConnection> playerEntities;
         private List<IEntityUpdater> entityUpdaters;
+        private List<IGameLoop> gameLoops;
 
-        private List<Entity> deadEntities;
         private List<(Player, SpellInfo)> spellUses;
-        private Dictionary<Entity, int> previousHealths;
-
+        
         private int currentEntityId;
+        private List<Entity> tempEntityList;
 
         public BaseGameRoom()
         {
             spellUses = new List<(Player, SpellInfo)>();
-            previousHealths = new Dictionary<Entity, int>();
-            deadEntities = new List<Entity>();
 
             collisionController = new CollisionController();
-            playerEntities = new Dictionary<PlayerConnection, Player>();
+            playerEntities = new Dictionary<Player, PlayerConnection>();
             entityUpdaters = new List<IEntityUpdater>()
             {
                 new GrenadeUpdater(),
                 new TimedDestroyUpdater(),
                 new StatusEffectUpdater()
+            };
+
+            gameLoops = new List<IGameLoop>()
+            {
+                new EntityMovementGameLoop(),
+                new CollisionGameLoop(OnEntityCollision),
+
+                new ActionGameLoop(() => RoomScheduler.Update(Tick)),
+
+                new EntityHealthGameLoop(SendEntityHealthChangePackets),
+                new PacketSenderGameLoop()
             };
 
             ProjectileSpawner = new ProjectileSpawner();
@@ -72,7 +82,6 @@ namespace SideWarsServer.Game.Room
             Logger.Info("Added player " + playerConnection.NetPeer.Id + " to the room");
             playerConnection.CurrentGameRoom = this;
 
-            Players.Add(playerConnection.NetPeer.Id, playerConnection);
             SendAllEntitySpawns(playerConnection.NetPeer);
 
             var team = GetNextTeam();
@@ -92,8 +101,8 @@ namespace SideWarsServer.Game.Room
                 default:
                     throw new System.Exception("Unknown champion.");
             }
-            
-            playerEntities.Add(playerConnection, player);
+
+            Players.Add(playerConnection.NetPeer.Id, playerConnection);
             SpawnEntity(player);
         }
 
@@ -167,6 +176,17 @@ namespace SideWarsServer.Game.Room
             }
         }
 
+        public List<Entity> GetEntities()
+        {
+            return tempEntityList;
+        }
+
+
+        public PlayerConnection GetPlayerConnection(Player player)
+        {
+            return playerEntities[player]
+        }
+
         public void StartGame()
         {
             if (RoomState != GameRoomState.Waiting)
@@ -182,30 +202,32 @@ namespace SideWarsServer.Game.Room
             if (RoomState != GameRoomState.Started)
                 return;
 
-            lock (Entities) lock (Players)
+            lock (Entities)
             {
-                Tick++;
+                lock (Players)
+                {
+                    Tick++;
 
-                deadEntities.Clear();
+                    tempEntityList = Entities.Values.ToList();
 
-                UpdateEntityMovements();
-                UpdateColliders();
-                UpdateCollisions();
-                UpdateEntityUpdaters();
-                RoomScheduler.Update(Tick);
+                    UpdateGameLoops();
 
-                CheckEntityHealthChanges();
-                CheckEntityHealths();
 
-                SendEntityDeathPackets();
-                SendPlayerMovementPackets();
-                SendMovementPackets();
-                SendPlayerSpellUsePackets();
+                    UpdateEntityUpdaters();
+
+                    SendEntityDeathPackets();
+                    SendPlayerMovementPackets();
+                    SendMovementPackets();
+                    SendPlayerSpellUsePackets();
+
+                    tempEntityList.Clear();
+                }
             }
         }
 
         protected void OnEntityCollision(Entity entity, Entity collidingEntity)
         {
+            Logger.Info(entity.ToString());
             if (entity is Bullet)
             {
                 new BulletCollisionEffect((Bullet)entity, collidingEntity).Start(this);
@@ -214,31 +236,15 @@ namespace SideWarsServer.Game.Room
 
         #region Tick Functions
 
-        private void CheckEntityHealthChanges()
+        private void UpdateGameLoops()
         {
-            foreach (var item in Entities)
+            foreach (var loop in gameLoops)
             {
-                var entity = item.Value;
-                
-                if (!previousHealths.ContainsKey(entity))
-                {
-                    previousHealths.Add(entity, entity.Health);
-                    continue;
-                }
-
-                if (entity.Health <= 0)
-                {
-                    previousHealths.Remove(entity);
-                    continue;
-                }
-
-                if (previousHealths[entity] != entity.Health)
-                {
-                    previousHealths[entity] = entity.Health;
-                    SendEntityHealthChangePackets(entity);
-                }
+                loop.Update(this);
             }
         }
+
+        
 
         private void UpdateEntityUpdaters()
         {
@@ -251,48 +257,7 @@ namespace SideWarsServer.Game.Room
             }
         }
 
-        private void UpdateEntityMovements()
-        {
-            foreach (var item in Entities)
-            {
-                var entity = item.Value;
-                var location = entity.Location;
-                entity.Movement.Update(LogicTimer.FixedDelta, ref location);
-
-                entity.Location = location;
-            }
-        }
-
-        private void UpdateColliders()
-        {
-            foreach (var item in Entities)
-            {
-                item.Value.Collider.UpdateLocation(item.Value.Location);
-            }
-        }
-
-        private void UpdateCollisions()
-        {
-            var entityList = Entities.Select((x) => x.Value).ToList();
-            collisionController.GetCollidingEntities(entityList, OnEntityCollision);
-        }
-
-        private void CheckEntityHealths()
-        {
-            foreach (var item in Entities)
-            {
-                var entity = item.Value;
-                if (entity.Health <= 0)
-                {
-                    deadEntities.Add(entity);
-                }
-            }
-
-            foreach (var item in deadEntities)
-            {
-                Entities.Remove(item.Id);
-            }
-        }
+        
 
         EntityTeam team = EntityTeam.Red;
         EntityTeam GetNextTeam()

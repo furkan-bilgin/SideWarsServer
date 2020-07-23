@@ -21,9 +21,9 @@ namespace SideWarsServer.Networking
             server = new NetManager(networkEventListener);
             server.BroadcastReceiveEnabled = true;
             
-            server.Start(443);
+            server.Start(9876);
             
-            Logger.Info("Started listening at 443");
+            Logger.Info("Started listening at 9876");
         }
 
         public void Update()

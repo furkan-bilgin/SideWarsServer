@@ -12,6 +12,7 @@ namespace SideWarsServer.Game.Logic.Updater
                 return;
 
             var timedDestroy = (ITimedDestroy)entity;
+
             if (gameRoom.Tick - entity.BirthTick >= LogicTimer.FramesPerSecond * timedDestroy.DestroySeconds) // If the time has passed
             {
                 entity.Kill(); // Kill the entity

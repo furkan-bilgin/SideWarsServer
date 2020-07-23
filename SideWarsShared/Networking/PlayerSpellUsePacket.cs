@@ -4,5 +4,6 @@
     {
         public int Id { get; set; }
         public ushort SpellType { get; set; }
+        public float Cooldown { get; set; }
     }
 }

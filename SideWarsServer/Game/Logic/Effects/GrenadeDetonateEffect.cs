@@ -19,7 +19,7 @@ namespace SideWarsServer.Game.Logic.Effects
         public void Start(IGameRoom room)
         {
             grenade.Kill();
-            new ExplosionEffect(grenade.Location, 5, grenade.ProjectileInfo.Damage).Start(room);
+            new ExplosionEffect(grenade.Location, 4, grenade.ProjectileInfo.Damage).Start(room);
 
             room.SpawnParticle(midAir ? ParticleType.MidAirExplosion : ParticleType.Explosion, grenade.Location, null);
         }

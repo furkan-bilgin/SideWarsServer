@@ -13,16 +13,11 @@ namespace SideWarsServer.Game.Logic
             switch (type)
             {
                 case ProjectileType.Bullet:
+                    projectile = new Bullet(shooter);
+                    break;
 
-                    if (shooter is Hyrex)
-                    {
-                        projectile = new HyrexBullet(shooter);
-                    }
-                    else
-                    {
-                        projectile = new Bullet(shooter);
-                    }
-
+                case ProjectileType.HyrexBullet:
+                    projectile = new HyrexBullet(shooter);
                     break;
 
                 case ProjectileType.Grenade:

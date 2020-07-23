@@ -3,6 +3,7 @@ using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
 using SideWars.Shared.Physics;
 using SideWarsServer.Utils;
+using System;
 
 namespace SideWarsServer.Game.Logic.Projectiles
 {
@@ -20,6 +21,7 @@ namespace SideWarsServer.Game.Logic.Projectiles
             bulletPosition = bulletPosition.InvertIfRedTeam(shooter.Team);
 
             Location = shooter.Location + bulletPosition;
+
             Collider = new SquareCollider(Location, ProjectileInfo.HitBoxMin, ProjectileInfo.HitBoxMax);
             Movement = new BulletMovement(shooter.Team, ProjectileInfo.Speed);
         }

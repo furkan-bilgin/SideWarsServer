@@ -1,8 +1,10 @@
 ﻿using Ara3D;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
 using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic;
+using SideWarsServer.Game.Logic.Projectiles;
 using System;
 using System.Collections.Generic;
 
@@ -56,6 +58,26 @@ namespace SideWarsServerTests
             bulletMovement.Update(1, ref loc);
 
             Assert.AreNotEqual(loc, prev);
+        }
+
+        [TestMethod]
+        public void HyrexBulletMoves()
+        {
+            var loc = Vector3.One;
+            var prev = Vector3.One;
+            var bulletMovement = new HyrexBulletMovement(EntityTeam.Blue, 5);
+
+            bulletMovement.Update(1, ref loc);
+
+            Assert.AreNotEqual(loc, prev);
+        }
+
+        [TestMethod]
+        public void HyrexBulletCollides()
+        {
+            var hb = new HyrexBullet(new Player(Vector3.Zero, PlayerInfo.Hyrex, null, SideWars.Shared.Packets.EntityTeam.Blue));
+            hb.Collider.UpdateLocation(Vector3.Zero);
+            Assert.IsTrue(hb.Collider.IsColliding(new SquareCollider(Vector3.Zero, -Vector3.One, Vector3.One)));
         }
     }
 }

@@ -8,34 +8,42 @@ using SideWarsServer.Utils;
 using SideWars.Shared.Game;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SideWarsServer.Game.Room
 {
-    public partial class BaseGameRoom
+    public class BaseGameRoomPacketSender
     {
+        private IGameRoom gameRoom;
+
+        public BaseGameRoomPacketSender(IGameRoom gameRoom)
+        {
+            this.gameRoom = gameRoom;
+        }
+
         void SendAllEntitySpawns(NetPeer netPeer)
         {
-            foreach (var item in Entities)
+            foreach (var item in gameRoom.GetEntities())
             {
-                SendEntitySpawn(item.Value, netPeer);
+                SendEntitySpawn(item, netPeer);
             }
         }
 
         void SendMovementPackets()
         {
-            foreach (var playerItem in playerEntities)
+            foreach (var playerItem in gameRoom.Players)
             {
-                foreach (var entityItem in Entities)
+                foreach (var entityItem in gameRoom.Entities)
                 {
                     var entity = entityItem.Value;
                     void sendEntityMovement()
                     {
-                        SendEntityMovement(entity, playerItem.Key.NetPeer);
+                        SendEntityMovement(entity, playerItem.Value.NetPeer);
                     }
 
                     if (entity is Player)
                     {
-                        if (Tick % LogicTimer.FramesPerSecond == 0) // Send Player positions every second in case of sync issues. 
+                        if (Tick % LogicTimer.FramesPerSecond == 0) // Send Player positions every second for sync issues. 
                             sendEntityMovement();
                     }
                     /*
@@ -50,13 +58,13 @@ namespace SideWarsServer.Game.Room
 
         void SendPlayerMovementPackets()
         {
-            foreach (var playerItem in playerEntities)
+            foreach (var playerItem in gameRoom.Players)
             {
-                foreach (var item in Players)
+                foreach (var item in gameRoom.GetEntities().Where(x => x is Player))
                 {
-                    if (item.Value.NetPeer != playerItem.Key.NetPeer)
+                    if (item != playerItem.Value.NetPeer)
                     {
-                        SendPlayerMovement(playerItem.Value, item.Value.NetPeer);
+                        SendPlayerMovement(item, item.Value.NetPeer);
                     }
                 }
             }
@@ -86,7 +94,10 @@ namespace SideWarsServer.Game.Room
             foreach (var item in spellUses)
             {
                 (var player, var spell) = item;
-                SendPlayerSpellUse(player, spell, player.PlayerConnection.NetPeer);
+                foreach (var roomPlayer in Players)
+                {
+                    SendPlayerSpellUse(player, spell, roomPlayer.Value.NetPeer);
+                }
             }
 
             spellUses.Clear();
@@ -186,7 +197,8 @@ namespace SideWarsServer.Game.Room
             Server.Instance.NetworkController.SendPacket(peer, new PlayerSpellUsePacket()
             {
                 Id = player.Id,
-                SpellType = (ushort)spellInfo.Type
+                SpellType = (ushort)spellInfo.Type,
+                Cooldown = spellInfo.Cooldown
             }, DeliveryMethod.ReliableOrdered);
         }
     }
