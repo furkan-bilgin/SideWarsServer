@@ -5,6 +5,7 @@ using SideWarsServer.Networking;
 using SideWars.Shared.Game;
 using System.Collections.Generic;
 using SideWarsServer.Game.Logic.Scheduler;
+using SideWarsServer.Game.Logic.GameLoop;
 
 namespace SideWarsServer.Game.Room
 {
@@ -25,6 +26,7 @@ namespace SideWarsServer.Game.Room
 
         Entity SpawnEntity(Entity entity);
         void SpawnParticle(ParticleType particleType, Vector3 location, float[] data = null);
+        T GetGameLoop<T>() where T : IGameLoop;
 
         /// <summary>
         /// Use this in GameLoops, returns a cached entity list.

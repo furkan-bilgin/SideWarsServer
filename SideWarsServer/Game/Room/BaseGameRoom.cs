@@ -39,7 +39,6 @@ namespace SideWarsServer.Game.Room
 
         public BaseGameRoom()
         {
-            throw new Exception("We don't send SpellUse packet to client, fix that");
             PacketSender = new BaseGameRoomPacketSender(this);
 
             collisionController = new CollisionController();
@@ -52,6 +51,7 @@ namespace SideWarsServer.Game.Room
 
             gameLoops = new List<IGameLoop>()
             {
+                new PlayerMovementGameLoop(),
                 new EntityMovementGameLoop(),
                 new CollisionGameLoop(OnEntityCollision),
 
@@ -72,6 +72,7 @@ namespace SideWarsServer.Game.Room
 
         ~BaseGameRoom()
         {
+            Logger.Info("GameRoom dispose");
             Server.Instance.LogicController.UnregisterLogicUpdate(Update);
         }
 
@@ -108,37 +109,15 @@ namespace SideWarsServer.Game.Room
         {
             Entities.Remove(playerConnection.NetPeer.Id);
 
-            if (Entities.Count == 0)
+            /*if (Entities.Count == 0)
             {
                 RoomState = GameRoomState.Closed;
-            }
+            }*/
         }
 
         public void UpdatePlayerMovement(PlayerConnection playerConnection, float horizontal, PlayerButton[] buttons)
         {
-            var player = (Player)Entities.Select(x => x.Value).Where(x => x is Player && ((Player)x).PlayerConnection.Token.Id == playerConnection.Token.Id).FirstOrDefault();
-            var playerMovement = (PlayerMovement)player.Movement;
-
-            //var addX = playerConnection.Latency / 1000 * playerMovement.Speed * horizontal * LogicTimer.FixedDelta; // A little lag compensation but it probably makes things worse :P
-            //player.Location = player.Location.SetX(player.Location.X + addX);
-
-            playerMovement.Horizontal = horizontal;
-
-            foreach (var button in buttons)
-            {
-                if (button == PlayerButton.Special1 || button == PlayerButton.Special2)
-                {
-                    var spell = player.PlayerSpells.SpellInfo.GetSpellInfo(button);
-                    player.PlayerSpells.Cast(this, player, spell);
-                }
-                else if (button == PlayerButton.Fire)
-                {
-                    if (player.PlayerCombat.Shoot())
-                    {
-                        new PlayerShootEffect(player).Start(this);
-                    }
-                }
-            }
+            GetGameLoop<PlayerMovementGameLoop>().AddBuffer(playerConnection, horizontal, buttons);
             
         }
 
@@ -173,6 +152,11 @@ namespace SideWarsServer.Game.Room
         public List<Entity> GetEntities()
         {
             return Entities.Values.ToList(); // Might change later idk.
+        }
+
+        public T GetGameLoop<T>() where T : IGameLoop
+        {
+            return (T)gameLoops.Where(x => x is T).First();
         }
 
         public void StartGame()

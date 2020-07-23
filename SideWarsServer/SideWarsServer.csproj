@@ -77,6 +77,7 @@
     <Compile Include="Game\Logic\GameLoop\EntityMovementGameLoop.cs" />
     <Compile Include="Game\Logic\GameLoop\IGameLoop.cs" />
     <Compile Include="Game\Logic\GameLoop\PacketSenderGameLoop.cs" />
+    <Compile Include="Game\Logic\GameLoop\PlayerMovementGameLoop.cs" />
     <Compile Include="Game\Logic\Projectiles\HyrexBullet.cs" />
     <Compile Include="Game\Logic\Scheduler\RoomScheduler.cs" />
     <Compile Include="Game\Logic\Spells\HyrexSpells.cs" />

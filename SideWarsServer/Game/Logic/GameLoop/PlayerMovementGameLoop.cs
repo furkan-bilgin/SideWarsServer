@@ -1,0 +1,67 @@
+﻿using SideWars.Shared.Packets;
+using SideWars.Shared.Physics;
+using SideWarsServer.Game.Logic.Effects;
+using SideWarsServer.Game.Room;
+using SideWarsServer.Networking;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SideWarsServer.Game.Logic.GameLoop
+{
+    public class PlayerMovementGameLoop : IGameLoop
+    {
+        class Buffer
+        {
+            public PlayerConnection PlayerConnection { get; set; }
+            public float Horizontal { get; set; }
+            public PlayerButton[] Buttons { get; set; }
+        }
+
+        private Queue<Buffer> movementBuffer;
+
+        public PlayerMovementGameLoop()
+        {
+            movementBuffer = new Queue<Buffer>();
+        }
+
+        public void Update(IGameRoom gameRoom)
+        {
+            while (movementBuffer.Count > 0)
+            {
+                var buffer = movementBuffer.Dequeue();
+
+                var player = (Player)gameRoom.Entities.Select(x => x.Value).Where(x => x is Player && ((Player)x).PlayerConnection.Token.Id == buffer.PlayerConnection.Token.Id).FirstOrDefault();
+                var playerMovement = (PlayerMovement)player.Movement;
+
+                playerMovement.Horizontal = buffer.Horizontal;
+
+                foreach (var button in buffer.Buttons)
+                {
+                    if (button == PlayerButton.Special1 || button == PlayerButton.Special2)
+                    {
+                        var spell = player.PlayerSpells.SpellInfo.GetSpellInfo(button);
+                        player.PlayerSpells.Cast(gameRoom, player, spell);
+
+                        gameRoom.GetGameLoop<PacketSenderGameLoop>().OnSpellUse(spell, player);
+                    }
+                    else if (button == PlayerButton.Fire)
+                    {
+                        if (player.PlayerCombat.Shoot())
+                        {
+                            new PlayerShootEffect(player).Start(gameRoom);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void AddBuffer(PlayerConnection connection, float horizontal, PlayerButton[] buttons)
+        {
+            lock (movementBuffer)
+                movementBuffer.Enqueue(new Buffer() { PlayerConnection = connection, Horizontal = horizontal, Buttons = buttons });
+        }
+    }
+}
