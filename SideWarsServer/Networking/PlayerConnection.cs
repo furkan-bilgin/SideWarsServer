@@ -23,5 +23,10 @@ namespace SideWarsServer.Networking
             Token = token;
             NetPeer = netPeer;
         }
+
+        public void SendPacket<T>(T packet, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T: class, new()
+        {
+            Server.Instance.NetworkController.SendPacket(NetPeer, packet, deliveryMethod);
+        }
     }
 }

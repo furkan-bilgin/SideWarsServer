@@ -13,7 +13,7 @@ namespace SideWarsServer.Game.Logic
         public IPlayerSpells PlayerSpells { get; set; }
         public PlayerInfo PlayerInfo { get; set; }
         public PlayerCombat PlayerCombat { get; set; }
-        public PlayerConnection PlayerConnection { get; private set; }
+        public PlayerConnection PlayerConnection { get; set; }
 
         public Player(Vector3 location, PlayerInfo playerInfo, PlayerConnection playerConnection, EntityTeam team) : base(playerInfo, team)
         {

@@ -40,7 +40,7 @@ namespace SideWarsServer.Networking
 
         public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
         {
-            Logger.Info("Peer disconnected with id " + peer.Id);
+            Logger.Info("Peer disconnected with id " + peer.Id+", reason "+disconnectInfo.Reason);
             Server.Instance.PlayerController.RemovePlayer(peer.Id);
         }
 

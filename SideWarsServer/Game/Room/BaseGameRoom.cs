@@ -81,7 +81,16 @@ namespace SideWarsServer.Game.Room
             Logger.Info("Added player " + playerConnection.NetPeer.Id + " to the room");
             playerConnection.CurrentGameRoom = this;
 
-            PacketSender.SendAllEntitySpawns(playerConnection.NetPeer);
+            PacketSender.SendAllEntitySpawns(playerConnection);
+
+            if (Players.ContainsKey(playerConnection.Token.Id))
+            {
+                var oldPlayer = this.GetPlayer(playerConnection.Token.Id);
+                oldPlayer.PlayerConnection = playerConnection;
+                Players[playerConnection.Token.Id] = playerConnection;
+
+                return;
+            }
 
             var team = GetNextTeam();
             var spawnPoint = RoomOptions.GetSpawnPoint(team);
@@ -101,24 +110,18 @@ namespace SideWarsServer.Game.Room
                     throw new System.Exception("Unknown champion.");
             }
 
-            Players.Add(playerConnection.Token.Id, playerConnection);
+            Players[playerConnection.Token.Id] = playerConnection;
             SpawnEntity(player);
         }
 
         public void RemovePlayer(PlayerConnection playerConnection)
         {
             Entities.Remove(playerConnection.NetPeer.Id);
-
-            /*if (Entities.Count == 0)
-            {
-                RoomState = GameRoomState.Closed;
-            }*/
         }
 
         public void UpdatePlayerMovement(PlayerConnection playerConnection, float horizontal, PlayerButton[] buttons)
         {
             GetGameLoop<PlayerMovementGameLoop>().AddBuffer(playerConnection, horizontal, buttons);
-            
         }
 
         public Entity SpawnEntity(Entity entity)
@@ -131,8 +134,7 @@ namespace SideWarsServer.Game.Room
 
             foreach (var item in Players)
             {
-                var peer = item.Value.NetPeer;
-                PacketSender.SendEntitySpawn(entity, peer); // Send everyone EntitySpawnPacket
+                PacketSender.SendEntitySpawn(entity, item.Value); // Send everyone EntitySpawnPacket
             }
 
             return entity;
@@ -145,7 +147,7 @@ namespace SideWarsServer.Game.Room
 
             foreach (var item in Players)
             {
-                PacketSender.SendParticleSpawn(particleType, location, data, item.Value.NetPeer);
+                PacketSender.SendParticleSpawn(particleType, location, data, item.Value);
             }
         }
 

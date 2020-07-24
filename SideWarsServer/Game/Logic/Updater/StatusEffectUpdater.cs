@@ -32,7 +32,6 @@ namespace SideWarsServer.Game.Logic.Updater
 
             if (!latestEntityStatusEffects.ContainsKey(entityHash))
             {
-                Console.WriteLine("updating status effect");
                 UpdateStatusEffects(entity);
                 latestEntityStatusEffects.Add(entityHash, statusEffectHash);
             }
@@ -71,7 +70,6 @@ namespace SideWarsServer.Game.Logic.Updater
 
         void UpdateStatusEffects(Entity entity)
         {
-            Console.WriteLine("Updated status effect");
             var info = (EntityInfo)entity.EntityInfo.Clone();
             foreach (var item in entity.StatusEffects)
             {

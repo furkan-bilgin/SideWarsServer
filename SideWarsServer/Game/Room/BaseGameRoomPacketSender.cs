@@ -9,6 +9,7 @@ using SideWars.Shared.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SideWarsServer.Networking;
 
 namespace SideWarsServer.Game.Room
 {
@@ -21,11 +22,11 @@ namespace SideWarsServer.Game.Room
             this.gameRoom = gameRoom;
         }
 
-        public void SendAllEntitySpawns(NetPeer netPeer)
+        public void SendAllEntitySpawns(PlayerConnection connection)
         {
             foreach (var item in gameRoom.GetEntities())
             {
-                SendEntitySpawn(item, netPeer);
+                SendEntitySpawn(item, connection);
             }
         }
 
@@ -38,7 +39,7 @@ namespace SideWarsServer.Game.Room
                     var entity = entityItem.Value;
                     void sendEntityMovement()
                     {
-                        SendEntityMovement(entity, playerItem.Value.NetPeer);
+                        SendEntityMovement(entity, playerItem.Value);
                     }
 
                     if (entity is Player)
@@ -64,7 +65,7 @@ namespace SideWarsServer.Game.Room
                 {
                     if (item.PlayerConnection.Token.Id != playerItem.Value.Token.Id)
                     {
-                        SendPlayerMovement(item, item.PlayerConnection.NetPeer);
+                        SendPlayerMovement(item, item.PlayerConnection);
                     }
                 }
             }
@@ -74,7 +75,7 @@ namespace SideWarsServer.Game.Room
         {
             foreach (var player in gameRoom.Players)
             {
-                SendEntityHealthChange(entity, player.Value.NetPeer);
+                SendEntityHealthChange(entity, player.Value);
             }
         }
 
@@ -84,7 +85,7 @@ namespace SideWarsServer.Game.Room
             {
                 foreach (var player in gameRoom.Players)
                 {
-                    SendEntityDeath(entity, player.Value.NetPeer);
+                    SendEntityDeath(entity, player.Value);
                 }
             }
         }
@@ -96,7 +97,7 @@ namespace SideWarsServer.Game.Room
                 (var player, var spell) = item;
                 foreach (var roomPlayer in gameRoom.Players)
                 {
-                    SendPlayerSpellUse(player, spell, roomPlayer.Value.NetPeer);
+                    SendPlayerSpellUse(player, spell, roomPlayer.Value);
                 }
             }
 
@@ -105,7 +106,7 @@ namespace SideWarsServer.Game.Room
 
         ///////// PACKET SENDER FUNCTIONS /////////
 
-        public void SendEntitySpawn(Entity entity, NetPeer peer)
+        public void SendEntitySpawn(Entity entity, PlayerConnection connection)
         {
             var data = new List<ushort>();
             var bigData = new List<float>();
@@ -115,7 +116,7 @@ namespace SideWarsServer.Game.Room
                 var player = (Player)entity;
                 data.Add((ushort)player.PlayerInfo.PlayerType);
                 
-                if (player.PlayerConnection.NetPeer.Id == peer.Id) // If peer has the same id as the entity, that means he can control it
+                if (player.PlayerConnection.Token.Id == connection.Token.Id) // If peer has the same id as the entity, that means he can control it
                 {
                     data.Add((ushort)EntityData.Controllable);
                 }
@@ -128,7 +129,7 @@ namespace SideWarsServer.Game.Room
                 bigData.Add(grenade.Target.Z);
             }
 
-            Server.Instance.NetworkController.SendPacket(peer, new EntitySpawnPacket()
+            connection.SendPacket(new EntitySpawnPacket()
             {
                 Id = entity.Id,
                 EntityType = (byte)entity.Type,
@@ -142,9 +143,9 @@ namespace SideWarsServer.Game.Room
             });
         }
 
-        public void SendParticleSpawn(ParticleType particleType, Vector3 location, float[] data, NetPeer peer)
+        public void SendParticleSpawn(ParticleType particleType, Vector3 location, float[] data, PlayerConnection connection)
         {
-            Server.Instance.NetworkController.SendPacket(peer, new ParticleSpawnPacket()
+            connection.SendPacket(new ParticleSpawnPacket()
             {
                 ParticleType = (ushort)particleType,
                 X = location.X,
@@ -154,9 +155,9 @@ namespace SideWarsServer.Game.Room
             });
         }
 
-        void SendEntityMovement(Entity entity, NetPeer peer)
+        void SendEntityMovement(Entity entity, PlayerConnection connection)
         {
-            Server.Instance.NetworkController.SendPacket(peer, new EntityMovementPacket()
+            connection.SendPacket(new EntityMovementPacket()
             {
                 Id = entity.Id,
                 X = entity.Location.X,
@@ -165,36 +166,36 @@ namespace SideWarsServer.Game.Room
             }, DeliveryMethod.Unreliable);
         }
 
-        void SendPlayerMovement(Player player, NetPeer peer)
+        void SendPlayerMovement(Player player, PlayerConnection connection)
         {
             var playerMovement = (PlayerMovement)player.Movement;
-            Server.Instance.NetworkController.SendPacket(peer, new ServerPlayerMovementPacket()
+            connection.SendPacket(new ServerPlayerMovementPacket()
             {
                 Id = player.Id,
                 Horizontal = Functions.AsSByte(playerMovement.Horizontal)
             }, DeliveryMethod.Unreliable);
         }
 
-        void SendEntityDeath(Entity entity, NetPeer peer)
+        void SendEntityDeath(Entity entity, PlayerConnection connection)
         {
-            Server.Instance.NetworkController.SendPacket(peer, new EntityDeathPacket()
+            connection.SendPacket(new EntityDeathPacket()
             {
                 Id = entity.Id
             }, DeliveryMethod.Unreliable);
         }
 
-        void SendEntityHealthChange(Entity entity, NetPeer peer)
+        void SendEntityHealthChange(Entity entity, PlayerConnection connection)
         {
-            Server.Instance.NetworkController.SendPacket(peer, new EntityHealthUpdatePacket()
+            connection.SendPacket(new EntityHealthUpdatePacket()
             {
                 Id = entity.Id,
                 Health = (ushort)entity.Health
             }, DeliveryMethod.ReliableSequenced);
         }
         
-        void SendPlayerSpellUse(Player player, SpellInfo spellInfo, NetPeer peer)
+        void SendPlayerSpellUse(Player player, SpellInfo spellInfo, PlayerConnection connection)
         {
-            Server.Instance.NetworkController.SendPacket(peer, new PlayerSpellUsePacket()
+            connection.SendPacket(new PlayerSpellUsePacket()
             {
                 Id = player.Id,
                 SpellType = (ushort)spellInfo.Type,

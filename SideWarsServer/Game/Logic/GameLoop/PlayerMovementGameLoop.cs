@@ -33,7 +33,7 @@ namespace SideWarsServer.Game.Logic.GameLoop
             {
                 var buffer = movementBuffer.Dequeue();
 
-                var player = (Player)gameRoom.Entities.Select(x => x.Value).Where(x => x is Player && ((Player)x).PlayerConnection.Token.Id == buffer.PlayerConnection.Token.Id).FirstOrDefault();
+                var player = gameRoom.GetPlayer(buffer.PlayerConnection.Token.Id);
                 var playerMovement = (PlayerMovement)player.Movement;
 
                 playerMovement.Horizontal = buffer.Horizontal;
@@ -43,9 +43,11 @@ namespace SideWarsServer.Game.Logic.GameLoop
                     if (button == PlayerButton.Special1 || button == PlayerButton.Special2)
                     {
                         var spell = player.PlayerSpells.SpellInfo.GetSpellInfo(button);
-                        player.PlayerSpells.Cast(gameRoom, player, spell);
 
-                        gameRoom.GetGameLoop<PacketSenderGameLoop>().OnSpellUse(spell, player);
+                        if (player.PlayerSpells.Cast(gameRoom, player, spell))
+                        {
+                            gameRoom.GetGameLoop<PacketSenderGameLoop>().OnSpellUse(spell, player);
+                        }
                     }
                     else if (button == PlayerButton.Fire)
                     {
