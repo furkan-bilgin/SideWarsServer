@@ -190,7 +190,6 @@ namespace SideWarsServer.Game.Room
 
         protected void OnEntityCollision(Entity entity, Entity collidingEntity)
         {
-            Logger.Info(entity.ToString());
             if (entity is Bullet)
             {
                 new BulletCollisionEffect((Bullet)entity, collidingEntity).Start(this);

@@ -16,6 +16,7 @@ namespace SideWarsServer.Game.Logic.Projectiles
             var randomOffset = new Vector3(RandomTool.Float(-0.04f, 0.04f), RandomTool.Float(-0.04f, 0.04f), RandomTool.Float(-0.04f, 0.04f)); // Since bullet randomisation uses position as seed, we could randomise the position a little bit
             Location += randomOffset;                                                                                                                    // to make fix some stupid stuff. Like shooting bullets in the same rotation when not moving.
 
+            Collider = new SquareCollider(Location, ProjectileInfo.HitBoxMin, ProjectileInfo.HitBoxMax);
             Movement = new HyrexBulletMovement(shooter.Team, ProjectileInfo.Speed);
         }
     }

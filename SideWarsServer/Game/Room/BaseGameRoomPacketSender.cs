@@ -47,11 +47,10 @@ namespace SideWarsServer.Game.Room
                         if (gameRoom.Tick % LogicTimer.FramesPerSecond == 0) // Send Player positions every second for sync issues. 
                             sendEntityMovement();
                     }
-                    /*
                     else
                     {
                         sendEntityMovement();
-                    }*/
+                    }
                 }
 
             }

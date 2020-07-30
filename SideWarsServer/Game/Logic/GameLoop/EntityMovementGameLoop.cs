@@ -1,4 +1,6 @@
-﻿using SideWarsServer.Game.Logic.Projectiles;
+﻿using Ara3D;
+using SideWarsServer.Game.Logic.Champions;
+using SideWarsServer.Game.Logic.Projectiles;
 using SideWarsServer.Game.Room;
 using SideWarsServer.Utils;
 using System;
@@ -17,8 +19,6 @@ namespace SideWarsServer.Game.Logic.GameLoop
             {
                 var location = entity.Location;
                 entity.Movement.Update(LogicTimer.FixedDelta, ref location);
-                if (entity is HyrexBullet)
-                    Logger.Info(location.ToString());
 
                 entity.Location = location;
             }

@@ -25,7 +25,7 @@ namespace SideWarsServer.Game.Room
 
         public static Player GetPlayer(this IGameRoom room, string token)
         {
-            return (Player)room.GetEntities().Where(x => ((Player)x).PlayerConnection.Token.Id == token).First();
+            return (Player)room.GetEntities().Where(x => x is Player && ((Player)x).PlayerConnection.Token.Id == token).FirstOrDefault();
         }
     }
 }

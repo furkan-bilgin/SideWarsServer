@@ -7,20 +7,20 @@ namespace SideWars.Shared.Game
         public static ProjectileInfo Bullet => new ProjectileInfo()
         {
             Type = ProjectileType.Bullet,
-            Speed = 80,
+            Speed = 55,
             Damage = 12,
-            HitBoxMin = -(Vector3.One / 3),
-            HitBoxMax = (Vector3.One / 3),
+            HitBoxMin = -Vector3.One / 1.5f,
+            HitBoxMax = Vector3.One / 1.5f,
             BaseHealth = 1
         };
 
         public static ProjectileInfo HyrexBullet => new ProjectileInfo()
         {
             Type = ProjectileType.HyrexBullet,
-            Speed = 75,
+            Speed = 55,
             Damage = 4,
-            HitBoxMin = -(Vector3.One / 3),
-            HitBoxMax = (Vector3.One / 3),
+            HitBoxMin = -Vector3.One / 1.5f,
+            HitBoxMax = Vector3.One / 1.5f,
             BaseHealth = 1
         };
 
@@ -29,8 +29,8 @@ namespace SideWars.Shared.Game
             Type = ProjectileType.Grenade,
             Speed = 7,
             Damage = 20,
-            HitBoxMin = -(Vector3.One / 2),
-            HitBoxMax = (Vector3.One / 2),
+            HitBoxMin = -Vector3.One / 1.25f,
+            HitBoxMax = Vector3.One / 1.25f,
             BaseHealth = 1
         };
     }

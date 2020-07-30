@@ -32,7 +32,7 @@ namespace SideWars.Shared.Game
             BaseHealth = 100,
             
             AttackSpeed = 1000,
-            BulletsPerShoot = 4,
+            BulletsPerShoot = 1,
             AmmoCount = 6,
             ReloadTime = .75f,
 

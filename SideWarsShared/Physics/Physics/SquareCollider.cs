@@ -8,9 +8,12 @@ namespace SideWars.Shared.Physics
         public bool IsEnabled { get; set; }
         public Box BoundingBox { get; set; }
         private Vector3 min, max;
+        private int hashCode;
 
         public SquareCollider(Vector3 location, Vector3 min, Vector3 max)
         {
+            hashCode = DateTime.UtcNow.GetHashCode();
+
             IsEnabled = true;
             this.min = min;
             this.max = max;
@@ -41,6 +44,11 @@ namespace SideWars.Shared.Physics
         public float GetHighestPoint()
         {
             return max.Y;
+        }
+
+        public override int GetHashCode()
+        {
+            return hashCode;
         }
     }
 }
