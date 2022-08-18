@@ -31,32 +31,42 @@ namespace SideWarsServer.Game
 
         public void RegisterLogicUpdate(Action action)
         {
-            var sortedAsc = logicUpdates.OrderBy(key => key.Value.Count); // Sort logic update count by asc, meaning get the logic update with least amount of jobs
-            sortedAsc.First().Value.Add(action); // And add the action there to balance core usage
+            lock (logicUpdates)
+            {
+                var sortedAsc = logicUpdates.OrderBy(key => key.Value.Count); // Sort logic update count by asc, meaning get the logic update with least amount of jobs
+                sortedAsc.First().Value.Add(action); // And add the action there to balance core usage
+            }
         }
 
         public void UnregisterLogicUpdate(Action action)
         {
-            foreach (var item in logicUpdates)
+            lock (logicUpdates)
             {
-                if (item.Value.Contains(action))
+                foreach (var item in logicUpdates)
                 {
-                    item.Value.Remove(action);
+                    if (item.Value.Contains(action))
+                    {
+                        item.Value.Remove(action);
+                    }
                 }
             }
         }
 
         private void LogicUpdate(int id)
         {  
-            List<Action> currentList;
-            logicUpdates.TryGetValue(id, out currentList);
-
-            lock (currentList)
+            if (logicUpdates.TryGetValue(id, out List<Action> currentList))
             {
-                for (int i = 0; i < currentList.Count; i++)
+                lock (currentList)
                 {
-                    currentList[i].Invoke();
+                    for (int i = 0; i < currentList.Count; i++)
+                    {
+                        currentList[i].Invoke();
+                    }
                 }
+            }
+            else
+            {
+                throw new Exception();
             }
         }
     }

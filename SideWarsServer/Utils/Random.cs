@@ -3,20 +3,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SideWarsServer.Utils
 {
-    public static class RandomTool
+    public class RandomTool
     {
-        static Random random = new Random();
+        public static RandomTool Current => threadLocal.Value;
+        public static ThreadLocal<RandomTool> threadLocal = new ThreadLocal<RandomTool>(() => new RandomTool());
+        private Random random;
 
-        public static float Float(float min, float max)
+        public RandomTool()
+        {
+            random = new Random();
+        }
+
+        public float Float(float min, float max)
         {
             return Math.Max(min, (float)random.NextDouble() * max);
         }
 
-        public static int Int(int min, int max)
+        public int Int(int min, int max)
         {
             return (int)Float(min, max);
         }

@@ -11,20 +11,16 @@ namespace SideWars.Shared.Physics
         private float xVelocity;
         private Random random;
         
-        public HyrexBulletMovement(EntityTeam Team, float Speed) : base(Team, Speed)
-        { }
+        public HyrexBulletMovement(EntityTeam Team, float Speed, int Seed) : base(Team, Speed)
+        {
+            random = new Random(Seed); // Create a random instance using location as seed.
+
+            xVelocity = (float)random.Next(-400, 400) / 100; // Set x velocity
+            yVelocity += (float)random.Next(-50, 50) / 100; // Set y velocity  
+        }
 
         public override void Update(float deltaTime, ref Vector3 location)
         {
-            if (spawnLocation == null)
-            {
-                spawnLocation = location;
-                random = new Random(location.X.GetHashCode() * location.Y.GetHashCode() * location.Z.GetHashCode()); // Create a random instance using location as seed.
-               
-                xVelocity = (float)random.Next(-400, 400) / 100; // Set x velocity
-                //yVelocity += (float)random.Next(-60, 80) / 100; // Set y velocity  
-            }
-            
             base.Update(deltaTime, ref location);
 
             location += new Vector3(xVelocity, 0, 0) * deltaTime;

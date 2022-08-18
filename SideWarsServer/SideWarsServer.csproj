@@ -128,6 +128,7 @@
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\LogicTimer.cs" />
     <Compile Include="Utils\Random.cs" />
+    <Compile Include="Utils\RandomStringGenerator.cs" />
     <Compile Include="Utils\Singleton.cs" />
     <Compile Include="Utils\Functions.cs" />
     <Compile Include="Utils\Wait.cs" />

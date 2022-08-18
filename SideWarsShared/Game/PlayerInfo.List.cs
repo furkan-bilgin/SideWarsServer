@@ -8,7 +8,7 @@ namespace SideWars.Shared.Game
         {
             PlayerType = ChampionType.Mark,
             ProjectileType = ProjectileType.Bullet,
-            BaseHealth = 120,
+            BaseHealth = 180,
 
             AttackSpeed = 300,
             BulletsPerShoot = 1,
@@ -16,7 +16,6 @@ namespace SideWars.Shared.Game
             ReloadTime = 1.5f,
 
             Speed = 3.5f,
-            JumpSpeed = 6,
 
             BulletPosition = new Vector3(0.03f, 0.5f, 1f),
             RunningBulletPosition = new Vector3(0.182f, 0.25f, 1f),
@@ -29,15 +28,14 @@ namespace SideWars.Shared.Game
         {
             PlayerType = ChampionType.Hyrex,
             ProjectileType = ProjectileType.HyrexBullet,
-            BaseHealth = 100,
+            BaseHealth = 150,
             
             AttackSpeed = 1000,
-            BulletsPerShoot = 1,
+            BulletsPerShoot = 4,
             AmmoCount = 6,
             ReloadTime = .75f,
 
             Speed = 3.5f,
-            JumpSpeed = 6,
 
             BulletPosition = new Vector3(0.03f, 0.5f, 1f),
             RunningBulletPosition = new Vector3(0.182f, 0.25f, 1f),

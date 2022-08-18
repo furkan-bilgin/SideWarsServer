@@ -7,6 +7,7 @@
         Blood,
         MuzzleFlash,
 
-        MarkHealup
+        // Mark Particles
+        MarkHealup,
     }
 }

@@ -47,10 +47,6 @@ namespace SideWarsServer.Game.Room
                         if (gameRoom.Tick % LogicTimer.FramesPerSecond == 0) // Send Player positions every second for sync issues. 
                             sendEntityMovement();
                     }
-                    else
-                    {
-                        sendEntityMovement();
-                    }
                 }
 
             }
@@ -126,6 +122,11 @@ namespace SideWarsServer.Game.Room
                 bigData.Add(grenade.Target.X);
                 bigData.Add(grenade.Target.Y);
                 bigData.Add(grenade.Target.Z);
+            }
+            else if (entity is HyrexBullet)
+            {
+                var hyrexBullet = (HyrexBullet)entity;
+                bigData.Add(hyrexBullet.BulletSeed);
             }
 
             connection.SendPacket(new EntitySpawnPacket()
