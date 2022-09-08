@@ -65,7 +65,7 @@ namespace SideWarsServerTests
         {
             var loc = Vector3.One;
             var prev = Vector3.One;
-            var bulletMovement = new HyrexBulletMovement(EntityTeam.Blue, 5);
+            var bulletMovement = new HyrexBulletMovement(EntityTeam.Blue, 5, 1);
 
             bulletMovement.Update(1, ref loc);
 

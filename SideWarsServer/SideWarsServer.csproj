@@ -56,6 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\APIController.cs" />
+    <Compile Include="API\Models\ConfirmUserMatchModel.cs" />
+    <Compile Include="Database\APITokenController.cs" />
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Database\DebugTokenController.cs" />
     <Compile Include="Database\Exceptions\InvalidTokenException.cs" />

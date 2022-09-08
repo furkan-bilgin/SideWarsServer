@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Net;
 using System.Text;
@@ -40,22 +41,27 @@ namespace SideWarsShared.REST
 
             requestData.Clear();
 
-            dynamic json = JsonConvert.DeserializeObject(resp);
+            var jsonDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(resp);
             if (checkAPIError)
-                json = CheckAPIError(json);
+                CheckAPIError(jsonDict);
 
-            return (T)json;
+            return JsonConvert.DeserializeObject<T>(resp);
+        }
+
+        public async Task<Dictionary<string, object>> Post(string url, bool checkAPIError = true)
+        {
+            return await Post(url, checkAPIError);
         }
 
         public async Task<T> Get<T>(string url, bool checkAPIError = true) where T : class
         {
             var resp = await webClient.DownloadStringTaskAsync(new Uri(url));
 
-            dynamic json = JsonConvert.DeserializeObject(resp); 
+            var jsonDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(resp); 
             if (checkAPIError)
-                json = CheckAPIError(json);
+                CheckAPIError(jsonDict);
 
-            return (T)json;
+            return JsonConvert.DeserializeObject<T>(resp);
         }
 
         public async Task<byte[]> GetRaw(string url)
@@ -63,22 +69,10 @@ namespace SideWarsShared.REST
             return await webClient.DownloadDataTaskAsync(url);
         }
 
-        private dynamic CheckAPIError(dynamic json)
+        private void CheckAPIError(Dictionary<string, object> json)
         {
-            string errorMessage;
-            try
-            {
-                var error = json.Error;
-                // There is error, so let's throw an exception
-                errorMessage = error.Message;
-            }
-            catch
-            {
-                // No error, we are good
-                return json;
-            }
-
-            throw new APIErrorException(errorMessage);
+            if (json.ContainsKey("Error"))
+                throw new APIErrorException(json["Message"].ToString());
         }
     }
 }
