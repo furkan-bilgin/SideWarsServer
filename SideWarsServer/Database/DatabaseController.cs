@@ -1,4 +1,5 @@
 ﻿using SideWarsServer.Database.Models;
+using SideWarsServer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,9 @@ namespace SideWarsServer.Database
                 var token = await tokenController.GetTokenAsync(tokenId);
                 return token;
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.Error(ex);
                 return null;
             }
         }

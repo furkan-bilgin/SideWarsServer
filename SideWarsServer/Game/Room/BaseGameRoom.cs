@@ -25,7 +25,7 @@ namespace SideWarsServer.Game.Room
         public GameRoomState RoomState { get; set; }
         public IGameRoomListener Listener { get; set; }
         public Dictionary<int, Entity> Entities { get; set; }
-        public Dictionary<string, PlayerConnection> Players { get; set; }
+        public Dictionary<int, PlayerConnection> Players { get; set; }
         public ProjectileSpawner ProjectileSpawner { get; set; }
         public BaseGameRoomPacketSender PacketSender { get; set; }
 
@@ -62,7 +62,7 @@ namespace SideWarsServer.Game.Room
             };
 
             ProjectileSpawner = new ProjectileSpawner();
-            Players = new Dictionary<string, PlayerConnection>();
+            Players = new Dictionary<int, PlayerConnection>();
             Entities = new Dictionary<int, Entity>();
             Listener = new BaseGameRoomListener(this);
             RoomScheduler = new RoomScheduler();
@@ -83,11 +83,11 @@ namespace SideWarsServer.Game.Room
 
             PacketSender.SendAllEntitySpawns(playerConnection);
 
-            if (Players.ContainsKey(playerConnection.Token.Id))
+            if (Players.ContainsKey(playerConnection.Token.ID))
             {
-                var oldPlayer = this.GetPlayer(playerConnection.Token.Id);
+                var oldPlayer = this.GetPlayer(playerConnection.Token.ID);
                 oldPlayer.PlayerConnection = playerConnection;
-                Players[playerConnection.Token.Id] = playerConnection;
+                Players[playerConnection.Token.ID] = playerConnection;
 
                 return;
             }
@@ -110,7 +110,7 @@ namespace SideWarsServer.Game.Room
                     throw new System.Exception("Unknown champion.");
             }
 
-            Players[playerConnection.Token.Id] = playerConnection;
+            Players[playerConnection.Token.ID] = playerConnection;
             SpawnEntity(player);
         }
 

@@ -58,7 +58,7 @@ namespace SideWarsServer.Game.Room
             {
                 foreach (var item in gameRoom.GetEntities().Where(x => x is Player).Select(x => (Player)x))
                 {
-                    if (item.PlayerConnection.Token.Id != playerItem.Value.Token.Id)
+                    if (item.PlayerConnection.Token.ID != playerItem.Value.Token.ID)
                     {
                         SendPlayerMovement(item, item.PlayerConnection);
                     }
@@ -111,7 +111,7 @@ namespace SideWarsServer.Game.Room
                 var player = (Player)entity;
                 data.Add((ushort)player.PlayerInfo.PlayerType);
                 
-                if (player.PlayerConnection.Token.Id == connection.Token.Id) // If peer has the same id as the entity, that means he can control it
+                if (player.PlayerConnection.Token.ID == connection.Token.ID) // If peer has the same id as the entity, that means he can control it
                 {
                     data.Add((ushort)EntityData.Controllable);
                 }

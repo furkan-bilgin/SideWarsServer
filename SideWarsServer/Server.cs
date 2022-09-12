@@ -1,4 +1,5 @@
-﻿using SideWarsServer.Database;
+﻿using SideWarsServer.API;
+using SideWarsServer.Database;
 using SideWarsServer.Game;
 using SideWarsServer.Game.Room;
 using SideWarsServer.Networking;
@@ -18,6 +19,7 @@ namespace SideWarsServer
         public RoomController RoomController { get; set; }
         public DatabaseController DatabaseController { get; set; }
         public PlayerController PlayerController { get; set; }
+        public APIController APIController { get; set; }
 
         public Server()
         {
@@ -38,6 +40,7 @@ namespace SideWarsServer
             RoomController = new RoomController();
             DatabaseController = new DatabaseController(new APITokenController());
             PlayerController = new PlayerController();
+            APIController = new APIController();
 
             NetworkController.StartServer();
 

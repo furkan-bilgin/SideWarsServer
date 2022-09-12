@@ -12,14 +12,14 @@ namespace SideWarsServer.Database.Models
         public ChampionType ChampionType { get; set; }
         public string Username { get; private set; }
         public string RoomId { get; private set; }
-        public string Id { get; private set; }
+        public int ID { get; private set; }
 
-        public Token(string tokenId, string username, string roomId, ChampionType championType)
+        public Token(int tokenId, string username, string roomId, ChampionType championType)
         {
             Username = username;
             RoomId = roomId;
             ChampionType = championType;
-            Id = tokenId;
+            ID = tokenId;
         }
     }
 }

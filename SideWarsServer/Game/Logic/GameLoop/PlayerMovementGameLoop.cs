@@ -33,7 +33,7 @@ namespace SideWarsServer.Game.Logic.GameLoop
             {
                 var buffer = movementBuffer.Dequeue();
 
-                var player = gameRoom.GetPlayer(buffer.PlayerConnection.Token.Id);
+                var player = gameRoom.GetPlayer(buffer.PlayerConnection.Token.ID);
                 var playerMovement = (PlayerMovement)player.Movement;
 
                 playerMovement.Horizontal = buffer.Horizontal;

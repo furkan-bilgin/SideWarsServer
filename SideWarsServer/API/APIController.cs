@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SideWarsServer.API
 {
-    public class APIController : Singleton<APIController>
+    public class APIController
     {
         private const string BASE_URL = "http://192.168.1.69:3000/api/v1/server";
         private RestClient restClient;
@@ -14,9 +14,7 @@ namespace SideWarsServer.API
         public APIController()
         {
             restClient = new RestClient();
-            restClient.SetHeaderToken(RestClient.GAME_SERVER_TOKEN_HEADER, Environment.GetEnvironmentVariable("SERVER_TOKEN"));
-
-            InitSingleton(this);
+            restClient.SetHeaderToken(RestClient.GAME_SERVER_TOKEN_HEADER, "fcc91728-946c-40d4-9e25-772b4f4d6434");// TODO CHANGE Environment.GetEnvironmentVariable("SERVER_TOKEN"));
         }
 
         public async Task<ConfirmUserMatchModel> ConfirmUserMatch(string matchToken)

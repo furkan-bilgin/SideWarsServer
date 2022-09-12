@@ -9,9 +9,9 @@ namespace SideWarsServer.Database
     {
         public async Task<Token> GetTokenAsync(string token)
         {
-            var res = await APIController.Instance.ConfirmUserMatch(token);
+            var res = await Server.Instance.APIController.ConfirmUserMatch(token);
 
-            return new Token(token, res.Username, token, (ChampionType)res.UserChampion);
+            return new Token(res.UserID, res.Username, res.RoomID, (ChampionType)res.UserChampion);
         }
     }
 }

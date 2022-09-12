@@ -11,7 +11,7 @@ namespace SideWarsServer.Database
         public async Task<Token> GetTokenAsync(string token)
         {
             a = a == ChampionType.Mark ? ChampionType.Hyrex : ChampionType.Mark;
-            return new Token(token, "Player", "default_room", a);
+            return new Token(token.GetHashCode(), "Player", "default_room", a);
         }
     }
 }

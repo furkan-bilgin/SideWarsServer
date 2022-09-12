@@ -17,7 +17,7 @@ namespace SideWarsServer.Game.Room
         GameRoomState RoomState { get; set; }
         IGameRoomListener Listener { get; set; }
         Dictionary<int, Entity> Entities { get; set; }
-        Dictionary<string, PlayerConnection> Players { get; set; }
+        Dictionary<int, PlayerConnection> Players { get; set; }
         BaseGameRoomPacketSender PacketSender { get; set; }
         int Tick { get; }
 
