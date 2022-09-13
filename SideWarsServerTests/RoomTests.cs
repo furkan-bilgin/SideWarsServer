@@ -30,7 +30,7 @@ namespace SideWarsServerTests
             netManager.Start();
             var netPeer = netManager.Connect("127.0.0.1", 9999, "");
 
-            var player = new PlayerConnection(new Token(true, string.Empty, string.Empty, SideWars.Shared.Game.ChampionType.Hyrex), netPeer);
+            var player = new PlayerConnection(new Token(1, string.Empty, string.Empty, SideWars.Shared.Game.ChampionType.Hyrex), netPeer);
 
             Assert.IsTrue(roomController.JoinOrCreateRoom(player));
             netPeer.Disconnect();

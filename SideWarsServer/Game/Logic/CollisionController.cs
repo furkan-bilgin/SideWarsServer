@@ -19,6 +19,13 @@ namespace SideWarsServer.Game.Logic
         public void GetCollidingBodies(List<ICollider> colliders, Action<ICollider, CollisionData> onCollision)
         {
             collidedBodies.Clear();
+            colliderHashes.Clear();
+
+            // Create random hashes for colliders
+            foreach (var item in colliders)
+            { 
+                colliderHashes.Add(item, stringGenerator.RandomString(7));
+            }
 
             foreach (var collider in colliders)
             {
@@ -52,13 +59,11 @@ namespace SideWarsServer.Game.Logic
         {
             collidingEntityDic.Clear();
             collidingEntityList.Clear();
-            colliderHashes.Clear();
 
             foreach (var item in entities)
             {
                 collidingEntityDic.Add(item.Collider, item);
                 collidingEntityList.Add(item.Collider);
-                colliderHashes.Add(item.Collider, stringGenerator.RandomString(15)); // Create random hashes for colliders
             }
 
             GetCollidingBodies(collidingEntityList, (collider, data) =>
