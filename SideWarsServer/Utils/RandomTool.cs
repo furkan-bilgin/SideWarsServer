@@ -28,5 +28,19 @@ namespace SideWarsServer.Utils
         {
             return (int)Float(min, max);
         }
+
+        public string String(int size)
+        {
+            var builder = new StringBuilder(size);
+            const string allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+            for (int i = 0; i < size; i++)
+            {
+                builder.Append(allowedChars[RandomTool.Current.Int(0, allowedChars.Length)]);
+            }
+
+            return builder.ToString();
+        }
+
     }
 }

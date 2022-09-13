@@ -24,7 +24,7 @@ namespace SideWarsServer.Game.Logic
             // Create random hashes for colliders
             foreach (var item in colliders)
             { 
-                colliderHashes.Add(item, stringGenerator.RandomString(7));
+                colliderHashes.Add(item, RandomTool.Current.String(7));
             }
 
             foreach (var collider in colliders)
