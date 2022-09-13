@@ -38,7 +38,7 @@ namespace SideWarsServer
             LogicController = new LogicController(threadCount);
             TaskController = new TaskController(threadCount, LogicController);
             RoomController = new RoomController();
-            DatabaseController = new DatabaseController(new APITokenController());
+            DatabaseController = new DatabaseController(new DebugTokenController()); //(new APITokenController());
             PlayerController = new PlayerController();
             APIController = new APIController();
 

@@ -10,6 +10,7 @@ namespace SideWarsServer.Game.Room
     {
         Waiting,
         Started,
+        Countdown,
         Closed
     }
 }

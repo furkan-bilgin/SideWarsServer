@@ -3,6 +3,7 @@ using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
 using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic.StatusEffects;
+using SideWarsServer.Networking;
 using System.Collections.Generic;
 
 namespace SideWarsServer.Game.Logic
@@ -74,6 +75,10 @@ namespace SideWarsServer.Game.Logic
         public virtual void Kill()
         {
             Health = 0;
+        }
+
+        public virtual void Packetify(ref List<ushort> data, ref List<float> bigData, PlayerConnection connection)
+        {
         }
     }
 }

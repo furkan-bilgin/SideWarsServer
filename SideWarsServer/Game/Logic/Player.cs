@@ -5,6 +5,7 @@ using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic.Combat;
 using SideWarsServer.Game.Logic.Spells;
 using SideWarsServer.Networking;
+using System.Collections.Generic;
 
 namespace SideWarsServer.Game.Logic
 {
@@ -38,6 +39,16 @@ namespace SideWarsServer.Game.Logic
 
             Movement.Speed = playerInfo.Speed;
             PlayerCombat.ReInitialize(playerInfo);
+        }
+
+        public override void Packetify(ref List<ushort> data, ref List<float> bigData, PlayerConnection connection)
+        {
+            data.Add((ushort)PlayerInfo.PlayerType);
+
+            if (PlayerConnection.Token.ID == connection.Token.ID) // If peer has the same id as the entity, that means he can control it
+            {
+                data.Add((ushort)EntityData.Controllable);
+            }
         }
     }
 }

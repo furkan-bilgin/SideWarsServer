@@ -106,28 +106,7 @@ namespace SideWarsServer.Game.Room
             var data = new List<ushort>();
             var bigData = new List<float>();
 
-            if (entity is Player)
-            {
-                var player = (Player)entity;
-                data.Add((ushort)player.PlayerInfo.PlayerType);
-                
-                if (player.PlayerConnection.Token.ID == connection.Token.ID) // If peer has the same id as the entity, that means he can control it
-                {
-                    data.Add((ushort)EntityData.Controllable);
-                }
-            }
-            else if (entity is Grenade)
-            {
-                var grenade = (Grenade)entity;
-                bigData.Add(grenade.Target.X);
-                bigData.Add(grenade.Target.Y);
-                bigData.Add(grenade.Target.Z);
-            }
-            else if (entity is HyrexBullet)
-            {
-                var hyrexBullet = (HyrexBullet)entity;
-                bigData.Add(hyrexBullet.BulletSeed);
-            }
+            entity.Packetify(ref data, ref bigData, connection);
 
             connection.SendPacket(new EntitySpawnPacket()
             {
@@ -201,6 +180,18 @@ namespace SideWarsServer.Game.Room
                 SpellType = (ushort)spellInfo.Type,
                 Cooldown = spellInfo.Cooldown
             }, DeliveryMethod.ReliableOrdered);
+        }
+
+        public void SendCountdownPacket()
+        {
+            foreach (var item in gameRoom.Players)
+            {
+                var connection = item.Value;
+                connection.SendPacket(new CountdownPacket()
+                {
+                    StartCountdown = true
+                });
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ using System.Linq;
 using SideWarsServer.Game.Logic.Scheduler;
 using SideWarsServer.Game.Logic.GameLoop;
 using System;
+using System.Threading.Tasks;
 
 namespace SideWarsServer.Game.Room
 {
@@ -121,7 +122,8 @@ namespace SideWarsServer.Game.Room
 
         public void UpdatePlayerMovement(PlayerConnection playerConnection, float horizontal, PlayerButton[] buttons)
         {
-            GetGameLoop<PlayerMovementGameLoop>().AddBuffer(playerConnection, horizontal, buttons);
+            if (RoomState == GameRoomState.Started)
+                GetGameLoop<PlayerMovementGameLoop>().AddBuffer(playerConnection, horizontal, buttons);
         }
 
         public Entity SpawnEntity(Entity entity)
@@ -161,14 +163,21 @@ namespace SideWarsServer.Game.Room
             return (T)gameLoops.Where(x => x is T).First();
         }
 
-        public void StartGame()
+        public async void StartGame()
         {
             if (RoomState != GameRoomState.Waiting)
                 throw new System.Exception("Game is already started");
 
+            RoomState = GameRoomState.Countdown;
+
+            // Send countdown packet and wait 3 seconds.
+            PacketSender.SendCountdownPacket();
+            await Task.Delay(3000);
+            
+            // Then start the game.
             RoomState = GameRoomState.Started;
-            Logger.Info("Start game");
-            // TODO: Game start
+
+            Logger.Info("Game started");
         }
 
         protected virtual void Update()

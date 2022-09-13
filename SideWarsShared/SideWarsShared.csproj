@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,9 +17,5 @@
       <HintPath>..\SideWarsServer\bin\Debug\LiteNetLib.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;D:\Programming\VisualStudioProjects\SideWarsServer\SideWarsShared\bin\Debug\netstandard2.0\SideWarsShared.dll&quot; &quot;D:\Programming\UnityProjects\NewSideWars\Assets\Plugins&quot;" />
-  </Target>
 
 </Project>
