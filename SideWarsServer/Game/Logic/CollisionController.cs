@@ -8,8 +8,6 @@ namespace SideWarsServer.Game.Logic
 {
     public class CollisionController
     {
-        RandomStringGenerator stringGenerator = new RandomStringGenerator();
-
         HashSet<string> collidedBodies = new HashSet<string>();
 
         Dictionary<ICollider, Entity> collidingEntityDic = new Dictionary<ICollider, Entity>();
