@@ -33,5 +33,15 @@ namespace SideWars.Shared.Game
             HitBoxMax = Vector3.One / 1.25f,
             BaseHealth = 1
         };
+
+        public static ProjectileInfo DesgamaBullet => new ProjectileInfo()
+        {
+            Type = ProjectileType.DesgamaBullet,
+            Speed = 45,
+            Damage = 15,
+            HitBoxMin = -Vector3.One / 1.25f,
+            HitBoxMax = Vector3.One / 1.25f,
+            BaseHealth = 1
+        };
     }
 }

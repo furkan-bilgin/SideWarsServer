@@ -7,11 +7,11 @@ namespace SideWarsServer.Database
 {
     public class DebugTokenController : ITokenController
     {
-        ChampionType a = ChampionType.Hyrex;
+        ChampionType a = ChampionType.Desgama;
         public async Task<Token> GetTokenAsync(string token)
         {
-            a = a == ChampionType.Mark ? ChampionType.Hyrex : ChampionType.Mark;
-            return new Token(token.GetHashCode(), "Player", "default_room", a);
+            //a = a == ChampionType.Mark ? ChampionType.Hyrex : ChampionType.Mark;
+            return new Token(token.GetHashCode(), "Player", "default_room" + token.GetHashCode(), a);
         }
     }
 }

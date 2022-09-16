@@ -3,6 +3,7 @@ using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic.Effects;
 using SideWarsServer.Game.Room;
 using SideWarsServer.Networking;
+using SideWarsServer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,7 @@ namespace SideWarsServer.Game.Logic.GameLoop
                     }
                     else if (button == PlayerButton.Fire)
                     {
+                        // TODO: Change this
                         if (player.PlayerCombat.Shoot())
                         {
                             new PlayerShootEffect(player).Start(gameRoom);

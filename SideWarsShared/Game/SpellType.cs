@@ -8,6 +8,10 @@
 
         // Hyrex Spells
         HyrexSlide,
-        HyrexFastFire
+        HyrexFastFire,
+
+        // Desgama Spells
+        DesgamaMissile,
+        DesgamaShield
     }
 }

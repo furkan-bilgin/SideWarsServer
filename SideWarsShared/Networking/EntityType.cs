@@ -5,6 +5,7 @@
         Player,
         Bullet,
         Grenade,
-        HyrexBullet
+        HyrexBullet,
+        DesgamaBullet
     }
 }

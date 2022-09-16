@@ -23,6 +23,10 @@ namespace SideWarsServer.Game.Logic
                 case ProjectileType.Grenade:
                     projectile = new Grenade(shooter);
                     break;
+
+                case ProjectileType.DesgamaBullet:
+                    projectile = new DesgamaBullet(shooter);
+                    break;
             }
 
             return projectile;

@@ -107,6 +107,10 @@ namespace SideWarsServer.Game.Room
                     player = new Hyrex(spawnPoint, playerConnection, team);
                     break;
 
+                case ChampionType.Desgama:
+                    player = new Desgama(spawnPoint, playerConnection, team);
+                    break;
+
                 default:
                     throw new System.Exception("Unknown champion.");
             }

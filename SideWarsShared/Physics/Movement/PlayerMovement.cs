@@ -21,6 +21,7 @@ namespace SideWars.Shared.Physics
         public virtual void Update(float deltaTime, ref Vector3 location)
         {
             location += new Vector3(GetMovementSpeed() * Horizontal, 0, 0) * deltaTime;
+            CheckSides(deltaTime, ref location);
         }
 
         protected void CheckSides(float deltaTime, ref Vector3 location)

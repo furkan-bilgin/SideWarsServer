@@ -1,7 +1,10 @@
 ﻿using Ara3D;
 using SideWars.Shared.Game;
+using SideWarsServer.Game.Logic.StatusEffects;
 using SideWarsServer.Game.Room;
+using SideWarsServer.Utils;
 using System;
+using System.Linq;
 
 namespace SideWarsServer.Game.Logic.Effects
 {
@@ -16,9 +19,19 @@ namespace SideWarsServer.Game.Logic.Effects
 
         public void Start(IGameRoom room)
         {
-            for (int i = 0; i < player.PlayerInfo.BulletsPerShoot; i++)
+            if (player.PlayerInfo.ShootTime > 0)
             {
-                new BulletSpawnEffect(player).Start(room);
+                room.RoomScheduler.ScheduleJobAfter(() =>
+                {
+                    // Return if this player is muted.
+                    if (player.StatusEffects.OfType<MutedStatusEffect>().Any())
+                        return;
+
+                    for (int i = 0; i < player.PlayerInfo.BulletsPerShoot; i++)
+                    {
+                        new BulletSpawnEffect(player).Start(room);
+                    }
+                }, player.PlayerInfo.ShootTime.SecondsToTicks());
             }
 
             new ShowMuzzleFlashEffect(player).Start(room);

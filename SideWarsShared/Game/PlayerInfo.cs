@@ -19,6 +19,7 @@ namespace SideWars.Shared.Game
 
         public int AmmoCount { get; set; }
         public float ReloadTime { get; set; }
+        public float ShootTime { get; set; }
 
         public Vector3 BulletPosition { get; set; }
         public Vector3 RunningBulletPosition { get; set; }
