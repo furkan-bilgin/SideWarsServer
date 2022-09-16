@@ -83,6 +83,7 @@
     <Compile Include="Game\Logic\GameLoop\PacketSenderGameLoop.cs" />
     <Compile Include="Game\Logic\GameLoop\PlayerMovementGameLoop.cs" />
     <Compile Include="Game\Logic\Projectiles\DesgamaBullet.cs" />
+    <Compile Include="Game\Logic\Projectiles\DesgamaMissile.cs" />
     <Compile Include="Game\Logic\Projectiles\HyrexBullet.cs" />
     <Compile Include="Game\Logic\Scheduler\RoomScheduler.cs" />
     <Compile Include="Game\Logic\Spells\DesgamaSpells.cs" />

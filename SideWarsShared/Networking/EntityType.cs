@@ -6,6 +6,8 @@
         Bullet,
         Grenade,
         HyrexBullet,
-        DesgamaBullet
+        DesgamaBullet,
+        DesgamaMissile
     }
 }
+ 

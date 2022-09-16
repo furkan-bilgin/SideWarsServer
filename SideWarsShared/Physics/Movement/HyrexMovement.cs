@@ -1,4 +1,5 @@
 ﻿using Ara3D;
+using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
 using System.Diagnostics;
 
@@ -7,12 +8,6 @@ namespace SideWars.Shared.Physics
     public class HyrexMovement : PlayerMovement
     {
         private bool slide;
-
-        /// <summary>
-        /// How many seconds sliding will take.
-        /// </summary>
-        public const float SLIDE_TIME = 1.25f;
-
         /// <summary>
         /// How fast sliding will be compared to normal speed
         /// </summary>
@@ -41,7 +36,7 @@ namespace SideWars.Shared.Physics
                     slideMultiplier = Horizontal > 0 ? 1 : -1;
                 }
 
-                if (stopwatch.ElapsedMilliseconds >= SLIDE_TIME * 1000)
+                if (stopwatch.ElapsedMilliseconds >= GameConstants.HYREX_FIRST_SPELL_TIME * 1000)
                 {
                     slide = false;
                     stopwatch.Stop();

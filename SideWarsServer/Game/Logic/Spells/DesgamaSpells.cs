@@ -1,5 +1,7 @@
 ﻿using SideWars.Shared.Game;
+using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic.Effects;
+using SideWarsServer.Game.Logic.Projectiles;
 using SideWarsServer.Game.Logic.StatusEffects;
 using SideWarsServer.Game.Room;
 using SideWarsServer.Utils;
@@ -22,23 +24,26 @@ namespace SideWarsServer.Game.Logic.Spells
             {
                 var baseGameRoom = (BaseGameRoom)gameRoom;
 
-                if (spell.Type == SpellType.MarkGrenade)
+                if (spell.Type == SpellType.DesgamaMissile)
                 {
-                    var spellTime = 1f; // Execute spell after 1 seconds
+                    // TODO: This will cause bugs. 
+                    var playerMovement = (PlayerMovement)player.Movement;
+                    playerMovement.IsHalted = true;
+                    baseGameRoom.RoomScheduler.ScheduleJobAfter(() => playerMovement.IsHalted = false, GameConstants.DESGAMA_FIRST_SPELL_TIME.SecondsToTicks());
 
-                    player.StatusEffects.Add(new MutedStatusEffect(spellTime.SecondsToTicks(), gameRoom.Tick)); // Apply muted status effect to Mark. (to prevent him to shoot or cast other spells)
-
-                    baseGameRoom.RoomScheduler.ScheduleJobAfter(() =>
+                    // Spawn missiles with angles
+                    var initialDelay = 0.3f;
+                    var j = 0;
+                    for (int i = 10; i >= -10; i -= 4)
                     {
-                        var grenade = baseGameRoom.ProjectileSpawner.SpawnProjectile(ProjectileType.Grenade, player);
-                        baseGameRoom.SpawnEntity(grenade);
-                    }, Convert.ToInt32(spellTime * LogicTimer.FramesPerSecond));
-
+                        var angle = i;
+                        baseGameRoom.RoomScheduler.ScheduleJobAfter(() => baseGameRoom.SpawnEntity(new DesgamaMissile(player, angle)), (initialDelay + 0.05f * j).SecondsToTicks());
+                        j += 1;
+                    }
                 }
-                else if (spell.Type == SpellType.MarkHeal)
+                else if (spell.Type == SpellType.DesgamaShield)
                 {
-                    player.Heal(25);
-                    baseGameRoom.SpawnParticle(ParticleType.MarkHealup, player.Location, new float[] { player.Id }); // Data contains playerID, in the client-side particle will follow player
+                
                 }
             }
 

@@ -24,15 +24,13 @@ namespace SideWarsServer.Game.Logic.Spells
 
                 if (spell.Type == SpellType.MarkGrenade)
                 {
-                    var spellTime = 1f; // Execute spell after 1 seconds
-
-                    player.StatusEffects.Add(new MutedStatusEffect(spellTime.SecondsToTicks(), gameRoom.Tick)); // Apply muted status effect to Mark. (to prevent him to shoot or cast other spells)
+                    player.StatusEffects.Add(new MutedStatusEffect(GameConstants.MARK_FIRST_SPELL_TIME.SecondsToTicks(), gameRoom.Tick)); // Apply muted status effect to Mark. (to prevent him to shoot or cast other spells)
 
                     baseGameRoom.RoomScheduler.ScheduleJobAfter(() =>
                     {
                         var grenade = baseGameRoom.ProjectileSpawner.SpawnProjectile(ProjectileType.Grenade, player);
                         baseGameRoom.SpawnEntity(grenade);
-                    }, Convert.ToInt32(spellTime * LogicTimer.FramesPerSecond)); 
+                    }, GameConstants.MARK_FIRST_SPELL_TIME.SecondsToTicks()); 
 
                 }
                 else if (spell.Type == SpellType.MarkHeal)

@@ -7,6 +7,7 @@ namespace SideWars.Shared.Game
         Bullet = 200,
         Grenade,
         HyrexBullet,
-        DesgamaBullet
+        DesgamaBullet,
+        DesgamaMissile
     }
 }

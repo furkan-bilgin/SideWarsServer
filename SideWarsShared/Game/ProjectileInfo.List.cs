@@ -43,5 +43,15 @@ namespace SideWars.Shared.Game
             HitBoxMax = Vector3.One / 1.25f,
             BaseHealth = 1
         };
+
+        public static ProjectileInfo DesgamaMissile => new ProjectileInfo()
+        {
+            Type = ProjectileType.DesgamaMissile,
+            Speed = 35,
+            Damage = 10,
+            HitBoxMin = -Vector3.One / 1.25f,
+            HitBoxMax = Vector3.One / 1.25f,
+            BaseHealth = 1
+        };
     }
 }

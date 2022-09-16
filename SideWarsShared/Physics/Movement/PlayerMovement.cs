@@ -7,10 +7,11 @@ namespace SideWars.Shared.Physics
     public class PlayerMovement : IPlayerMovement
     {
         public float Speed { get; set; }
-        public float JumpSpeed { get; set; }
 
         public float Horizontal { get; set; }
+        public bool IsHalted { get; set; }
         public EntityTeam Team { get; private set; }
+
 
         public PlayerMovement(EntityTeam team, ICollider collider, float speed)
         {
@@ -20,7 +21,9 @@ namespace SideWars.Shared.Physics
 
         public virtual void Update(float deltaTime, ref Vector3 location)
         {
-            location += new Vector3(GetMovementSpeed() * Horizontal, 0, 0) * deltaTime;
+            if (!IsHalted)
+                location += new Vector3(GetMovementSpeed() * Horizontal, 0, 0) * deltaTime;
+            
             CheckSides(deltaTime, ref location);
         }
 
