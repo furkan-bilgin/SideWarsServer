@@ -37,7 +37,7 @@ namespace SideWars.Shared.Game
         public static ProjectileInfo DesgamaBullet => new ProjectileInfo()
         {
             Type = ProjectileType.DesgamaBullet,
-            Speed = 45,
+            Speed = 30,
             Damage = 15,
             HitBoxMin = -Vector3.One / 1.25f,
             HitBoxMax = Vector3.One / 1.25f,
