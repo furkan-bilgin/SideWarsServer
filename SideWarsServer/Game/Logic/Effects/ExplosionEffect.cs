@@ -1,4 +1,5 @@
 ﻿using Ara3D;
+using SideWars.Shared.Game;
 using SideWarsServer.Game.Room;
 
 namespace SideWarsServer.Game.Logic.Effects
@@ -22,6 +23,7 @@ namespace SideWarsServer.Game.Logic.Effects
             foreach (var entity in entities)
             {
                 entity.Hurt(damage);
+                room.SpawnParticle(ParticleType.Blood, entity.Location);
             }
         }
     }

@@ -48,7 +48,7 @@ namespace SideWarsServer
             {
                 NetworkController.Update();
                 RoomController.Update();
-                await Task.Delay(5);
+                await Task.Delay(2);
             }
 
             Environment.Exit(0);
