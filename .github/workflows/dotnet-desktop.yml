@@ -32,7 +32,7 @@ jobs:
         
     - name: Test Solution
       run: |
-        dotnet test ../_build/SideWarsServerTests.dll
+        dotnet test ./_build/SideWarsServerTests.dll
         
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
