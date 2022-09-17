@@ -24,7 +24,6 @@ namespace SideWarsServer.Game.Logic
             PlayerConnection = playerConnection;
             Location = location;
             
-            Collider = new SquareCollider(location, PlayerInfo.HitBoxMin, PlayerInfo.HitBoxMax);
             Movement = new PlayerMovement(Team, Collider, PlayerInfo.Speed);
             PlayerCombat = new PlayerCombat(PlayerInfo);
 

@@ -1,6 +1,7 @@
 ﻿using SideWars.Shared.Game;
 using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic.Effects;
+using SideWarsServer.Game.Logic.Other;
 using SideWarsServer.Game.Logic.Projectiles;
 using SideWarsServer.Game.Logic.StatusEffects;
 using SideWarsServer.Game.Room;
@@ -30,7 +31,8 @@ namespace SideWarsServer.Game.Logic.Spells
                     var playerMovement = (PlayerMovement)player.Movement;
                     playerMovement.IsHalted = true;
 
-                    player.StatusEffects.Add(new MutedStatusEffect(GameConstants.DESGAMA_FIRST_SPELL_TIME.SecondsToTicks(), gameRoom.Tick)); // Apply muted status during casting
+                    // Apply muted status during casting
+                    player.StatusEffects.Add(new MutedStatusEffect(GameConstants.DESGAMA_FIRST_SPELL_TIME.SecondsToTicks(), gameRoom.Tick)); 
                     baseGameRoom.RoomScheduler.ScheduleJobAfter(() => playerMovement.IsHalted = false, GameConstants.DESGAMA_FIRST_SPELL_TIME.SecondsToTicks());
 
                     // Spawn missiles with angles
@@ -45,7 +47,15 @@ namespace SideWarsServer.Game.Logic.Spells
                 }
                 else if (spell.Type == SpellType.DesgamaShield)
                 {
-                
+                    // Apply muted status during casting
+                    player.StatusEffects.Add(new MutedStatusEffect(GameConstants.DESGAMA_SECOND_SPELL_TIME.SecondsToTicks(), gameRoom.Tick)); 
+
+                    baseGameRoom.RoomScheduler.ScheduleJobAfter(() =>
+                    {
+                        // Spawn a shield entity and a spark particle
+                        var shield = baseGameRoom.SpawnEntity(new DesgamaShield(player));
+                        baseGameRoom.SpawnParticle(ParticleType.Spark, shield.Location);
+                    }, GameConstants.DESGAMA_SECOND_SPELL_TIME.SecondsToTicks()); 
                 }
             }
 

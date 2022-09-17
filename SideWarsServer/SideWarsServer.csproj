@@ -82,6 +82,7 @@
     <Compile Include="Game\Logic\GameLoop\IGameLoop.cs" />
     <Compile Include="Game\Logic\GameLoop\PacketSenderGameLoop.cs" />
     <Compile Include="Game\Logic\GameLoop\PlayerMovementGameLoop.cs" />
+    <Compile Include="Game\Logic\Other\DesgamaShield.cs" />
     <Compile Include="Game\Logic\Projectiles\DesgamaBullet.cs" />
     <Compile Include="Game\Logic\Projectiles\DesgamaMissile.cs" />
     <Compile Include="Game\Logic\Projectiles\HyrexBullet.cs" />
@@ -92,6 +93,8 @@
     <Compile Include="Game\Logic\StatusEffects\FastFireStatusEffect.cs" />
     <Compile Include="Game\Logic\StatusEffects\IStatusEffect.cs" />
     <Compile Include="Game\Logic\StatusEffects\MutedStatusEffect.cs" />
+    <Compile Include="Game\Logic\StatusEffects\PoisonStatusEffect.cs" />
+    <Compile Include="Game\Logic\Updater\CustomStatusEffectUpdater.cs" />
     <Compile Include="Game\Logic\Updater\GrenadeUpdater.cs" />
     <Compile Include="Game\Logic\Updater\IEntityUpdater.cs" />
     <Compile Include="Game\Logic\Projectiles\Bullet.cs" />

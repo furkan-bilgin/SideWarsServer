@@ -19,5 +19,8 @@ namespace SideWars.Shared.Game
 
         // Desgama missile launch duration
         public const float DESGAMA_FIRST_SPELL_TIME = 1.35f;
+
+        // Desgama missile launch duration
+        public const float DESGAMA_SECOND_SPELL_TIME = 0.5f;
     }
 }

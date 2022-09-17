@@ -22,9 +22,9 @@ namespace SideWarsServer.Game.Logic.Effects
             if (bullet.Team == collidingEntity.Team)
                 return;
 
+            collidingEntity.Hurt(bullet.ProjectileInfo.Damage);
             if (collidingEntity is Player)
             { 
-                collidingEntity.Hurt(bullet.ProjectileInfo.Damage);
                 room.SpawnParticle(ParticleType.Blood, collidingEntity.Location);
             }
             else if (collidingEntity is Grenade)

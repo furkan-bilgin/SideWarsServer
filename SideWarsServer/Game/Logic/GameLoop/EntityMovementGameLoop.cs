@@ -17,10 +17,16 @@ namespace SideWarsServer.Game.Logic.GameLoop
         {
             foreach (var entity in gameRoom.GetEntities())
             {
-                var location = entity.Location;
-                if (!(entity is Player))
-                    entity.Movement.Update(LogicTimer.FixedDelta, ref location);
+                // Continue if the entity is a player. Player movements get updated at PlayerMovementGameLoop.
+                if (entity is Player)
+                    continue;
 
+                // Continue if this entity is static.
+                if (entity.Movement == null)
+                    continue;
+
+                var location = entity.Location;
+                entity.Movement.Update(LogicTimer.FixedDelta, ref location);
                 entity.Location = location;
             }
         }

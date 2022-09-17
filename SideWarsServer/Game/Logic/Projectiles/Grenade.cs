@@ -22,7 +22,6 @@ namespace SideWarsServer.Game.Logic.Projectiles
             var bulletPosition = shooter.PlayerInfo.BulletPosition.InvertIfRedTeam(shooter.Team);
             
             Location = shooter.Location + bulletPosition;
-            Collider = new SquareCollider(Location, ProjectileInfo.HitBoxMin, ProjectileInfo.HitBoxMax);
             Movement = new GrenadeMovement(shooter.Team, Target, Location);
         }
 

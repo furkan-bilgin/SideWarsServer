@@ -10,7 +10,7 @@ namespace SideWarsServer.Database
         ChampionType a = ChampionType.Desgama;
         public async Task<Token> GetTokenAsync(string token)
         {
-            a = a == ChampionType.Desgama ? ChampionType.Mark : ChampionType.Desgama;
+            //a = a == ChampionType.Desgama ? ChampionType.Mark : ChampionType.Desgama;
             return new Token(token.GetHashCode(), "Player", "default_room" + token.GetHashCode(), a);
         }
     }

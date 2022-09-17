@@ -6,8 +6,7 @@
         MidAirExplosion,
         Blood,
         MuzzleFlash,
-
-        // Mark Particles
         MarkHealup,
+        Spark
     }
 }

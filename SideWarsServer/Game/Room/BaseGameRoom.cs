@@ -47,7 +47,8 @@ namespace SideWarsServer.Game.Room
             {
                 new GrenadeUpdater(),
                 new TimedDestroyUpdater(),
-                new StatusEffectUpdater()
+                new StatusEffectUpdater(),
+                new CustomStatusEffectUpdater()
             };
 
             gameLoops = new List<IGameLoop>()

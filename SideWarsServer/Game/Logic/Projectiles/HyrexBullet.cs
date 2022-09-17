@@ -19,7 +19,6 @@ namespace SideWarsServer.Game.Logic.Projectiles
             Type = EntityType.HyrexBullet;
             ProjectileInfo = ProjectileInfo.HyrexBullet;
 
-            Collider = new SquareCollider(Location, ProjectileInfo.HitBoxMin, ProjectileInfo.HitBoxMax);
             Movement = new HyrexBulletMovement(shooter.Team, ProjectileInfo.Speed, BulletSeed);
         }
 

@@ -32,6 +32,7 @@ namespace SideWarsServer.Game.Logic
             EntityInfo = entityInfo;
 
             StatusEffects = new List<IStatusEffect>();
+            Collider = new SquareCollider(Location, entityInfo.HitBoxMin, entityInfo.HitBoxMax);
         }
 
         public virtual void UpdateEntityInfo(EntityInfo info)

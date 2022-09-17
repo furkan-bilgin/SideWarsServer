@@ -7,7 +7,8 @@
         Grenade,
         HyrexBullet,
         DesgamaBullet,
-        DesgamaMissile
+        DesgamaMissile,
+        DesgamaShield
     }
 }
  
