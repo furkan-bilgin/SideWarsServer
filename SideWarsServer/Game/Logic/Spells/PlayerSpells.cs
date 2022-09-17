@@ -1,7 +1,9 @@
 ﻿using SideWars.Shared.Game;
+using SideWarsServer.Game.Logic.StatusEffects;
 using SideWarsServer.Game.Room;
 using SideWarsServer.Utils;
 using System;
+using System.Linq;
 
 namespace SideWarsServer.Game.Logic.Spells
 {
@@ -26,6 +28,10 @@ namespace SideWarsServer.Game.Logic.Spells
                 return false;
 
             if (!SpellTimer.CanCast(spell))
+                return false;
+
+            // Do not cast if player is muted
+            if (player.StatusEffects.OfType<MutedStatusEffect>().Any())
                 return false;
 
             return true;

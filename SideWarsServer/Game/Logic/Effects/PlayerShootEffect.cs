@@ -19,20 +19,22 @@ namespace SideWarsServer.Game.Logic.Effects
 
         public void Start(IGameRoom room)
         {
-            if (player.PlayerInfo.ShootTime > 0)
+            Action shoot = () =>
             {
-                room.RoomScheduler.ScheduleJobAfter(() =>
-                {
-                    // Return if this player is muted.
-                    if (player.StatusEffects.OfType<MutedStatusEffect>().Any())
-                        return;
+                // Return if this player is muted.
+                if (player.StatusEffects.OfType<MutedStatusEffect>().Any())
+                    return;
 
-                    for (int i = 0; i < player.PlayerInfo.BulletsPerShoot; i++)
-                    {
-                        new BulletSpawnEffect(player).Start(room);
-                    }
-                }, player.PlayerInfo.ShootTime.SecondsToTicks());
-            }
+                for (int i = 0; i < player.PlayerInfo.BulletsPerShoot; i++)
+                {
+                    new BulletSpawnEffect(player).Start(room);
+                }
+            };
+
+            if (player.PlayerInfo.ShootTime > 0)
+                room.RoomScheduler.ScheduleJobAfter(shoot, player.PlayerInfo.ShootTime.SecondsToTicks());
+            else
+                shoot();
 
             new ShowMuzzleFlashEffect(player).Start(room);
         }

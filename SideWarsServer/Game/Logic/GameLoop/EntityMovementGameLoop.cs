@@ -18,7 +18,8 @@ namespace SideWarsServer.Game.Logic.GameLoop
             foreach (var entity in gameRoom.GetEntities())
             {
                 var location = entity.Location;
-                entity.Movement.Update(LogicTimer.FixedDelta, ref location);
+                if (!(entity is Player))
+                    entity.Movement.Update(LogicTimer.FixedDelta, ref location);
 
                 entity.Location = location;
             }

@@ -29,14 +29,16 @@ namespace SideWarsServer.Game.Logic.Spells
                     // TODO: This will cause bugs. 
                     var playerMovement = (PlayerMovement)player.Movement;
                     playerMovement.IsHalted = true;
+
+                    player.StatusEffects.Add(new MutedStatusEffect(GameConstants.DESGAMA_FIRST_SPELL_TIME.SecondsToTicks(), gameRoom.Tick)); // Apply muted status during casting
                     baseGameRoom.RoomScheduler.ScheduleJobAfter(() => playerMovement.IsHalted = false, GameConstants.DESGAMA_FIRST_SPELL_TIME.SecondsToTicks());
 
                     // Spawn missiles with angles
                     var initialDelay = 0.3f;
                     var j = 0;
-                    for (int i = 10; i >= -10; i -= 4)
+                    for (int i = -10; i <= 10; i += 4)
                     {
-                        var angle = i;
+                        var angle = player.Team == SideWars.Shared.Packets.EntityTeam.Blue ? -i : i;
                         baseGameRoom.RoomScheduler.ScheduleJobAfter(() => baseGameRoom.SpawnEntity(new DesgamaMissile(player, angle)), (initialDelay + 0.05f * j).SecondsToTicks());
                         j += 1;
                     }

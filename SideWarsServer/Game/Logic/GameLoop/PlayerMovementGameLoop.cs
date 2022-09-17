@@ -39,6 +39,10 @@ namespace SideWarsServer.Game.Logic.GameLoop
 
                 playerMovement.Horizontal = buffer.Horizontal;
 
+                var location = player.Location;
+                playerMovement.Update(LogicTimer.FixedDelta, ref location);
+                player.Location = location;
+
                 foreach (var button in buffer.Buttons)
                 {
                     if (button == PlayerButton.Special1 || button == PlayerButton.Special2)

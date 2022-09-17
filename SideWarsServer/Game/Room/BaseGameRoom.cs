@@ -69,6 +69,9 @@ namespace SideWarsServer.Game.Room
             RoomScheduler = new RoomScheduler();
 
             Server.Instance.LogicController.RegisterLogicUpdate(Update);
+            var entity = SpawnEntity(new Mark(RoomOptions.GetSpawnPoint(EntityTeam.Red), new PlayerConnection(new Database.Models.Token(31, "", "", ChampionType.Mark), null), EntityTeam.Red));
+            entity.BaseHealth = 9999;
+            entity.Heal(9999);
         }
 
         ~BaseGameRoom()

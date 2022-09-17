@@ -18,6 +18,6 @@ namespace SideWars.Shared.Game
         public const float HYREX_SECOND_SPELL_TIME = 3;
 
         // Desgama missile launch duration
-        public const float DESGAMA_FIRST_SPELL_TIME = 1.3f;
+        public const float DESGAMA_FIRST_SPELL_TIME = 1.35f;
     }
 }

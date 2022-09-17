@@ -10,7 +10,7 @@
     public class PlayerUpdatePacket
     {
         public byte[] PlayerButtons { get; set; }
-        public sbyte Horizontal { get; set; }
+        public float Horizontal { get; set; }
         //public bool Jump { get; set; }
     }
 }

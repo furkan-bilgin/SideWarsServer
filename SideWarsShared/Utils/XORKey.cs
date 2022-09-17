@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SideWarsShared.Utils
+namespace SideWars.Shared.Utils
 {
     public class XORKey
     {

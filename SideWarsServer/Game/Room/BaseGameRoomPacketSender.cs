@@ -142,7 +142,7 @@ namespace SideWarsServer.Game.Room
                 X = entity.Location.X,
                 Y = entity.Location.Y,
                 Z = entity.Location.Z
-            }, DeliveryMethod.Unreliable);
+            });
         }
 
         void SendPlayerMovement(Player player, PlayerConnection connection)
@@ -152,7 +152,7 @@ namespace SideWarsServer.Game.Room
             {
                 Id = player.Id,
                 Horizontal = Functions.AsSByte(playerMovement.Horizontal)
-            }, DeliveryMethod.Unreliable);
+            });
         }
 
         void SendEntityDeath(Entity entity, PlayerConnection connection)
@@ -160,7 +160,7 @@ namespace SideWarsServer.Game.Room
             connection.SendPacket(new EntityDeathPacket()
             {
                 Id = entity.Id
-            }, DeliveryMethod.Unreliable);
+            });
         }
 
         void SendEntityHealthChange(Entity entity, PlayerConnection connection)
