@@ -25,6 +25,10 @@ namespace SideWarsServer.Game.Logic.GameLoop
                 if (entity.Movement == null)
                     continue;
 
+                // Continue if the movement is halted.
+                if (entity.Movement.IsHalted)
+                    continue;
+
                 var location = entity.Location;
                 entity.Movement.Update(LogicTimer.FixedDelta, ref location);
                 entity.Location = location;

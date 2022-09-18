@@ -8,6 +8,13 @@ namespace SideWarsServer.Game.Logic.Updater
 {
     public class CustomStatusEffectUpdater : IEntityUpdater
     {
+        private HashSet<Entity> stunnedEntities;
+
+        public CustomStatusEffectUpdater()
+        {
+            stunnedEntities = new HashSet<Entity>();
+        }
+
         public void Update(Entity entity, IGameRoom gameRoom)
         {
             foreach (var statusEffect in entity.StatusEffects)
@@ -27,9 +34,11 @@ namespace SideWarsServer.Game.Logic.Updater
             UpdateStun(entity, gameRoom);
         }
 
-        private HashSet<Entity> stunnedEntities;
         private void UpdateStun(Entity entity, IGameRoom gameRoom)
         {
+            if (entity.Movement == null)
+                return;
+
             var baseGameRoom = (BaseGameRoom)gameRoom;
             var hasStunStatusEffect = entity.StatusEffects.OfType<StunStatusEffect>().Any();
             entity.Movement.IsHalted = hasStunStatusEffect;

@@ -56,9 +56,7 @@ namespace SideWarsServer.Game.Room
                 new PlayerMovementGameLoop(),
                 new EntityMovementGameLoop(),
                 new CollisionGameLoop(OnEntityCollision),
-
                 new ActionGameLoop(() => RoomScheduler.Update(Tick)),
-
                 new EntityHealthGameLoop(),
                 new PacketSenderGameLoop()
             };
@@ -180,7 +178,8 @@ namespace SideWarsServer.Game.Room
 
             // Send countdown packet and wait 3 seconds.
             PacketSender.SendCountdownPacket();
-            await Task.Delay(3000);
+            
+            // TODO: UNCOMMENT THIS await Task.Delay(3000);
             
             // Then start the game.
             RoomState = GameRoomState.Started;

@@ -115,6 +115,7 @@
     <Compile Include="Game\Logic\Updater\TimedDestroyUpdater.cs" />
     <Compile Include="Game\Room\BaseGameRoom.cs" />
     <Compile Include="Game\Room\BaseGameRoomExtensions.cs" />
+    <Compile Include="Game\Room\BaseGameRoomPlayerSync.cs" />
     <Compile Include="Game\Room\GameRoomState.cs" />
     <Compile Include="Game\Room\IGameRoom.cs" />
     <Compile Include="Game\Room\Listener\BaseGameRoomListener.cs" />

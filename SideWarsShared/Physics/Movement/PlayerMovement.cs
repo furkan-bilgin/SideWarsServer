@@ -21,6 +21,11 @@ namespace SideWars.Shared.Physics
 
         public virtual void Update(float deltaTime, ref Vector3 location)
         {
+            // Clamp horizontal speed between 1 and -1
+            // -1 <= x <= 1 where x = Horizontal
+            Horizontal = MathOps.Min(1, Horizontal);
+            Horizontal = MathOps.Max(-1, Horizontal);
+
             location += new Vector3(GetMovementSpeed() * Horizontal, 0, 0) * deltaTime;
             CheckSides(deltaTime, ref location);
         }

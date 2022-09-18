@@ -16,6 +16,7 @@ namespace SideWarsServer.Game.Logic.GameLoop
         public PacketSenderGameLoop()
         {
             spellUses = new List<(Player, SpellInfo)>();
+            entityHalts = new List<Entity>();
         }
 
         public void Update(IGameRoom gameRoom)

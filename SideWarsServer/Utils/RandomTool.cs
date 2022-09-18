@@ -36,7 +36,7 @@ namespace SideWarsServer.Utils
 
             for (int i = 0; i < size; i++)
             {
-                builder.Append(allowedChars[RandomTool.Current.Int(0, allowedChars.Length)]);
+                builder.Append(allowedChars[Current.Int(0, allowedChars.Length - 1)]);
             }
 
             return builder.ToString();

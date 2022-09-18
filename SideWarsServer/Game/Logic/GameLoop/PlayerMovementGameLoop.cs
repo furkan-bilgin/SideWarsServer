@@ -33,15 +33,18 @@ namespace SideWarsServer.Game.Logic.GameLoop
             while (movementBuffer.Count > 0)
             {
                 var buffer = movementBuffer.Dequeue();
-
                 var player = gameRoom.GetPlayer(buffer.PlayerConnection.Token.ID);
-                var playerMovement = (PlayerMovement)player.Movement;
 
+                var playerMovement = (PlayerMovement)player.Movement;
                 playerMovement.Horizontal = buffer.Horizontal;
 
-                var location = player.Location;
-                playerMovement.Update(LogicTimer.FixedDelta, ref location);
-                player.Location = location;
+                // Update movement if it's not halted
+                if (!playerMovement.IsHalted)
+                {
+                    var location = player.Location;
+                    playerMovement.Update(LogicTimer.FixedDelta, ref location);
+                    player.Location = location;
+                }
 
                 foreach (var button in buffer.Buttons)
                 {

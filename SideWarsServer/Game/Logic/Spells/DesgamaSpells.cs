@@ -27,13 +27,10 @@ namespace SideWarsServer.Game.Logic.Spells
 
                 if (spell.Type == SpellType.DesgamaMissile)
                 {
-                    // TODO: This will cause bugs. 
-                    var playerMovement = (PlayerMovement)player.Movement;
-                    playerMovement.IsHalted = true;
-
                     // Apply muted status during casting
-                    player.StatusEffects.Add(new MutedStatusEffect(GameConstants.DESGAMA_FIRST_SPELL_TIME.SecondsToTicks(), gameRoom.Tick)); 
-                    baseGameRoom.RoomScheduler.ScheduleJobAfter(() => playerMovement.IsHalted = false, GameConstants.DESGAMA_FIRST_SPELL_TIME.SecondsToTicks());
+                    player.StatusEffects.Add(new MutedStatusEffect(GameConstants.DESGAMA_FIRST_SPELL_TIME.SecondsToTicks(), gameRoom.Tick));
+                    // Apply stun status during casting to prevent movement
+                    player.StatusEffects.Add(new StunStatusEffect(GameConstants.DESGAMA_FIRST_SPELL_TIME.SecondsToTicks(), gameRoom.Tick));
 
                     // Spawn missiles with angles
                     var initialDelay = 0.3f;

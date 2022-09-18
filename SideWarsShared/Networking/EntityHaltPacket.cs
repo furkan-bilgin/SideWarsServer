@@ -8,5 +8,8 @@ namespace SideWars.Shared.Packets
     {
         public int Id { get; set; }
         public bool IsHalted { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
     }
 }

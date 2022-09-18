@@ -208,7 +208,10 @@ namespace SideWarsServer.Game.Room
                 connection.SendPacket(new EntityHaltPacket()
                 {
                     Id = entity.Id,
-                    IsHalted = entity.Movement.IsHalted
+                    IsHalted = entity.Movement.IsHalted,
+                    X = entity.Location.X,
+                    Y = entity.Location.Y,
+                    Z = entity.Location.Z
                 });
             }
         }
