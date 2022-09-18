@@ -11,6 +11,7 @@ namespace SideWarsServer.Game.Logic.GameLoop
     public class PacketSenderGameLoop : IGameLoop
     {
         private List<(Player, SpellInfo)> spellUses;
+        private List<Entity> entityHalts;
 
         public PacketSenderGameLoop()
         {
@@ -21,13 +22,20 @@ namespace SideWarsServer.Game.Logic.GameLoop
         {
             gameRoom.PacketSender.SendMovementPackets();
             gameRoom.PacketSender.SendPlayerSpellUsePackets(spellUses);
+            gameRoom.PacketSender.SendEntityHaltPackets(entityHalts);
 
             spellUses.Clear();
+            entityHalts.Clear();
         }
 
         public void OnSpellUse(SpellInfo info, Player player)
         {
             spellUses.Add((player, info));
+        }
+
+        public void OnEntityHaltChange(Entity entity)
+        {
+            entityHalts.Add(entity);
         }
     }
 }

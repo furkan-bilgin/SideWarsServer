@@ -5,9 +5,9 @@ namespace SideWars.Shared.Physics
 {
     public class BulletMovement : IProjectileMovement
     {
-        
         public float Speed { get; set; }
         public EntityTeam Team { get; set; }
+        public bool IsHalted { get; set; }
 
         protected float yVelocity;
         private const float BULLET_GRAVITY = 2.5f;

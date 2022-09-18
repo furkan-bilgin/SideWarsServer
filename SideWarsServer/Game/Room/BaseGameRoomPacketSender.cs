@@ -95,8 +95,14 @@ namespace SideWarsServer.Game.Room
                     SendPlayerSpellUse(player, spell, roomPlayer.Value);
                 }
             }
+        }
 
-            spellUses.Clear();
+        public void SendEntityHaltPackets(List<Entity> halts)
+        {
+            foreach (var item in halts)
+            {
+                SendEntityHalt(item);
+            }
         }
 
         ///////// PACKET SENDER FUNCTIONS /////////
@@ -190,6 +196,19 @@ namespace SideWarsServer.Game.Room
                 connection.SendPacket(new CountdownPacket()
                 {
                     StartCountdown = true
+                });
+            }
+        }
+
+        public void SendEntityHalt(Entity entity)
+        {
+            foreach (var item in gameRoom.Players)
+            {
+                var connection = item.Value;
+                connection.SendPacket(new EntityHaltPacket()
+                {
+                    Id = entity.Id,
+                    IsHalted = entity.Movement.IsHalted
                 });
             }
         }

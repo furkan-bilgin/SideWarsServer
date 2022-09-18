@@ -1,5 +1,9 @@
-﻿using SideWarsServer.Game.Logic.StatusEffects;
+﻿using SideWarsServer.Game.Logic.GameLoop;
+using SideWarsServer.Game.Logic.StatusEffects;
 using SideWarsServer.Game.Room;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace SideWarsServer.Game.Logic.Updater
 {
     public class CustomStatusEffectUpdater : IEntityUpdater
@@ -18,6 +22,28 @@ namespace SideWarsServer.Game.Logic.Updater
                         entity.Hurt(poisonStatusEffect.DamagePerUnitTime);
                     }
                 }
+            }
+
+            UpdateStun(entity, gameRoom);
+        }
+
+        private HashSet<Entity> stunnedEntities;
+        private void UpdateStun(Entity entity, IGameRoom gameRoom)
+        {
+            var baseGameRoom = (BaseGameRoom)gameRoom;
+            var hasStunStatusEffect = entity.StatusEffects.OfType<StunStatusEffect>().Any();
+            entity.Movement.IsHalted = hasStunStatusEffect;
+
+            // Send stun on change
+            if (hasStunStatusEffect && !stunnedEntities.Contains(entity))
+            {
+                baseGameRoom.GetGameLoop<PacketSenderGameLoop>().OnEntityHaltChange(entity);
+                stunnedEntities.Add(entity);
+            } 
+            else if (!hasStunStatusEffect && stunnedEntities.Contains(entity)) 
+            {
+                baseGameRoom.GetGameLoop<PacketSenderGameLoop>().OnEntityHaltChange(entity);
+                stunnedEntities.Remove(entity);
             }
         }
     }
