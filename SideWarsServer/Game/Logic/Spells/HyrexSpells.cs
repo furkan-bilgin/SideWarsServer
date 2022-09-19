@@ -28,7 +28,7 @@ namespace SideWarsServer.Game.Logic.Spells
                     var hyrexMovement = (HyrexMovement)player.Movement;
                     var hyrexCollider = (SquareCollider)player.Collider;
 
-                    player.StatusEffects.Add(new MutedStatusEffect((GameConstants.HYREX_FIRST_SPELL_TIME + 0.25f).SecondsToTicks(), gameRoom.Tick)); // Apply muted status effect to Hyrex, so he can't shoot while sliding
+                    player.StatusEffects.Add(new MutedStatusEffect((GameConstants.HYREX_FIRST_SPELL_TIME + 0.75f).SecondsToTicks(), gameRoom.Tick)); // Apply muted status effect to Hyrex, so he can't shoot while sliding
 
                     hyrexMovement.StartSliding();
                     hyrexCollider.IsEnabled = false;
@@ -40,7 +40,8 @@ namespace SideWarsServer.Game.Logic.Spells
                 }
                 else if (spell.Type == SpellType.HyrexFastFire)
                 {
-                    player.StatusEffects.Add(new HyrexFastFireStatusEffect(GameConstants.HYREX_SECOND_SPELL_TIME.SecondsToTicks(), gameRoom.Tick)); 
+                    player.StatusEffects.Add(new HyrexFastFireStatusEffect(GameConstants.HYREX_SECOND_SPELL_TIME.SecondsToTicks(), gameRoom.Tick));
+                    baseGameRoom.SpawnParticle(ParticleType.Spark, player.Location);
                 }
             }
 

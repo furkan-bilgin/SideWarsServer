@@ -9,7 +9,7 @@ namespace SideWarsServer.Game.Logic.Other
     {
         public static EntityInfo DesgamaShieldInfo => new EntityInfo()
         {
-            BaseHealth = 90,
+            BaseHealth = 100,
             HitBoxMin = -new Vector3(1, 1, 0.375f),
             HitBoxMax = new Vector3(1, 1, 0.375f)
         };
@@ -21,7 +21,7 @@ namespace SideWarsServer.Game.Logic.Other
 
             Location = player.Location + new Vector3(0, 0.2f, invertZ ? -2 : 2);
 
-            // Apply a poison status effect forever
+            // Apply a poison status effect indefinitely
             StatusEffects.Add(new PoisonStatusEffect(999999, 0, 15, 1f));
             UpdateEntityInfo(EntityInfo);
         }

@@ -10,6 +10,7 @@ namespace SideWars.Shared.Physics
         public bool IsHalted { get; set; }
 
         protected float yVelocity;
+        protected float xVelocity;
         private const float BULLET_GRAVITY = 2.5f;
 
         public BulletMovement(EntityTeam Team, float Speed)
@@ -23,7 +24,7 @@ namespace SideWars.Shared.Physics
             var speed = Team == EntityTeam.Red ? -Speed : Speed;
             yVelocity -= BULLET_GRAVITY * deltaTime;
 
-            location += new Vector3(0, yVelocity, speed) * deltaTime;
+            location += new Vector3(xVelocity, yVelocity, speed) * deltaTime;
         }
     }
 }

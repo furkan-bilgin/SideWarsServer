@@ -58,8 +58,8 @@ namespace SideWars.Shared.Game
 
             Speed = 3.1f,
 
-            BulletPosition = new Vector3(0.03f, 0.35f, 1f),
-            RunningBulletPosition = new Vector3(0.182f, 0.25f, 1f),
+            BulletPosition = new Vector3(0, 0.35f, 1f),
+            RunningBulletPosition = new Vector3(0, 0.35f, 1f),
 
             HitBoxMin = -new Vector3(0.6f, 1, 0.375f),
             HitBoxMax = new Vector3(0.6f, 1, 0.375f)

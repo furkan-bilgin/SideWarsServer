@@ -3,6 +3,7 @@ using SideWarsServer.Game.Logic.Projectiles;
 using SideWarsServer.Game.Room;
 using SideWars.Shared.Game;
 using SideWarsServer.Utils;
+using SideWarsServer.Game.Logic.Other;
 
 namespace SideWarsServer.Game.Logic.Effects
 {
@@ -31,6 +32,13 @@ namespace SideWarsServer.Game.Logic.Effects
             {
                 var grenade = (Grenade)collidingEntity;
                 new GrenadeDetonateEffect(grenade).Start(room);
+            }
+            else if (collidingEntity is DesgamaShield)
+            {
+                // Other bullets have custom death particles in client-side, so we only need to 
+                // spawn these
+                if (bullet is Bullet || bullet is HyrexBullet)
+                    room.SpawnParticle(ParticleType.DesgamaMissileDeath, bullet.Location);
             }
 
             bullet.Kill();

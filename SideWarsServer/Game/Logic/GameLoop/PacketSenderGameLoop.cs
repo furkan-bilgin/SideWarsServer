@@ -21,6 +21,7 @@ namespace SideWarsServer.Game.Logic.GameLoop
 
         public void Update(IGameRoom gameRoom)
         {
+            //gameRoom.PacketSender.SendServerTickPacket();
             gameRoom.PacketSender.SendMovementPackets();
             gameRoom.PacketSender.SendPlayerSpellUsePackets(spellUses);
             gameRoom.PacketSender.SendEntityHaltPackets(entityHalts);

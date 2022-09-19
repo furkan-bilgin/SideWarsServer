@@ -68,9 +68,6 @@ namespace SideWarsServer.Game.Room
             RoomScheduler = new RoomScheduler();
 
             Server.Instance.LogicController.RegisterLogicUpdate(Update);
-            var entity = SpawnEntity(new Mark(RoomOptions.GetSpawnPoint(EntityTeam.Red), new PlayerConnection(new Database.Models.Token(31, "", "", ChampionType.Mark), null), EntityTeam.Red));
-            entity.BaseHealth = 150;
-            entity.Heal(150);
         }
 
         ~BaseGameRoom()
@@ -192,15 +189,12 @@ namespace SideWarsServer.Game.Room
             if (RoomState != GameRoomState.Started)
                 return;
 
-            lock (Entities)
+            lock (Entities) lock (Players)
             {
-                lock (Players)
-                {
-                    Tick++;
+                Tick++;
 
-                    UpdateEntityUpdaters();
-                    UpdateGameLoops();
-                }
+                UpdateEntityUpdaters();
+                UpdateGameLoops();
             }
         }
 

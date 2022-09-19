@@ -1,4 +1,6 @@
-﻿namespace SideWarsServer.Game.Logic.Projectiles
+﻿using SideWars.Shared.Physics;
+
+namespace SideWarsServer.Game.Logic.Projectiles
 {
     public class DesgamaBullet : Bullet
     {
@@ -6,6 +8,7 @@
         {
             ProjectileInfo = SideWars.Shared.Game.ProjectileInfo.DesgamaBullet;
             Type = SideWars.Shared.Packets.EntityType.DesgamaBullet;
+            Movement = new BulletMovement(shooter.Team, ProjectileInfo.Speed);
         }
     }
 }

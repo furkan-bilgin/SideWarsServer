@@ -215,5 +215,17 @@ namespace SideWarsServer.Game.Room
                 });
             }
         }
+
+        public void SendServerTickPacket()
+        {
+            foreach (var item in gameRoom.Players)
+            {
+                var connection = item.Value;
+                connection.SendPacket(new ServerTickPacket()
+                {
+                    CurrentTick = gameRoom.Tick
+                });
+            }
+        }
     }
 }

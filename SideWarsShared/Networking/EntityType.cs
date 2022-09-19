@@ -6,9 +6,12 @@
         Bullet,
         Grenade,
         HyrexBullet,
+
         DesgamaBullet,
         DesgamaMissile,
-        DesgamaShield
+        DesgamaShield,
+
+        GalacticusBullet
     }
 }
  

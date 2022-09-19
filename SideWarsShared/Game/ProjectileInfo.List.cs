@@ -9,8 +9,8 @@ namespace SideWars.Shared.Game
             Type = ProjectileType.Bullet,
             Speed = 55,
             Damage = 12,
-            HitBoxMin = -Vector3.One / 1.5f,
-            HitBoxMax = Vector3.One / 1.5f,
+            HitBoxMin = -Vector3.One / 1.75f,
+            HitBoxMax = Vector3.One / 1.75f,
             BaseHealth = 1
         };
 
@@ -39,8 +39,8 @@ namespace SideWars.Shared.Game
             Type = ProjectileType.DesgamaBullet,
             Speed = 30,
             Damage = 15,
-            HitBoxMin = -Vector3.One / 1.25f,
-            HitBoxMax = Vector3.One / 1.25f,
+            HitBoxMin = -Vector3.One / 1.5f,
+            HitBoxMax = Vector3.One / 1.5f,
             BaseHealth = 1
         };
 
@@ -49,6 +49,17 @@ namespace SideWars.Shared.Game
             Type = ProjectileType.DesgamaMissile,
             Speed = 35,
             Damage = 10,
+            HitBoxMin = -Vector3.One / 1.25f,
+            HitBoxMax = Vector3.One / 1.25f,
+            BaseHealth = 1
+        };
+
+
+        public static ProjectileInfo GalacticusBullet => new ProjectileInfo()
+        {
+            Type = ProjectileType.DesgamaMissile,
+            Speed = 25,
+            Damage = 8,
             HitBoxMin = -Vector3.One / 1.25f,
             HitBoxMax = Vector3.One / 1.25f,
             BaseHealth = 1

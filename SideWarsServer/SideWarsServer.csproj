@@ -66,6 +66,7 @@
     <Compile Include="Database\Models\Token.cs" />
     <Compile Include="Game\LogicController.cs" />
     <Compile Include="Game\Logic\Champions\Desgama.cs" />
+    <Compile Include="Game\Logic\Champions\Galacticus.cs" />
     <Compile Include="Game\Logic\Champions\Hyrex.cs" />
     <Compile Include="Game\Logic\Effects\ApplyStatusEffect.cs" />
     <Compile Include="Game\Logic\Effects\BulletCollisionEffect.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Game\Logic\Other\DesgamaShield.cs" />
     <Compile Include="Game\Logic\Projectiles\DesgamaBullet.cs" />
     <Compile Include="Game\Logic\Projectiles\DesgamaMissile.cs" />
+    <Compile Include="Game\Logic\Projectiles\GalacticusBullet.cs" />
     <Compile Include="Game\Logic\Projectiles\HyrexBullet.cs" />
     <Compile Include="Game\Logic\Scheduler\RoomScheduler.cs" />
     <Compile Include="Game\Logic\Spells\DesgamaSpells.cs" />

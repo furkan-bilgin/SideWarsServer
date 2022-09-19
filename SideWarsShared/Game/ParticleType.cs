@@ -7,6 +7,7 @@
         Blood,
         MuzzleFlash,
         MarkHealup,
-        Spark
+        Spark,
+        DesgamaMissileDeath
     }
 }
