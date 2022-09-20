@@ -1,4 +1,5 @@
 ﻿using Ara3D;
+using SideWars.Shared.Packets;
 using SideWarsServer.Game.Logic;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,11 @@ namespace SideWarsServer.Game.Room
         public static Player GetPlayer(this IGameRoom room, int tokenID)
         {
             return (Player)room.GetEntities().Where(x => x is Player && ((Player)x).PlayerConnection.Token.ID == tokenID).FirstOrDefault();
+        }
+
+        public static List<Player> GetPlayersByTeam(this IGameRoom room, EntityTeam team)
+        {
+            return room.GetEntities().Where(x => x is Player && x.Team == team).Cast<Player>().ToList();
         }
     }
 }

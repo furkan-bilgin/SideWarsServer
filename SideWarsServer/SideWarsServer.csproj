@@ -90,6 +90,7 @@
     <Compile Include="Game\Logic\Projectiles\HyrexBullet.cs" />
     <Compile Include="Game\Logic\Scheduler\RoomScheduler.cs" />
     <Compile Include="Game\Logic\Spells\DesgamaSpells.cs" />
+    <Compile Include="Game\Logic\Spells\GalacticusSpells.cs" />
     <Compile Include="Game\Logic\Spells\HyrexSpells.cs" />
     <Compile Include="Game\Logic\Spells\PlayerSpells.cs" />
     <Compile Include="Game\Logic\StatusEffects\FastFireStatusEffect.cs" />

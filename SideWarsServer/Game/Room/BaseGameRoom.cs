@@ -101,15 +101,15 @@ namespace SideWarsServer.Game.Room
                 case ChampionType.Mark:
                     player = new Mark(spawnPoint, playerConnection, team);
                     break;
-
                 case ChampionType.Hyrex:
                     player = new Hyrex(spawnPoint, playerConnection, team);
                     break;
-
                 case ChampionType.Desgama:
                     player = new Desgama(spawnPoint, playerConnection, team);
                     break;
-
+                case ChampionType.Galacticus:
+                    player = new Galacticus(spawnPoint, playerConnection, team);
+                    break;
                 default:
                     throw new System.Exception("Unknown champion.");
             }

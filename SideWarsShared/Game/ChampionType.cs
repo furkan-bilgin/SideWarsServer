@@ -6,6 +6,7 @@ namespace SideWars.Shared.Game
     {
         Mark = 100,
         Hyrex,
-        Desgama
+        Desgama,
+        Galacticus
     }
 }

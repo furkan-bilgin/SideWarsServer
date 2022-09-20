@@ -8,6 +8,7 @@ namespace SideWars.Shared.Game
         Grenade,
         HyrexBullet,
         DesgamaBullet,
-        DesgamaMissile
+        DesgamaMissile,
+        GalacticusBullet
     }
 }

@@ -57,8 +57,8 @@ namespace SideWars.Shared.Game
 
         public static ProjectileInfo GalacticusBullet => new ProjectileInfo()
         {
-            Type = ProjectileType.DesgamaMissile,
-            Speed = 25,
+            Type = ProjectileType.GalacticusBullet,
+            Speed = 15,
             Damage = 8,
             HitBoxMin = -Vector3.One / 1.25f,
             HitBoxMax = Vector3.One / 1.25f,
