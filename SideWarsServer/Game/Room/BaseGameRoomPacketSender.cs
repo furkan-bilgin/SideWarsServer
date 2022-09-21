@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SideWarsServer.Networking;
+using Newtonsoft.Json;
 
 namespace SideWarsServer.Game.Room
 {
@@ -44,7 +45,7 @@ namespace SideWarsServer.Game.Room
 
                     if (entity is Player)
                     {
-                        if (gameRoom.Tick % LogicTimer.FramesPerSecond == 0) // Send Player positions every second for sync issues. 
+                        if (gameRoom.Tick % LogicTimer.FramesPerSecond / 3 == 0) // Send Player positions thrice a second for sync issues. 
                             sendEntityMovement();
                     }
                 }
@@ -89,7 +90,7 @@ namespace SideWarsServer.Game.Room
         {
             foreach (var item in spellUses)
             {
-                (var player, var spell) = item;
+                var (player, spell) = item;
                 foreach (var roomPlayer in gameRoom.Players)
                 {
                     SendPlayerSpellUse(player, spell, roomPlayer.Value);
@@ -97,11 +98,12 @@ namespace SideWarsServer.Game.Room
             }
         }
 
-        public void SendEntityHaltPackets(List<Entity> halts)
+        public void SendEntityInfoUpdatePackets(List<(Entity, object)> entityInfoUpdates)
         {
-            foreach (var item in halts)
+            foreach (var item in entityInfoUpdates)
             {
-                SendEntityHalt(item);
+                var (entity, update) = item;
+                SendEntityInfoUpdate(entity, JsonConvert.SerializeObject(update));
             }
         }
 
@@ -148,7 +150,7 @@ namespace SideWarsServer.Game.Room
                 X = entity.Location.X,
                 Y = entity.Location.Y,
                 Z = entity.Location.Z
-            });
+            }, DeliveryMethod.ReliableSequenced);
         }
 
         void SendPlayerMovement(Player player, PlayerConnection connection)
@@ -200,22 +202,6 @@ namespace SideWarsServer.Game.Room
             }
         }
 
-        public void SendEntityHalt(Entity entity)
-        {
-            foreach (var item in gameRoom.Players)
-            {
-                var connection = item.Value;
-                connection.SendPacket(new EntityHaltPacket()
-                {
-                    Id = entity.Id,
-                    IsHalted = entity.Movement.IsHalted,
-                    X = entity.Location.X,
-                    Y = entity.Location.Y,
-                    Z = entity.Location.Z
-                });
-            }
-        }
-
         public void SendServerTickPacket()
         {
             foreach (var item in gameRoom.Players)
@@ -224,6 +210,22 @@ namespace SideWarsServer.Game.Room
                 connection.SendPacket(new ServerTickPacket()
                 {
                     CurrentTick = gameRoom.Tick
+                });
+            }
+        }
+
+        public void SendEntityInfoUpdate(Entity entity, string newInfo)
+        {
+            foreach (var item in gameRoom.Players)
+            {
+                var connection = item.Value;
+                connection.SendPacket(new EntityInfoUpdatePacket()
+                {
+                    Id = entity.Id,
+                    NewInfo = newInfo,
+                    X = entity.Location.X,
+                    Y = entity.Location.Y,
+                    Z = entity.Location.Z
                 });
             }
         }

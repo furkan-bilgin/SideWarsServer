@@ -8,6 +8,7 @@
         MuzzleFlash,
         MarkHealup,
         Spark,
-        DesgamaMissileDeath
+        DesgamaMissileDeath,
+        GalacticusStunSpark
     }
 }

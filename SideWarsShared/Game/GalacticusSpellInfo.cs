@@ -10,7 +10,8 @@ namespace SideWars.Shared.Game
         {
             Spells = new List<SpellInfo>()
             {
-
+                new SpellInfo(8, SpellType.GalacticusSlow),
+                new SpellInfo(15, SpellType.GalacticusStun)
             };
         }
     }

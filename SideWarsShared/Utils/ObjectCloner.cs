@@ -1,4 +1,5 @@
-﻿using SideWars.Shared.Utils.ArrayExtensions;
+﻿using Newtonsoft.Json;
+using SideWars.Shared.Utils.ArrayExtensions;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -128,5 +129,4 @@ namespace SideWars.Shared.Utils
             }
         }
     }
-
 }

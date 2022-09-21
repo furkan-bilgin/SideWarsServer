@@ -10,8 +10,8 @@ namespace SideWars.Shared.Game
         {
             Spells = new List<SpellInfo>()
             {
-                new SpellInfo(10, SpellType.MarkGrenade), // Grenade skill, 10 sec cooldown
-                new SpellInfo(15, SpellType.MarkHeal)     // Heal skill, 10 sec cooldown
+                new SpellInfo(10, SpellType.MarkGrenade), 
+                new SpellInfo(15, SpellType.MarkHeal)  
             };
         }
     }

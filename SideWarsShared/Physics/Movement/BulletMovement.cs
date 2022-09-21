@@ -7,7 +7,6 @@ namespace SideWars.Shared.Physics
     {
         public float Speed { get; set; }
         public EntityTeam Team { get; set; }
-        public bool IsHalted { get; set; }
 
         protected float yVelocity;
         protected float xVelocity;

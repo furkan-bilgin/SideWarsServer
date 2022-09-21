@@ -30,30 +30,6 @@ namespace SideWarsServer.Game.Logic.Updater
                     }
                 }
             }
-
-            UpdateStun(entity, gameRoom);
-        }
-
-        private void UpdateStun(Entity entity, IGameRoom gameRoom)
-        {
-            if (entity.Movement == null)
-                return;
-
-            var baseGameRoom = (BaseGameRoom)gameRoom;
-            var hasStunStatusEffect = entity.StatusEffects.OfType<StunStatusEffect>().Any();
-            entity.Movement.IsHalted = hasStunStatusEffect;
-
-            // Send stun on change
-            if (hasStunStatusEffect && !stunnedEntities.Contains(entity))
-            {
-                baseGameRoom.GetGameLoop<PacketSenderGameLoop>().OnEntityHaltChange(entity);
-                stunnedEntities.Add(entity);
-            } 
-            else if (!hasStunStatusEffect && stunnedEntities.Contains(entity)) 
-            {
-                baseGameRoom.GetGameLoop<PacketSenderGameLoop>().OnEntityHaltChange(entity);
-                stunnedEntities.Remove(entity);
-            }
         }
     }
 }

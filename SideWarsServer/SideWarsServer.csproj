@@ -97,6 +97,7 @@
     <Compile Include="Game\Logic\StatusEffects\IStatusEffect.cs" />
     <Compile Include="Game\Logic\StatusEffects\MutedStatusEffect.cs" />
     <Compile Include="Game\Logic\StatusEffects\PoisonStatusEffect.cs" />
+    <Compile Include="Game\Logic\StatusEffects\SlowdownStatusEffect.cs" />
     <Compile Include="Game\Logic\StatusEffects\StunStatusEffect.cs" />
     <Compile Include="Game\Logic\Updater\CustomStatusEffectUpdater.cs" />
     <Compile Include="Game\Logic\Updater\GrenadeUpdater.cs" />

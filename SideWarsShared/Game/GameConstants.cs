@@ -22,5 +22,10 @@ namespace SideWars.Shared.Game
 
         // Desgama missile launch duration
         public const float DESGAMA_SECOND_SPELL_TIME = 0.5f;
+
+        // Galacticus enemy stun duration
+        public const float GALACTICUS_SECOND_SPELL_TIME = 1.5f;
+
+
     }
 }

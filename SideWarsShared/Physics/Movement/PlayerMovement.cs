@@ -9,7 +9,6 @@ namespace SideWars.Shared.Physics
         public float Speed { get; set; }
 
         public float Horizontal { get; set; }
-        public bool IsHalted { get; set; }
         public EntityTeam Team { get; private set; }
 
 

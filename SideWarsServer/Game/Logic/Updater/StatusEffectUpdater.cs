@@ -1,6 +1,7 @@
 ﻿using SideWars.Shared.Game;
 using SideWars.Shared.Utils;
 using SideWarsServer.Game.Logic.Effects;
+using SideWarsServer.Game.Logic.GameLoop;
 using SideWarsServer.Game.Logic.Projectiles;
 using SideWarsServer.Game.Logic.StatusEffects;
 using SideWarsServer.Game.Room;
@@ -29,17 +30,24 @@ namespace SideWarsServer.Game.Logic.Updater
 
             var entityHash = entity.GetHashCode();
             var statusEffectHash = GetHashOfStatusEffects(entity.StatusEffects);
+            var entityInfoToBeSynced = new Dictionary<string, object>();
 
+            // Save the status effect hash if it wasn't saved before
             if (!latestEntityStatusEffects.ContainsKey(entityHash))
             {
-                UpdateStatusEffects(entity);
+                entityInfoToBeSynced = UpdateStatusEffects(entity);
                 latestEntityStatusEffects.Add(entityHash, statusEffectHash);
             }
             else if (latestEntityStatusEffects[entityHash] != statusEffectHash)
             {
+                // Update status effects if the hash has changed
                 latestEntityStatusEffects[entityHash] = statusEffectHash;
-                UpdateStatusEffects(entity);
+                entityInfoToBeSynced = UpdateStatusEffects(entity);
             }
+
+            if (entityInfoToBeSynced.Count > 0)
+                gameRoom.GetGameLoop<PacketSenderGameLoop>().OnEntityInfoChange(entity, entityInfoToBeSynced);
+          
         }
 
         void CheckExpiredStatusEffects(Entity entity, IGameRoom gameRoom)
@@ -61,22 +69,43 @@ namespace SideWarsServer.Game.Logic.Updater
 
         int GetHashOfStatusEffects(List<IStatusEffect> statusEffects)
         {
-            var hash = 1;
+            var hash = 13;
             foreach (var item in statusEffects)
-                hash *= item.GetHashCode();
+                hash = (hash * 7) + item.GetHashCode();
 
             return hash;
         }
 
-        void UpdateStatusEffects(Entity entity)
+        // List of EntityInfo fields we need to keep in sync with the client
+        private Dictionary<string, Func<EntityInfo, object>> entityInfoSync = new Dictionary<string, Func<EntityInfo, object>>()
         {
-            var info = (EntityInfo)entity.EntityInfo.Clone();
+            { "Speed", (x) => x.Speed },
+            { "BaseHealth", (x) => x.BaseHealth }
+        };
+
+        Dictionary<string, object> UpdateStatusEffects(Entity entity)
+        {
+            var newInfo = (EntityInfo)entity.EntityInfo.Clone();
+            var oldInfo = entity.EntityInfo;
+
             foreach (var item in entity.StatusEffects)
             {
-                info = item.ApplyEffect(info);
+                newInfo = item.ApplyEffect(newInfo);
             }
 
-            entity.UpdateEntityInfo(info);
+            // Sync important fields with client
+            var entityInfoToBeSynced = new Dictionary<string, object>(); 
+            foreach (var item in entityInfoSync)
+            {
+                var (name, checker) = (item.Key, item.Value);
+                if (checker(newInfo) != checker(oldInfo))
+                {
+                    entityInfoToBeSynced.Add(name, checker(newInfo));
+                }
+            }
+
+            entity.UpdateEntityInfo(newInfo);
+            return entityInfoToBeSynced;
         }
     }
 }

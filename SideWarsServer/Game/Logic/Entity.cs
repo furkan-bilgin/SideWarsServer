@@ -38,6 +38,8 @@ namespace SideWarsServer.Game.Logic
         public virtual void UpdateEntityInfo(EntityInfo info)
         {
             BaseHealth = info.BaseHealth;
+            if (Movement != null)
+                Movement.Speed = info.Speed;
 
             if (Health == -1)
                 Health = info.BaseHealth;

@@ -40,7 +40,7 @@ namespace SideWarsServer.Game.Logic.Spells
                 }
                 else if (spell.Type == SpellType.HyrexFastFire)
                 {
-                    player.StatusEffects.Add(new HyrexFastFireStatusEffect(GameConstants.HYREX_SECOND_SPELL_TIME.SecondsToTicks(), gameRoom.Tick));
+                    player.StatusEffects.Add(new FastFireStatusEffect(GameConstants.HYREX_SECOND_SPELL_TIME.SecondsToTicks(), gameRoom.Tick, 50));
                     baseGameRoom.SpawnParticle(ParticleType.Spark, player.Location);
                 }
             }

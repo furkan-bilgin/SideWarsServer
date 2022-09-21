@@ -4,10 +4,10 @@ using System.Text;
 
 namespace SideWars.Shared.Packets
 {
-    public class EntityHaltPacket
+    public class EntityInfoUpdatePacket
     {
         public int Id { get; set; }
-        public bool IsHalted { get; set; }
+        public string NewInfo { get; set; }
         public float X { get; set; }
         public float Y { get; set; }
         public float Z { get; set; }

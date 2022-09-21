@@ -10,7 +10,7 @@ namespace SideWars.Shared.Physics.Movement
         private Func<Vector3> enemyLocationGetter;
         
         // All in seconds
-        public const float FOLLOW_TIME = 1.5f;
+        public const float FOLLOW_TIME = 0.7f;
         private const float FOLLOW_SPEED = 3;
         private float currentFollowTime;
 
@@ -31,7 +31,7 @@ namespace SideWars.Shared.Physics.Movement
                 currentFollowTime += deltaTime;
 
                 // Change velocity smoothly to prevent jittery movement
-                xVelocity = MathOps.Lerp(xVelocity, targetXVelocity, 0.15f);
+                xVelocity = MathOps.Lerp(xVelocity, targetXVelocity, 0.1f);
             }
 
             base.Update(deltaTime, ref location);

@@ -1,24 +1,25 @@
 ﻿using SideWars.Shared.Game;
-using SideWars.Shared.Utils;
 using SideWarsServer.Utils;
 
 namespace SideWarsServer.Game.Logic.StatusEffects
 {
-    public class StunStatusEffect : IStatusEffect
+    public class SlowdownStatusEffect : IStatusEffect
     {
         public int ExpirityPeriod { get; set; }
         public int SpawnTick { get; private set; }
+        private int slowdownPercentage;
 
-        public StunStatusEffect(int expirityPeriod, int spawnTick)
+        public SlowdownStatusEffect(int expirityPeriod, int spawnTick, int slowdownPercentage)
         {
             ExpirityPeriod = expirityPeriod;
             SpawnTick = spawnTick;
+            this.slowdownPercentage = slowdownPercentage;
         }
 
         public EntityInfo ApplyEffect(EntityInfo entityInfo)
         {
             var playerInfo = (PlayerInfo)entityInfo;
-            playerInfo.Speed = playerInfo.Speed.DownByPercentage(100);
+            playerInfo.Speed = playerInfo.Speed.DownByPercentage(slowdownPercentage); 
 
             return playerInfo;
         }

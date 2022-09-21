@@ -12,6 +12,10 @@
 
         // Desgama Spells
         DesgamaMissile,
-        DesgamaShield
+        DesgamaShield,
+
+        // Galacticus Spells
+        GalacticusStun,
+        GalacticusSlow
     }
 }

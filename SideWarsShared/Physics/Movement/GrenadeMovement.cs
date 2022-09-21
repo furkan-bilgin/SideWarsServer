@@ -11,7 +11,6 @@ namespace SideWars.Shared.Physics
         const float HEIGHT = 2f;
 
         public float Speed { get; set; }
-        public bool IsHalted { get; set; }
         public EntityTeam Team { get; set; }
         private Vector3 target;
         private ParabolaData parabolaData;
