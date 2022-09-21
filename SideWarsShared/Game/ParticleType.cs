@@ -9,6 +9,7 @@
         MarkHealup,
         Spark,
         DesgamaMissileDeath,
-        GalacticusStunSpark
+        GalacticusStunSpark,
+        GalacticusSlowSpark
     }
 }
