@@ -1,4 +1,4 @@
-name: EZRep Build
+name: SideWarsServer Build
 
 on:
   push:
