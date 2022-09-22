@@ -98,7 +98,7 @@ namespace SideWarsServer.Game.Logic.Updater
             foreach (var item in entityInfoSync)
             {
                 var (name, checker) = (item.Key, item.Value);
-                if (checker(newInfo) != checker(oldInfo))
+                if (!checker(newInfo).Equals(checker(oldInfo)))
                 {
                     entityInfoToBeSynced.Add(name, checker(newInfo));
                 }
