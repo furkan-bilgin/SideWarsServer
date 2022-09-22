@@ -31,39 +31,11 @@ namespace SideWarsServer.Game.Room
             }
         }
 
-        public void SendMovementPackets()
-        {
-            foreach (var playerItem in gameRoom.Players)
-            {
-                foreach (var entityItem in gameRoom.Entities)
-                {
-                    var entity = entityItem.Value;
-                    void sendEntityMovement()
-                    {
-                        SendEntityMovement(entity, playerItem.Value);
-                    }
-
-                    if (entity is Player)
-                    {
-                        if (gameRoom.Tick % LogicTimer.FramesPerSecond / 3 == 0) // Send Player positions thrice a second for sync issues. 
-                            sendEntityMovement();
-                    }
-                }
-
-            }
-        }
-
         public void SendPlayerMovementPackets()
         {
-            foreach (var playerItem in gameRoom.Players)
+            foreach (var item in gameRoom.Players)
             {
-                foreach (var item in gameRoom.GetEntities().Where(x => x is Player).Select(x => (Player)x))
-                {
-                    if (item.PlayerConnection.Token.ID != playerItem.Value.Token.ID)
-                    {
-                        SendPlayerMovement(item, item.PlayerConnection);
-                    }
-                }
+                SendPlayerMovement(gameRoom.GetEntities().Where(x => x is Player).Select(x => (Player)x).ToArray(), item.Value);
             }
         }
 
@@ -153,14 +125,18 @@ namespace SideWarsServer.Game.Room
             }, DeliveryMethod.ReliableSequenced);
         }
 
-        void SendPlayerMovement(Player player, PlayerConnection connection)
+        void SendPlayerMovement(Player[] players, PlayerConnection connection)
         {
-            var playerMovement = (PlayerMovement)player.Movement;
+            var playerMovements = players.Select(x => (PlayerMovement)x.Movement);
             connection.SendPacket(new ServerPlayerMovementPacket()
             {
-                Id = player.Id,
-                Horizontal = Functions.AsSByte(playerMovement.Horizontal)
-            });
+                Tick = connection.CurrentGameRoom.Tick,
+                Id = players.Select(x => x.Id).ToArray(),
+                X = players.Select(x => x.Location.X).ToArray(),
+                Y = players.Select(x => x.Location.Y).ToArray(),
+                Z = players.Select(x => x.Location.Z).ToArray(),
+                Horizontal = playerMovements.Select(x => x.Horizontal).ToArray()
+            }, DeliveryMethod.Unreliable);
         }
 
         void SendEntityDeath(Entity entity, PlayerConnection connection)
@@ -187,7 +163,7 @@ namespace SideWarsServer.Game.Room
                 Id = player.Id,
                 SpellType = (ushort)spellInfo.Type,
                 Cooldown = spellInfo.Cooldown
-            }, DeliveryMethod.ReliableOrdered);
+            });
         }
 
         public void SendCountdownPacket()

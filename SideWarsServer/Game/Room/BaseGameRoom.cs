@@ -83,24 +83,32 @@ namespace SideWarsServer.Game.Room
 
         public void AddPlayer(PlayerConnection playerConnection)
         {
-            Logger.Info("Added player " + playerConnection.NetPeer.Id + " to the room");
             playerConnection.CurrentGameRoom = this;
-
             PacketSender.SendAllEntitySpawns(playerConnection);
 
+            // Re-assign new PlayerConnection to the old player
             if (Players.ContainsKey(playerConnection.Token.ID))
             {
                 var oldPlayer = this.GetPlayer(playerConnection.Token.ID);
-                oldPlayer.PlayerConnection = playerConnection;
-                Players[playerConnection.Token.ID] = playerConnection;
+                if (oldPlayer != null)
+                    oldPlayer.PlayerConnection = playerConnection;
 
+                Players[playerConnection.Token.ID] = playerConnection;
                 return;
             }
 
+            Players[playerConnection.Token.ID] = playerConnection;
+            SpawnPlayerEntity(playerConnection);
+
+            Logger.Info("Added player " + playerConnection.NetPeer.Id + " to the room");
+        }
+
+        public Entity SpawnPlayerEntity(PlayerConnection playerConnection)
+        {
             var team = GetNextTeam();
             var spawnPoint = RoomOptions.GetSpawnPoint(team);
             Player player;
-            
+
             switch (playerConnection.Token.ChampionType)
             {
                 case ChampionType.Mark:
@@ -116,11 +124,10 @@ namespace SideWarsServer.Game.Room
                     player = new Galacticus(spawnPoint, playerConnection, team);
                     break;
                 default:
-                    throw new System.Exception("Unknown champion.");
+                    throw new Exception("Unknown champion.");
             }
 
-            Players[playerConnection.Token.ID] = playerConnection;
-            SpawnEntity(player);
+            return SpawnEntity(player);
         }
 
         public void RemovePlayer(PlayerConnection playerConnection)
