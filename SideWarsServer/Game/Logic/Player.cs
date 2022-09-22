@@ -37,7 +37,7 @@ namespace SideWarsServer.Game.Logic
             var playerInfo = (PlayerInfo)entityInfo;
 
             Movement.Speed = playerInfo.Speed;
-            PlayerCombat.ReInitialize(playerInfo);
+            PlayerCombat.Initialize(playerInfo);
         }
 
         public override void Packetify(ref List<ushort> data, ref List<float> bigData, PlayerConnection connection)

@@ -19,7 +19,7 @@ namespace SideWarsServer.Game.Logic.Effects
 
         public void Start(IGameRoom room)
         {
-            Action shoot = () =>
+            void shoot()
             {
                 // Return if this player is muted.
                 if (player.StatusEffects.OfType<MutedStatusEffect>().Any())
@@ -31,12 +31,12 @@ namespace SideWarsServer.Game.Logic.Effects
                 }
             };
 
+            new ShowMuzzleFlashEffect(player).Start(room);
+
             if (player.PlayerInfo.ShootTime > 0)
                 room.RoomScheduler.ScheduleJobAfter(shoot, player.PlayerInfo.ShootTime.SecondsToTicks());
             else
                 shoot();
-
-            new ShowMuzzleFlashEffect(player).Start(room);
         }
     }
 }

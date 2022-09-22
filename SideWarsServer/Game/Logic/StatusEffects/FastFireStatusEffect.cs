@@ -19,7 +19,7 @@ namespace SideWarsServer.Game.Logic.StatusEffects
         public EntityInfo ApplyEffect(EntityInfo entityInfo)
         {
             var playerInfo = (PlayerInfo)entityInfo;
-            playerInfo.AttackSpeed = playerInfo.AttackSpeed.DownByPercentage(fastFirePercentage); // Fire 50% faster
+            playerInfo.AttackTime = playerInfo.AttackTime.DownByPercentage(fastFirePercentage); // Fire 50% faster
 
             return playerInfo;
         }

@@ -10,7 +10,7 @@ namespace SideWars.Shared.Game
             ProjectileType = ProjectileType.Bullet,
             BaseHealth = 180,
 
-            AttackSpeed = 300,
+            AttackTime = 0.3f,
             BulletsPerShoot = 1,
             AmmoCount = 30,
             ReloadTime = 1.5f,
@@ -30,7 +30,7 @@ namespace SideWars.Shared.Game
             ProjectileType = ProjectileType.HyrexBullet,
             BaseHealth = 150,
 
-            AttackSpeed = 1000,
+            AttackTime = 1f,
             BulletsPerShoot = 4,
             AmmoCount = 6,
             ReloadTime = .75f,
@@ -50,7 +50,7 @@ namespace SideWars.Shared.Game
             ProjectileType = ProjectileType.DesgamaBullet,
             BaseHealth = 120,
 
-            AttackSpeed = 1500,
+            AttackTime = 1.5f,
             BulletsPerShoot = 1,
             AmmoCount = 6,
             ReloadTime = 1.5f,
@@ -71,7 +71,7 @@ namespace SideWars.Shared.Game
             ProjectileType = ProjectileType.GalacticusBullet,
             BaseHealth = 120,
 
-            AttackSpeed = 900,
+            AttackTime = 0.9f,
             BulletsPerShoot = 1,
             AmmoCount = 6,
             ReloadTime = 1.5f,

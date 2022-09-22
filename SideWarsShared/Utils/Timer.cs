@@ -27,4 +27,13 @@ namespace SideWars.Shared.Utils
             return false;
         }
     }
+
+    public class FloatTimer : Timer
+    {
+        public float Period { set => PeriodMilliseconds = (int)(value * 1000); }
+
+        public FloatTimer(float period) : base((int)(period * 1000))
+        {
+        }
+    }
 }

@@ -7,23 +7,29 @@ namespace SideWarsServer.Game.Logic.Combat
 {
     public class PlayerCombat
     {
+        public int CurrentAmmo { get; private set; }
+
         private PlayerInfo playerInfo;
-        private Timer attackTimer;
+        private FloatTimer attackTimer;
+        private FloatTimer reloadTimer;
         private bool isPaused;
 
         public PlayerCombat(PlayerInfo playerInfo)
         {
-            ReInitialize(playerInfo);
+            CurrentAmmo = playerInfo.AmmoCount;
+
+            Initialize(playerInfo);
             this.playerInfo = playerInfo;
         }
 
-        public void ReInitialize(PlayerInfo playerInfo)
+        public void Initialize(PlayerInfo playerInfo)
         {
             if (attackTimer == null)
-                attackTimer = new Timer(playerInfo.AttackSpeed);
+                attackTimer = new FloatTimer(playerInfo.AttackTime);
             else
-                attackTimer.PeriodMilliseconds = playerInfo.AttackSpeed;
+                attackTimer.Period = playerInfo.AttackTime;
 
+            reloadTimer = new FloatTimer(playerInfo.ReloadTime);
             this.playerInfo = playerInfo;
         }
 
@@ -32,10 +38,32 @@ namespace SideWarsServer.Game.Logic.Combat
             if (isPaused)
                 return false;
 
-            if (playerInfo.AttackSpeed <= 0)
+            if (playerInfo.AttackTime == 0)
                 return false;
 
-            return attackTimer.CanTick();
+            if (CurrentAmmo == 0)
+            {
+                if (reloadTimer.CanTick())
+                {
+                    CurrentAmmo = playerInfo.AmmoCount;
+                    return Shoot();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            var canAttack = attackTimer.CanTick();
+            if (canAttack)
+            {
+                CurrentAmmo--;
+                // Exhaust timer to restart it
+                if (CurrentAmmo == 0)
+                    reloadTimer.CanTick();
+            }
+
+            return canAttack;
         }
 
         public void Pause()

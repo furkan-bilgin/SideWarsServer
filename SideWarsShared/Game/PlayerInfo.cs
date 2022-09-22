@@ -10,14 +10,13 @@ namespace SideWars.Shared.Game
         public ProjectileType ProjectileType { get; set; }
         public ChampionType PlayerType { get; set; }
 
-        /// <summary>
-        /// Player attack speed in milliseconds.
-        /// </summary>
-        public int AttackSpeed { get; set; } 
 
         public int BulletsPerShoot { get; set; }
 
         public int AmmoCount { get; set; }
+
+        // All in seconds
+        public float AttackTime { get; set; }
         public float ReloadTime { get; set; }
         public float ShootTime { get; set; }
 

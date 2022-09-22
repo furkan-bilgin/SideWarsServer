@@ -20,7 +20,8 @@ namespace SideWarsServer.Game.Logic.Effects
 
         public void Start(IGameRoom room)
         {
-            room.SpawnParticle(ParticleType.MuzzleFlash, Vector3.Zero, new float[] { player.Id });
+            // Need a neet-er way of sending bullets, either client-side prediction or a seperate packet. This just makes things harder to understand.
+            room.SpawnParticle(ParticleType.MuzzleFlash, Vector3.Zero, new float[] { player.Id, player.PlayerCombat.CurrentAmmo - 1 });
         }
     }
 }
