@@ -3,7 +3,7 @@
     public class RoundUpdatePacket
     {
         public int Round { get; set; }
-        public int LastRoundWinner { get; set; }
+        public EntityTeam LastRoundWinner { get; set; }
         public bool GameFinished { get; set; }
     }
 }

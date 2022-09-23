@@ -8,9 +8,14 @@ namespace SideWarsServer.Utils
 {
     public class Logger
     {
+        private static string GetDateString()
+        {
+            return $"[{DateTime.Now.ToString()}]";
+        }
+
         public static void Info(string text)
         {
-            Console.WriteLine("[Info] " + text);
+            Console.WriteLine($"{GetDateString()} [Info] {text}");
         }
 
         public static void Error(Exception ex)
@@ -21,7 +26,7 @@ namespace SideWarsServer.Utils
         public static void Error(string text)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("[Error] " + text);
+            Console.WriteLine($"{GetDateString()} [Error] {text}");
             Console.ResetColor();
         }
     }

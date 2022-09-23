@@ -83,6 +83,7 @@
     <Compile Include="Game\Logic\GameLoop\IGameLoop.cs" />
     <Compile Include="Game\Logic\GameLoop\PacketSenderGameLoop.cs" />
     <Compile Include="Game\Logic\GameLoop\PlayerMovementGameLoop.cs" />
+    <Compile Include="Game\Logic\GameLoop\RoundGameLoop.cs" />
     <Compile Include="Game\Logic\Other\DesgamaShield.cs" />
     <Compile Include="Game\Logic\Projectiles\DesgamaBullet.cs" />
     <Compile Include="Game\Logic\Projectiles\DesgamaMissile.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Game\Room\Listener\IGameRoomListener.cs" />
     <Compile Include="Game\Room\RoomController.cs" />
     <Compile Include="Game\Room\RoomOptions.cs" />
+    <Compile Include="Networking\MockPlayerConnection.cs" />
     <Compile Include="Networking\NetworkEventListener.cs" />
     <Compile Include="Networking\NetworkController.cs" />
     <Compile Include="Networking\PlayerConnection.cs" />

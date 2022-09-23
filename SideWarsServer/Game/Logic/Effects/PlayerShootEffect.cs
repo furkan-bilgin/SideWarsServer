@@ -22,8 +22,8 @@ namespace SideWarsServer.Game.Logic.Effects
             void shoot()
             {
                 // Return if this player is muted.
-                if (player.StatusEffects.OfType<MutedStatusEffect>().Any())
-                    return;
+                //if (player.StatusEffects.OfType<MutedStatusEffect>().Any())
+                //    return;
 
                 for (int i = 0; i < player.PlayerInfo.BulletsPerShoot; i++)
                 {

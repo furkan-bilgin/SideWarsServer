@@ -26,6 +26,9 @@ namespace SideWarsServer.Networking
 
         public void SendPacket<T>(T packet, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T: class, new()
         {
+            if (this is MockPlayerConnection)
+                return;
+
             Server.Instance.NetworkController.SendPacket(NetPeer, packet, deliveryMethod);
         }
     }

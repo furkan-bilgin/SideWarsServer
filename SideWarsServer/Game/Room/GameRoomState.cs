@@ -9,8 +9,8 @@ namespace SideWarsServer.Game.Room
     public enum GameRoomState
     {
         Waiting,
+        RoundUpdate,
         Started,
-        Countdown,
         Closed
     }
 }

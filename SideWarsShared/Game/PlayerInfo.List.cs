@@ -8,7 +8,7 @@ namespace SideWars.Shared.Game
         {
             PlayerType = ChampionType.Mark,
             ProjectileType = ProjectileType.Bullet,
-            BaseHealth = 180,
+            BaseHealth = 360,
 
             AttackTime = 0.3f,
             BulletsPerShoot = 1,
@@ -28,7 +28,7 @@ namespace SideWars.Shared.Game
         {
             PlayerType = ChampionType.Hyrex,
             ProjectileType = ProjectileType.HyrexBullet,
-            BaseHealth = 150,
+            BaseHealth = 300,
 
             AttackTime = 1f,
             BulletsPerShoot = 4,
@@ -48,7 +48,7 @@ namespace SideWars.Shared.Game
         {
             PlayerType = ChampionType.Desgama,
             ProjectileType = ProjectileType.DesgamaBullet,
-            BaseHealth = 120,
+            BaseHealth = 240,
 
             AttackTime = 1.5f,
             BulletsPerShoot = 1,
@@ -69,7 +69,7 @@ namespace SideWars.Shared.Game
         {
             PlayerType = ChampionType.Galacticus,
             ProjectileType = ProjectileType.GalacticusBullet,
-            BaseHealth = 120,
+            BaseHealth = 240,
 
             AttackTime = 0.9f,
             BulletsPerShoot = 1,

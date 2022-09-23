@@ -33,5 +33,10 @@ namespace SideWarsServer.Game.Room
         {
             return room.GetEntities().Where(x => x is Player && x.Team == team).Cast<Player>().ToList();
         }
+
+        public static List<EntityTeam> GetAliveTeams(this IGameRoom room)
+        {
+            return room.GetEntities().Where(x => x is Player).GroupBy(x => x.Team).Select(x => x.Key).ToList();
+        }
     }
 }

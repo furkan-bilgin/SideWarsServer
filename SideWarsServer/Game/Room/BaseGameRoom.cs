@@ -1,7 +1,6 @@
 ﻿using Ara3D;
 using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
-using SideWars.Shared.Physics;
 using SideWarsServer.Game.Logic;
 using SideWarsServer.Game.Logic.Champions;
 using SideWarsServer.Game.Logic.Effects;
@@ -15,7 +14,7 @@ using System.Linq;
 using SideWarsServer.Game.Logic.Scheduler;
 using SideWarsServer.Game.Logic.GameLoop;
 using System;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace SideWarsServer.Game.Room
 {
@@ -31,8 +30,9 @@ namespace SideWarsServer.Game.Room
         public BaseGameRoomPacketSender PacketSender { get; set; }
 
         public int Tick { get; private set; }
+        public int CurrentRound { get; private set; }
+        public Dictionary<EntityTeam, int> Scoreboard { get; private set; }
 
-        private CollisionController collisionController;
         private List<IEntityUpdater> entityUpdaters;
         private List<IGameLoop> gameLoops;
 
@@ -42,7 +42,6 @@ namespace SideWarsServer.Game.Room
         {
             PacketSender = new BaseGameRoomPacketSender(this);
 
-            collisionController = new CollisionController();
             entityUpdaters = new List<IEntityUpdater>()
             {
                 new GrenadeUpdater(),
@@ -58,6 +57,7 @@ namespace SideWarsServer.Game.Room
                 new CollisionGameLoop(OnEntityCollision),
                 new ActionGameLoop(() => RoomScheduler.Update(Tick)),
                 new EntityHealthGameLoop(),
+                new RoundGameLoop(),
                 new PacketSenderGameLoop()
             };
 
@@ -66,19 +66,25 @@ namespace SideWarsServer.Game.Room
             Entities = new Dictionary<int, Entity>();
             Listener = new BaseGameRoomListener(this);
             RoomScheduler = new RoomScheduler();
+            Scoreboard = new Dictionary<EntityTeam, int>() { { EntityTeam.Blue, 0 }, { EntityTeam.Red, 0 } };
+            newRoundTimer = new Stopwatch();
 
             Server.Instance.LogicController.RegisterLogicUpdate(Update);
 
             var team = GetNextTeam();
-            var player = SpawnEntity(new Mark(RoomOptions.GetSpawnPoint(team), new PlayerConnection(new Database.Models.Token(123, "123", "123", ChampionType.Mark), null), team));
-            player.BaseHealth = 999;
-            player.Heal(999);
+
+            AddPlayer(new MockPlayerConnection(ChampionType.Galacticus));
         }
 
         ~BaseGameRoom()
         {
-            Logger.Info("GameRoom dispose");
+            Dispose();
+        }
+
+        public void Dispose()
+        {
             Server.Instance.LogicController.UnregisterLogicUpdate(Update);
+            GC.SuppressFinalize(this);
         }
 
         public void AddPlayer(PlayerConnection playerConnection)
@@ -100,7 +106,7 @@ namespace SideWarsServer.Game.Room
             Players[playerConnection.Token.ID] = playerConnection;
             SpawnPlayerEntity(playerConnection);
 
-            Logger.Info("Added player " + playerConnection.NetPeer.Id + " to the room");
+            Logger.Info("Added player " + playerConnection.Token + " to the room");
         }
 
         public Entity SpawnPlayerEntity(PlayerConnection playerConnection)
@@ -178,26 +184,23 @@ namespace SideWarsServer.Game.Room
             return (T)gameLoops.Where(x => x is T).First();
         }
 
-        public async void StartGame()
+        public void StartGame()
         {
             if (RoomState != GameRoomState.Waiting)
                 throw new System.Exception("Game is already started");
 
-            RoomState = GameRoomState.Countdown;
-
-            // Send countdown packet and wait 3 seconds.
-            PacketSender.SendCountdownPacket();
-            
-            // TODO: UNCOMMENT THIS await Task.Delay(3000);
-            
-            // Then start the game.
-            RoomState = GameRoomState.Started;
-
-            Logger.Info("Game started");
+            RoomState = GameRoomState.RoundUpdate;
+            Logger.Info("Starting game...");
         }
 
         protected virtual void Update()
         {
+            if (RoomState == GameRoomState.RoundUpdate)
+            {
+                NewRoundUpdate();
+                return;
+            }
+
             if (RoomState != GameRoomState.Started)
                 return;
 
@@ -207,6 +210,78 @@ namespace SideWarsServer.Game.Room
 
                 UpdateEntityUpdaters();
                 UpdateGameLoops();
+            }
+        }
+
+        private Stopwatch newRoundTimer;
+        private bool newRoundSpawnedPlayers;
+        protected virtual void NewRoundUpdate()
+        {
+            // If we haven't started timer
+            if (!newRoundTimer.IsRunning)
+            {
+                newRoundTimer.Start();
+
+                var lastWinner = EntityTeam.None;
+                CurrentRound++;
+
+                if (CurrentRound > 1)
+                {
+                    var aliveTeam = this.GetAliveTeams().FirstOrDefault();
+
+                    // If both teams are completely dead, select a random winner
+                    if (aliveTeam == EntityTeam.None)
+                        aliveTeam = RandomTool.Current.Float(0, 1) >= 0.5f ? EntityTeam.Red : EntityTeam.Blue;
+
+                    lastWinner = aliveTeam;
+                    Scoreboard[aliveTeam] += 1;
+
+                    // Check scoreboard
+                    foreach (var item in Scoreboard)
+                    {
+                        // Send game-over packet if this team has won
+                        if (item.Value >= RoomOptions.MaxScore)
+                        {
+                            RoomState = GameRoomState.Closed;
+                            PacketSender.SendRoundUpdatePacket(CurrentRound, item.Key, true);
+
+                            // TODO: Do post-game API update and stuff
+                            return;
+                        }
+                    }
+
+                    newRoundSpawnedPlayers = false;
+                } 
+                else
+                {
+                    newRoundSpawnedPlayers = true;
+                }
+
+                PacketSender.SendRoundUpdatePacket(CurrentRound, lastWinner, false);
+            }
+
+            // TODO: change magic values
+            if (newRoundTimer.Elapsed.Seconds >= 3)
+            {
+                if (!newRoundSpawnedPlayers)
+                {
+                    // Kill all entities and spawn players
+                    foreach (var entity in Entities)
+                        entity.Value.Kill();
+
+                    foreach (var item in Players)
+                        SpawnPlayerEntity(item.Value);
+
+                    UpdateGameLoops();
+                    newRoundSpawnedPlayers = true;
+                }
+            } 
+
+            if (newRoundTimer.Elapsed.Seconds >= 6)
+            {
+                // Start the game
+                newRoundTimer.Reset();
+                RoomState = GameRoomState.Started;
             }
         }
 
@@ -245,6 +320,8 @@ namespace SideWarsServer.Game.Room
             team = team == EntityTeam.Red ? EntityTeam.Blue : EntityTeam.Red;
             return team;
         }
+
+
         #endregion
     }
 }

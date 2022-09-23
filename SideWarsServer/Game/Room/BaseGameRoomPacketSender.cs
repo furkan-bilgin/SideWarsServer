@@ -166,14 +166,16 @@ namespace SideWarsServer.Game.Room
             });
         }
 
-        public void SendCountdownPacket()
+        public void SendRoundUpdatePacket(int round, EntityTeam lastWinner, bool gameFinished)
         {
             foreach (var item in gameRoom.Players)
             {
                 var connection = item.Value;
-                connection.SendPacket(new CountdownPacket()
+                connection.SendPacket(new RoundUpdatePacket()
                 {
-                    StartCountdown = true
+                    Round = round,
+                    LastRoundWinner = lastWinner,
+                    GameFinished = gameFinished
                 });
             }
         }

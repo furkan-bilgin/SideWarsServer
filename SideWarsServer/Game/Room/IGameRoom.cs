@@ -6,10 +6,11 @@ using SideWars.Shared.Game;
 using System.Collections.Generic;
 using SideWarsServer.Game.Logic.Scheduler;
 using SideWarsServer.Game.Logic.GameLoop;
+using System;
 
 namespace SideWarsServer.Game.Room
 {
-    public interface IGameRoom
+    public interface IGameRoom : IDisposable
     {
         RoomScheduler RoomScheduler { get; set; }
         ProjectileSpawner ProjectileSpawner { get; set; }
@@ -23,14 +24,9 @@ namespace SideWarsServer.Game.Room
 
         void AddPlayer(PlayerConnection playerConnection);
         void RemovePlayer(PlayerConnection playerConnection);
-
         Entity SpawnEntity(Entity entity);
         void SpawnParticle(ParticleType particleType, Vector3 location, float[] data = null);
         T GetGameLoop<T>() where T : IGameLoop;
-
-        /// <summary>
-        /// Use this in GameLoops, returns a cached entity list.
-        /// </summary>
         List<Entity> GetEntities();
     }
 }
