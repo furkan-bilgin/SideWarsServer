@@ -8,5 +8,6 @@ namespace SideWarsServer.Game.Room.Listener
     {
         void OnPlayerReady(PlayerConnection player);
         void OnPlayerMovementChange(PlayerConnection player, float horizontal, PlayerButton[] buttons);
+        void OnPlayerDisconnect(PlayerConnection player);
     }
 }

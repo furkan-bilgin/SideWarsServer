@@ -32,5 +32,14 @@ namespace SideWarsServer.Game.Room.Listener
 
             gameRoom.StartGame();
         }
+
+        public void OnPlayerDisconnect(PlayerConnection player)
+        {
+            if (gameRoom.RoomState != GameRoomState.Closed)
+            {
+                var winnerTeam = gameRoom.GetPlayer(player.Token.ID).Team.GetOppositeTeam();
+                gameRoom.FinishGame(winnerTeam);
+            }
+        }
     }
 }

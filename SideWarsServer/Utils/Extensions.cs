@@ -20,5 +20,13 @@ namespace SideWarsServer.Utils
         {
             return Convert.ToInt32(val * LogicTimer.FramesPerSecond);
         }
+
+        public static EntityTeam GetOppositeTeam(this EntityTeam team)
+        {
+            if (team == EntityTeam.None)
+                return team;
+
+            return team == EntityTeam.Red ? EntityTeam.Blue : EntityTeam.Red;
+        }
     }
 }

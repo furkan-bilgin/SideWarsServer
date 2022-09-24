@@ -198,6 +198,14 @@ namespace SideWarsServer.Game.Room
             Logger.Info("Starting game...");
         }
 
+        public void FinishGame(EntityTeam winnerTeam)
+        {
+            RoomState = GameRoomState.Closed;
+            PacketSender.SendRoundUpdatePacket(CurrentRound, winnerTeam, true);
+
+            // TODO: Do post-game API update and stuff
+        }
+
         protected virtual void Update()
         {
             if (RoomState == GameRoomState.RoundUpdate)
@@ -248,10 +256,7 @@ namespace SideWarsServer.Game.Room
                         // Send game-over packet if this team has won
                         if (item.Value >= RoomOptions.MaxScore)
                         {
-                            RoomState = GameRoomState.Closed;
-                            PacketSender.SendRoundUpdatePacket(CurrentRound, item.Key, true);
-
-                            // TODO: Do post-game API update and stuff
+                            FinishGame(aliveTeam);
                             return;
                         }
                     }

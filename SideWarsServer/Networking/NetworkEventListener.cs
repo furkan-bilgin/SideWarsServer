@@ -41,7 +41,17 @@ namespace SideWarsServer.Networking
         public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
         {
             Logger.Info("Peer disconnected with id " + peer.Id+", reason "+disconnectInfo.Reason);
-            Server.Instance.PlayerController.RemovePlayer(peer.Id);
+
+            // Notify GameRoom about Player disconnection
+            if (Server.Instance.PlayerController.Players.TryGetValue(peer.Id, out var playerConnection))
+            {
+                if (playerConnection.CurrentGameRoom != null)
+                {
+                    playerConnection.CurrentGameRoom.Listener.OnPlayerDisconnect(playerConnection);
+                }
+
+                Server.Instance.PlayerController.RemovePlayer(peer.Id);
+            }
         }
 
         public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)

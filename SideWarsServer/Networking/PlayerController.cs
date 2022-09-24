@@ -24,7 +24,7 @@ namespace SideWarsServer.Networking
         {
             Players.Remove(playerConnection.NetPeer.Id);
         }
-
+        
         public void RemovePlayer(int id)
         {
             Players.Remove(id);
