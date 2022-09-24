@@ -7,6 +7,7 @@ namespace SideWarsServer.Networking
     public class NetworkController
     {
         public NetPacketProcessor PacketProcessor { get; private set; }
+
         private NetManager server;
         private NetworkEventListener networkEventListener;
 
@@ -19,11 +20,10 @@ namespace SideWarsServer.Networking
         {
             networkEventListener = new NetworkEventListener();
             server = new NetManager(networkEventListener);
-            server.BroadcastReceiveEnabled = true;
+            server.UpdateTime = 20;
+            server.Start(5000);
             
-            server.Start(9876);
-            
-            Logger.Info("Started listening at 9876");
+            Logger.Info("Started listening at 5000");
         }
 
         public void Update()

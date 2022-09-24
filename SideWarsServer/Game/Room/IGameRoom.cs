@@ -21,6 +21,7 @@ namespace SideWarsServer.Game.Room
         Dictionary<int, PlayerConnection> Players { get; set; }
         BaseGameRoomPacketSender PacketSender { get; set; }
         int Tick { get; }
+        int CurrentRound { get; }
 
         void AddPlayer(PlayerConnection playerConnection);
         void RemovePlayer(PlayerConnection playerConnection);

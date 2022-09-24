@@ -52,8 +52,8 @@ namespace SideWars.Shared.Game
 
             AttackTime = 1.5f,
             BulletsPerShoot = 1,
-            AmmoCount = 6,
-            ReloadTime = 1.5f,
+            AmmoCount = 7,
+            ReloadTime = 2f,
             ShootTime = 0.68f,
 
             Speed = 3.1f,
@@ -73,8 +73,8 @@ namespace SideWars.Shared.Game
 
             AttackTime = 0.9f,
             BulletsPerShoot = 1,
-            AmmoCount = 6,
-            ReloadTime = 1.5f,
+            AmmoCount = 7,
+            ReloadTime = 2f,
             ShootTime = 0.4f,
 
             Speed = 2.6f,

@@ -31,6 +31,8 @@ namespace SideWarsServer.Game.Room
 
         public int Tick { get; private set; }
         public int CurrentRound { get; private set; }
+        public float CurrentRoundTime { get; private set; }
+
         public Dictionary<EntityTeam, int> Scoreboard { get; private set; }
 
         private List<IEntityUpdater> entityUpdaters;
@@ -41,6 +43,23 @@ namespace SideWarsServer.Game.Room
         public BaseGameRoom()
         {
             PacketSender = new BaseGameRoomPacketSender(this);
+            InitGameTickers();
+
+            ProjectileSpawner = new ProjectileSpawner();
+            Players = new Dictionary<int, PlayerConnection>();
+            Entities = new Dictionary<int, Entity>();
+            Listener = new BaseGameRoomListener(this);
+            Scoreboard = new Dictionary<EntityTeam, int>() { { EntityTeam.Blue, 0 }, { EntityTeam.Red, 0 } };
+            newRoundTimer = new Stopwatch();
+            Server.Instance.LogicController.RegisterLogicUpdate(Update);
+
+            var team = GetNextTeam();
+            AddPlayer(new MockPlayerConnection(ChampionType.Galacticus));
+        }
+
+        private void InitGameTickers()
+        {
+            RoomScheduler = new RoomScheduler();
 
             entityUpdaters = new List<IEntityUpdater>()
             {
@@ -60,20 +79,6 @@ namespace SideWarsServer.Game.Room
                 new RoundGameLoop(),
                 new PacketSenderGameLoop()
             };
-
-            ProjectileSpawner = new ProjectileSpawner();
-            Players = new Dictionary<int, PlayerConnection>();
-            Entities = new Dictionary<int, Entity>();
-            Listener = new BaseGameRoomListener(this);
-            RoomScheduler = new RoomScheduler();
-            Scoreboard = new Dictionary<EntityTeam, int>() { { EntityTeam.Blue, 0 }, { EntityTeam.Red, 0 } };
-            newRoundTimer = new Stopwatch();
-
-            Server.Instance.LogicController.RegisterLogicUpdate(Update);
-
-            var team = GetNextTeam();
-
-            AddPlayer(new MockPlayerConnection(ChampionType.Galacticus));
         }
 
         ~BaseGameRoom()
@@ -207,6 +212,7 @@ namespace SideWarsServer.Game.Room
             lock (Entities) lock (Players)
             {
                 Tick++;
+                CurrentRoundTime -= LogicTimer.FixedDelta;
 
                 UpdateEntityUpdaters();
                 UpdateGameLoops();
@@ -272,6 +278,7 @@ namespace SideWarsServer.Game.Room
                     foreach (var item in Players)
                         SpawnPlayerEntity(item.Value);
 
+                    InitGameTickers();
                     UpdateGameLoops();
                     newRoundSpawnedPlayers = true;
                 }
@@ -281,6 +288,7 @@ namespace SideWarsServer.Game.Room
             {
                 // Start the game
                 newRoundTimer.Reset();
+                CurrentRoundTime = RoomOptions.RoundTime;
                 RoomState = GameRoomState.Started;
             }
         }

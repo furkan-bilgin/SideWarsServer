@@ -48,7 +48,7 @@ namespace SideWars.Shared.Game
         {
             Type = ProjectileType.DesgamaMissile,
             Speed = 35,
-            Damage = 10,
+            Damage = 12,
             HitBoxMin = -Vector3.One / 1.25f,
             HitBoxMax = Vector3.One / 1.25f,
             BaseHealth = 1
@@ -59,7 +59,7 @@ namespace SideWars.Shared.Game
         {
             Type = ProjectileType.GalacticusBullet,
             Speed = 15,
-            Damage = 8,
+            Damage = 10,
             HitBoxMin = -Vector3.One / 1.25f,
             HitBoxMax = Vector3.One / 1.25f,
             BaseHealth = 1

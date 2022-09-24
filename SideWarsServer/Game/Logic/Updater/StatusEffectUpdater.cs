@@ -14,11 +14,13 @@ namespace SideWarsServer.Game.Logic.Updater
 {
     public class StatusEffectUpdater : IEntityUpdater
     {
-        private Dictionary<int, int> latestEntityStatusEffects;
+        private Dictionary<int, int> latestEntityStatusEffectHashes;
+        private Dictionary<int, EntityInfo> lastAppliedEntityInfo;
 
         public StatusEffectUpdater()
         {
-            latestEntityStatusEffects = new Dictionary<int, int>();
+            latestEntityStatusEffectHashes = new Dictionary<int, int>();
+            lastAppliedEntityInfo = new Dictionary<int, EntityInfo>();
         }
 
         public void Update(Entity entity, IGameRoom gameRoom)
@@ -33,15 +35,15 @@ namespace SideWarsServer.Game.Logic.Updater
             var entityInfoToBeSynced = new Dictionary<string, object>();
 
             // Save the status effect hash if it wasn't saved before
-            if (!latestEntityStatusEffects.ContainsKey(entityHash))
+            if (!latestEntityStatusEffectHashes.ContainsKey(entityHash))
             {
                 entityInfoToBeSynced = UpdateStatusEffects(entity);
-                latestEntityStatusEffects.Add(entityHash, statusEffectHash);
+                latestEntityStatusEffectHashes.Add(entityHash, statusEffectHash);
             }
-            else if (latestEntityStatusEffects[entityHash] != statusEffectHash)
+            else if (latestEntityStatusEffectHashes[entityHash] != statusEffectHash)
             {
                 // Update status effects if the hash has changed
-                latestEntityStatusEffects[entityHash] = statusEffectHash;
+                latestEntityStatusEffectHashes[entityHash] = statusEffectHash;
                 entityInfoToBeSynced = UpdateStatusEffects(entity);
             }
 
@@ -93,6 +95,9 @@ namespace SideWarsServer.Game.Logic.Updater
                 newInfo = item.ApplyEffect(newInfo);
             }
 
+            if (lastAppliedEntityInfo.ContainsKey(entity.Id))
+                oldInfo = lastAppliedEntityInfo[entity.Id];
+
             // Sync important fields with client
             var entityInfoToBeSynced = new Dictionary<string, object>(); 
             foreach (var item in entityInfoSync)
@@ -105,6 +110,8 @@ namespace SideWarsServer.Game.Logic.Updater
             }
 
             entity.UpdateEntityInfo(newInfo);
+            lastAppliedEntityInfo[entity.Id] = (EntityInfo)newInfo.Clone();
+
             return entityInfoToBeSynced;
         }
     }
