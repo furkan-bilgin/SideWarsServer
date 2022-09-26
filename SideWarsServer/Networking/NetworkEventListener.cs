@@ -10,12 +10,10 @@ namespace SideWarsServer.Networking
     {
         public async void OnConnectionRequest(ConnectionRequest request)
         {
-            string tokenId;
-            if (!request.Data.TryGetString(out tokenId))
+            if (!request.Data.TryGetString(out var tokenId))
                 request.Reject();
 
             var token = await Server.Instance.DatabaseController.GetTokenAsync(tokenId);
-
             if (token != null)
             {
                 var peer = request.Accept();
@@ -25,7 +23,9 @@ namespace SideWarsServer.Networking
                 Server.Instance.RoomController.JoinOrCreateRoom(playerConnection);
             }
             else
+            {
                 request.Reject();
+            }
         }
 
         public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)

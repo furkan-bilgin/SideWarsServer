@@ -1,6 +1,7 @@
 ﻿using Ara3D;
 using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
+using SideWars.Shared.Utils;
 
 namespace SideWars.Shared.Physics
 {
@@ -26,6 +27,8 @@ namespace SideWars.Shared.Physics
             Horizontal = MathOps.Max(-1, Horizontal);
 
             location += new Vector3(GetMovementSpeed() * Horizontal, 0, 0) * deltaTime;
+            location.TruncateVec();
+
             CheckSides(deltaTime, ref location);
         }
 

@@ -35,6 +35,18 @@ namespace SideWars.Shared.Utils
 
             return new ParabolaData(velocityXZ + velocityY * -Math.Sign(gravity), time);
         }
+
+        public static float Truncate(this float f, int decimalPlaces)
+        {
+            var exp = Math.Pow(10, decimalPlaces);
+            return (float)(Math.Truncate(f * exp) / exp);
+        }
+
+        public static void TruncateVec(this ref Vector3 vec)
+        {
+            const int decPlaces = 2;
+            vec = new Vector3(vec.X.Truncate(decPlaces), vec.Y.Truncate(decPlaces), vec.Z.Truncate(decPlaces));   
+        }
     }
 
     public struct ParabolaData

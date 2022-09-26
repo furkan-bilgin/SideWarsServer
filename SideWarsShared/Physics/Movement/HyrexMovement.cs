@@ -1,6 +1,7 @@
 ﻿using Ara3D;
 using SideWars.Shared.Game;
 using SideWars.Shared.Packets;
+using SideWars.Shared.Utils;
 using System.Diagnostics;
 
 namespace SideWars.Shared.Physics
@@ -44,6 +45,7 @@ namespace SideWars.Shared.Physics
                 }
 
                 location += new Vector3(slideMultiplier * GetMovementSpeed() * SLIDE_SPEED_MULTIPLIER, 0, 0) * deltaTime;
+                location.TruncateVec();
 
                 CheckSides(deltaTime, ref location);
             }
