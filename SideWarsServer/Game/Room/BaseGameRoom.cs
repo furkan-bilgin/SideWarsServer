@@ -198,12 +198,20 @@ namespace SideWarsServer.Game.Room
             Logger.Info("Starting game...");
         }
 
-        public void FinishGame(EntityTeam winnerTeam)
+        public async void FinishGame(EntityTeam winnerTeam)
         {
             RoomState = GameRoomState.Closed;
             PacketSender.SendRoundUpdatePacket(CurrentRound, winnerTeam, true);
 
-            // TODO: Do post-game API update and stuff
+            // Finish User Matches via API
+            var res = await Server.Instance.APIController.FinishUserMatches(
+                    Players.Values.Select(x => x.Token).ToList(),
+                    Players.Values.Select(x => x.Token).Where(x => x.Team == winnerTeam).ToList());
+            
+            if (!res)
+            {
+                Logger.Error("Failed to finish user matches");
+            }
         }
 
         protected virtual void Update()

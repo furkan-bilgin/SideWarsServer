@@ -50,7 +50,7 @@ namespace SideWarsShared.REST
 
         public async Task<Dictionary<string, object>> Post(string url, bool checkAPIError = true)
         {
-            return await Post(url, checkAPIError);
+            return await Post<Dictionary<string, object>>(url, checkAPIError);
         }
 
         public async Task<T> Get<T>(string url, bool checkAPIError = true) where T : class

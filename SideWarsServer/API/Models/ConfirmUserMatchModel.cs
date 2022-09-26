@@ -6,5 +6,7 @@
         public string Username;
         public int UserChampion;
         public int UserID;
+        public int UserMatchID;
+        public int TeamID;
     }
 }

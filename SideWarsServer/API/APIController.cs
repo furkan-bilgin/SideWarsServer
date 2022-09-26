@@ -1,7 +1,11 @@
-﻿using SideWarsServer.API.Models;
+﻿using Newtonsoft.Json;
+using SideWarsServer.API.Models;
+using SideWarsServer.Database.Models;
 using SideWarsServer.Utils;
 using SideWarsShared.REST;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SideWarsServer.API
@@ -25,6 +29,17 @@ namespace SideWarsServer.API
                 .Post<ConfirmUserMatchModel>(BASE_URL + "/confirm-user-match");
 
             return res;
+        }
+
+        public async Task<bool> FinishUserMatches(List<Token> players, List<Token> winners)
+        {
+            // SideWarsLobbyServer/app/controllers/match_controller.go
+            var res = await restClient
+                .AddRequestData("UserMatchIDs", JsonConvert.SerializeObject(players.Select(x => x.ID)))
+                .AddRequestData("WinnerMatchIDs", JsonConvert.SerializeObject(winners.Select(x => x.ID)))
+                .Post(BASE_URL + "/finish-user-matches");
+
+            return (bool)res["Success"];
         }
     }
 }

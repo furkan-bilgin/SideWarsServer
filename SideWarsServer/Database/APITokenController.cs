@@ -1,5 +1,5 @@
 ﻿using SideWars.Shared.Game;
-using SideWarsServer.API;
+using SideWars.Shared.Packets;
 using SideWarsServer.Database.Models;
 using System.Threading.Tasks;
 
@@ -11,7 +11,7 @@ namespace SideWarsServer.Database
         {
             var res = await Server.Instance.APIController.ConfirmUserMatch(token);
 
-            return new Token(res.UserID, res.Username, res.RoomID, (ChampionType)res.UserChampion);
+            return new Token(res.UserMatchID, res.Username, res.RoomID, (ChampionType)res.UserChampion, (EntityTeam)(res.TeamID + 1));
         }
     }
 }
