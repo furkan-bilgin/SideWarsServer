@@ -53,7 +53,6 @@ namespace SideWarsServer.Game.Room
             newRoundTimer = new Stopwatch();
             Server.Instance.LogicController.RegisterLogicUpdate(Update);
 
-            var team = GetNextTeam();
             AddPlayer(new MockPlayerConnection(ChampionType.Galacticus));
         }
 
@@ -116,7 +115,10 @@ namespace SideWarsServer.Game.Room
 
         public Entity SpawnPlayerEntity(PlayerConnection playerConnection)
         {
-            var team = GetNextTeam();
+            var team = playerConnection.Token.Team;
+            if (team == EntityTeam.None)
+                team = GetNextTeam();
+
             var spawnPoint = RoomOptions.GetSpawnPoint(team);
             Player player;
 
