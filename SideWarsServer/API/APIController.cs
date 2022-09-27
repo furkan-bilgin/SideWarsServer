@@ -12,7 +12,7 @@ namespace SideWarsServer.API
 {
     public class APIController
     {
-        private const string BASE_URL = "http://192.168.1.69:3000/api/v1/server";
+        private const string BASE_URL = "http://localhost:3000/api/v1/server";
         private RestClient restClient;
 
         public APIController()
