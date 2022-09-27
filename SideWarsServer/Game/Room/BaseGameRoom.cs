@@ -206,13 +206,23 @@ namespace SideWarsServer.Game.Room
             PacketSender.SendRoundUpdatePacket(CurrentRound, winnerTeam, true);
 
             // Finish User Matches via API
-            var res = await Server.Instance.APIController.FinishUserMatches(
+            bool res = false;
+            try
+            {
+                res = await Server.Instance.APIController.FinishUserMatches(
                     Players.Values.Select(x => x.Token).ToList(),
                     Players.Values.Select(x => x.Token).Where(x => x.Team == winnerTeam).ToList());
-            
-            if (!res)
+            }
+            catch (Exception ex)
             {
-                Logger.Error("Failed to finish user matches");
+                Logger.Error(ex);
+            }
+            finally
+            {
+                if (!res)
+                {
+                    Logger.Error("Failed to finish user matches.");
+                }
             }
         }
 
