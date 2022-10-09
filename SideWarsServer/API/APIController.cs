@@ -18,7 +18,7 @@ namespace SideWarsServer.API
         public APIController()
         {
             restClient = new RestClient();
-            restClient.SetHeaderToken(RestClient.GAME_SERVER_TOKEN_HEADER, "fcc91728-946c-40d4-9e25-772b4f4d6434");// TODO CHANGE Environment.GetEnvironmentVariable("SERVER_TOKEN"));
+            restClient.SetHeaderToken(RestClient.GAME_SERVER_TOKEN_HEADER, "SERVERTOKEN_U9gd9ewWbbJNW4yf");// TODO CHANGE Environment.GetEnvironmentVariable("SERVER_TOKEN"));
         }
 
         public async Task<ConfirmUserMatchModel> ConfirmUserMatch(string matchToken)

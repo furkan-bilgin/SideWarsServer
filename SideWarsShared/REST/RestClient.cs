@@ -20,12 +20,26 @@ namespace SideWarsShared.REST
         public const string GAME_SERVER_TOKEN_HEADER = "SW-ServerToken";
         public const string CLIENT_TOKEN_HEADER = "SW-ClientToken";
 
-        private WebClient webClient = new WebClient();
+        private WebClient webClient  
+        {
+            get
+            {
+                var client = new WebClient();
+                foreach (var pair in requestHeaders)
+                {
+                    client.Headers[pair.Key] = pair.Value;
+                }
+
+                return client;
+            }
+        }
+
         private NameValueCollection requestData = new NameValueCollection();
+        private Dictionary<string, string> requestHeaders = new Dictionary<string, string>();
 
         public void SetHeaderToken(string header, string token)
         {
-            webClient.Headers[header] = token;
+            requestHeaders[header] = token;
         }
 
         public RestClient AddRequestData(string key, string val)

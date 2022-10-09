@@ -68,8 +68,8 @@ namespace SideWarsServer.Game.Logic.GameLoop
 
         public void AddBuffer(PlayerConnection connection, float horizontal, PlayerButton[] buttons)
         {
-            lock (movementBuffer)
-                movementBuffer.Enqueue(new Buffer() { PlayerConnection = connection, Horizontal = horizontal, Buttons = buttons });
+            lock (movementBuffer) lock(buttons)
+                movementBuffer.Enqueue(new Buffer() { PlayerConnection = connection, Horizontal = horizontal, Buttons = buttons.ToArray() });
         }
     }
 }

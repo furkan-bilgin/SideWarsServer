@@ -7,7 +7,7 @@ namespace SideWarsServer.Database
 {
     public class DebugTokenController : ITokenController
     {
-        ChampionType a = ChampionType.Mark;
+        ChampionType a = ChampionType.Desgama;
         public async Task<Token> GetTokenAsync(string token)
         {
             //a = a == ChampionType.Desgama ? ChampionType.Mark : ChampionType.Desgama;
