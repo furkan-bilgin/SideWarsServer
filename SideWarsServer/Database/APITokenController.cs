@@ -11,7 +11,7 @@ namespace SideWarsServer.Database
         {
             var res = await Server.Instance.APIController.ConfirmUserMatch(token);
 
-            return new Token(res.UserMatchID, res.Username, res.RoomID, (ChampionType)res.UserChampion, (EntityTeam)(res.TeamID + 1));
+            return new Token(res.UserMatchID, res.Username, res.RoomID, (ChampionType)res.UserChampion, (EntityTeam)res.TeamID);
         }
     }
 }

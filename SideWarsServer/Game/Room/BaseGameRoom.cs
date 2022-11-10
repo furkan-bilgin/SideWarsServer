@@ -4,17 +4,17 @@ using SideWars.Shared.Packets;
 using SideWarsServer.Game.Logic;
 using SideWarsServer.Game.Logic.Champions;
 using SideWarsServer.Game.Logic.Effects;
+using SideWarsServer.Game.Logic.GameLoop;
 using SideWarsServer.Game.Logic.Projectiles;
+using SideWarsServer.Game.Logic.Scheduler;
 using SideWarsServer.Game.Logic.Updater;
 using SideWarsServer.Game.Room.Listener;
 using SideWarsServer.Networking;
 using SideWarsServer.Utils;
-using System.Collections.Generic;
-using System.Linq;
-using SideWarsServer.Game.Logic.Scheduler;
-using SideWarsServer.Game.Logic.GameLoop;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace SideWarsServer.Game.Room
 {
@@ -110,7 +110,7 @@ namespace SideWarsServer.Game.Room
             Players[playerConnection.Token.ID] = playerConnection;
             SpawnPlayerEntity(playerConnection);
 
-            Logger.Info("Added player " + playerConnection.Token + " to the room");
+            Logger.Info($"Added player {playerConnection.Token.Username} to team {playerConnection.Token.Team}");
         }
 
         public Entity SpawnPlayerEntity(PlayerConnection playerConnection)
@@ -238,13 +238,13 @@ namespace SideWarsServer.Game.Room
                 return;
 
             lock (Entities) lock (Players)
-            {
-                Tick++;
-                CurrentRoundTime -= LogicTimer.FixedDelta;
+                {
+                    Tick++;
+                    CurrentRoundTime -= LogicTimer.FixedDelta;
 
-                UpdateEntityUpdaters();
-                UpdateGameLoops();
-            }
+                    UpdateEntityUpdaters();
+                    UpdateGameLoops();
+                }
         }
 
         private Stopwatch newRoundTimer;
@@ -282,7 +282,7 @@ namespace SideWarsServer.Game.Room
                     }
 
                     newRoundSpawnedPlayers = false;
-                } 
+                }
                 else
                 {
                     newRoundSpawnedPlayers = true;
@@ -307,7 +307,7 @@ namespace SideWarsServer.Game.Room
                     UpdateGameLoops();
                     newRoundSpawnedPlayers = true;
                 }
-            } 
+            }
 
             if (newRoundTimer.Elapsed.Seconds >= 6)
             {

@@ -5,8 +5,8 @@ namespace SideWarsServer.Networking
 {
     public class MockPlayerConnection : PlayerConnection
     {
-        public MockPlayerConnection(string roomId, ChampionType championType) : base(new Database.Models.Token(RandomTool.Current.Int(0, 999999), "MockPlayer", roomId, championType, SideWars.Shared.Packets.EntityTeam.Red), null) 
-        { 
+        public MockPlayerConnection(string roomId, ChampionType championType) : base(new Database.Models.Token(RandomTool.Current.Int(0, 999999), "MockPlayer", roomId, championType, SideWars.Shared.Packets.EntityTeam.Blue), null)
+        {
             IsReady = true;
         }
 
