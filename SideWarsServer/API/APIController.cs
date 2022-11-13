@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SideWarsServer.API.Models;
 using SideWarsServer.Database.Models;
-using SideWarsServer.Utils;
 using SideWarsShared.REST;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +10,7 @@ namespace SideWarsServer.API
 {
     public class APIController
     {
-        private const string BASE_URL = "http://localhost:3000/api/v1/server";
+        private const string BASE_URL = "https://1.lobby.sw.furkanbilgin.net/api/v1/server";
         private RestClient restClient;
 
         public APIController()
