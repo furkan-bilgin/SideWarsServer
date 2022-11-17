@@ -16,11 +16,7 @@ namespace SideWarsServer.Game.Logic.Projectiles
         {
             ProjectileInfo = SideWars.Shared.Game.ProjectileInfo.GalacticusBullet;
             Type = EntityType.GalacticusBullet;
-            Movement = new GalacticusBulletMovement(shooter.Team, ProjectileInfo.Speed, () => {
-                if (target != null)
-                    return target.Location;
-                return Vector3.Zero;
-            });
+            Movement = new GalacticusBulletMovement(shooter.Team, ProjectileInfo.Speed, () => target == null ? Vector3.Zero : target.Location);
         }
 
         public void ChooseTarget(IGameRoom room)
